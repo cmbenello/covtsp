@@ -1,0 +1,12 @@
+city_name: Berlin U-Bahn & S-Bahn
+gtfs_url: https://www.vbb.de/fileadmin/user_upload/VBB/Dokumente/API-Datensaetze/gtfs-mastscharf/GTFS.zip
+gtfs_path: berlin
+station_count: 175
+route_type_filter: [1, 2]  # 1 = Metro, 2 = Rail (S-Bahn)
+walking_speed_kmh: 5.0
+max_walk_distance_m: 500
+start_station: null
+time_window:
+  start: "05:00"
+  end: "01:00"
+excluded_stations: []

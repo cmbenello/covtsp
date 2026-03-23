@@ -1,0 +1,12 @@
+city_name: London Underground
+gtfs_url: https://data.bus-data.dft.gov.uk/timetable/download/gtfs-file/london/
+gtfs_path: london
+station_count: 272
+route_type_filter: [1]  # 1 = Metro/Subway
+walking_speed_kmh: 5.0
+max_walk_distance_m: 500
+start_station: null  # solver picks best start
+time_window:
+  start: "05:30"
+  end: "00:30"
+excluded_stations: []

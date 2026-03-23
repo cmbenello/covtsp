@@ -1,0 +1,12 @@
+city_name: Toy Network
+gtfs_url: ""  # local data only
+gtfs_path: toy
+station_count: 10
+route_type_filter: [1]
+walking_speed_kmh: 5.0
+max_walk_distance_m: 800
+start_station: S1
+time_window:
+  start: "06:00"
+  end: "22:00"
+excluded_stations: []

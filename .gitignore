@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.env
+data/london/
+data/nyc/
+data/berlin/
+results/
+.claude/

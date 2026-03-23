@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Viewer — Open Transit Optimizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: 'var(--bg)',
+                        'bg-card': 'var(--bg-card)',
+                        accent: '#c00004',
+                        text: 'var(--text)',
+                        muted: 'var(--muted)',
+                        border: 'var(--border)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans theme-dark" style="background: var(--bg); color: var(--text);">
+
+    <!-- Top bar -->
+    <nav class="fixed top-0 w-full z-50 border-b" style="background: var(--bg-nav); border-color: var(--border);">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="index.html" class="font-mono font-bold text-sm tracking-tight" style="color: var(--text);">
+                Open Transit Optimizer
+            </a>
+            <div class="flex items-center gap-3">
+                <button id="theme-toggle" class="p-2 rounded-lg transition hover:opacity-80" style="background: var(--bg-card); border: 1px solid var(--border);" title="Toggle dark/light mode">
+                    <svg id="icon-sun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg id="icon-moon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+                <button id="export-btn" class="px-3 py-1.5 text-xs font-mono font-semibold rounded-lg bg-accent text-white hover:bg-red-700 transition hidden">
+                    Export PNG
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- File loader (shown initially) -->
+    <div id="loader" class="fixed inset-0 flex items-center justify-center z-40" style="background: var(--bg);">
+        <div class="text-center px-6">
+            <div class="font-mono text-accent text-xs uppercase tracking-wider mb-3">Route Viewer</div>
+            <h1 class="text-3xl font-bold mb-6" style="color: var(--text);">Load a route</h1>
+            <label class="inline-block bg-accent hover:bg-red-700 text-white px-8 py-4 font-semibold rounded-lg cursor-pointer transition text-lg">
+                Choose JSON File
+                <input type="file" id="file-input" accept=".json" class="hidden">
+            </label>
+            <p class="text-xs mt-4" style="color: var(--muted);">
+                <code style="color: var(--text);">python cli.py solve --config configs/london.yaml --date 2026-03-17</code>
+            </p>
+            <button id="load-sample" class="mt-4 px-6 py-2 text-sm font-mono rounded-lg transition border" style="color: var(--text); border-color: var(--border); background: var(--bg-card);" onmouseover="this.style.background='var(--timeline-hover)'" onmouseout="this.style.background='var(--bg-card)'">
+                or load sample route
+            </button>
+        </div>
+    </div>
+
+    <!-- Main content (hidden until file loaded) -->
+    <div id="results" class="hidden pt-14">
+        <!-- Export wrapper - this is what gets captured as PNG -->
+        <div id="export-card">
+            <!-- Map -->
+            <div id="map" class="w-full" style="height: 55vh; min-height: 350px;"></div>
+
+            <!-- Stats bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-0 border-b" style="background: var(--bg-card); border-color: var(--border);">
+                <div class="stat-cell">
+                    <div id="stat-time" class="font-mono text-2xl md:text-3xl font-bold text-accent">--</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--muted);">Total Time</div>
+                </div>
+                <div class="stat-cell">
+                    <div id="stat-stations" class="font-mono text-2xl md:text-3xl font-bold" style="color: var(--text);">--</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--muted);">Stations</div>
+                </div>
+                <div class="stat-cell">
+                    <div id="stat-gap" class="font-mono text-2xl md:text-3xl font-bold text-accent">--</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--muted);">Optimality Gap</div>
+                </div>
+                <div class="stat-cell">
+                    <div id="stat-bound" class="font-mono text-2xl md:text-3xl font-bold" style="color: var(--text);">--</div>
+                    <div class="text-xs uppercase tracking-wider" style="color: var(--muted);">LP Bound</div>
+                </div>
+            </div>
+
+            <!-- Watermark for export -->
+            <div id="watermark" class="hidden py-2 px-4 text-center" style="background: var(--bg-card);">
+                <span class="font-mono text-xs" style="color: var(--muted);">Open Transit Optimizer</span>
+                <span class="text-xs mx-2" style="color: var(--border);">|</span>
+                <span id="wm-city" class="font-mono text-xs" style="color: var(--muted);">--</span>
+                <span class="text-xs mx-2" style="color: var(--border);">|</span>
+                <span id="wm-date" class="font-mono text-xs" style="color: var(--muted);">--</span>
+            </div>
+        </div>
+
+        <!-- Animation controls (outside export-card so they don't appear in PNG) -->
+        <div id="animation-controls" class="hidden flex items-center justify-center gap-4 py-2 border-b" style="background: var(--bg-card); border-color: var(--border);">
+            <button id="anim-play" class="px-4 py-1.5 text-xs font-mono font-semibold rounded-lg bg-accent text-white hover:bg-red-700 transition" style="min-width: 70px;">
+                Play
+            </button>
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-mono" style="color: var(--muted);">Speed</span>
+                <input id="anim-speed" type="range" min="1" max="10" value="5" class="anim-slider">
+                <span id="anim-speed-label" class="text-xs font-mono" style="color: var(--text); min-width: 24px;">5x</span>
+            </div>
+            <span id="anim-progress" class="text-xs font-mono" style="color: var(--muted);">0 stations</span>
+        </div>
+
+        <!-- Meta bar -->
+        <div class="px-4 py-3 flex flex-wrap gap-4 text-xs border-b" style="background: var(--bg); border-color: var(--border); color: var(--muted);">
+            <span>City: <strong id="meta-city" class="font-mono" style="color: var(--text);">--</strong></span>
+            <span>Date: <strong id="meta-date" class="font-mono" style="color: var(--text);">--</strong></span>
+            <span>Graph: <strong id="meta-graph" class="font-mono" style="color: var(--text);">--</strong></span>
+            <span>Start: <strong id="meta-start" class="font-mono" style="color: var(--text);">--</strong></span>
+        </div>
+
+        <!-- Route timeline -->
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <h2 class="font-mono text-xs uppercase tracking-wider mb-4" style="color: var(--muted);">Route Timeline</h2>
+            <div id="timeline" class="space-y-0.5 max-h-[50vh] overflow-y-auto pr-2"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- html-to-image for PNG export -->
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

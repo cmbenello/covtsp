@@ -1,0 +1,12 @@
+city_name: NYC Subway
+gtfs_url: http://web.mta.info/developers/data/nyct/subway/google_transit.zip
+gtfs_path: nyc
+station_count: 472
+route_type_filter: [1]  # 1 = Metro/Subway
+walking_speed_kmh: 5.0
+max_walk_distance_m: 400
+start_station: null
+time_window:
+  start: "05:00"
+  end: "01:00"
+excluded_stations: []
