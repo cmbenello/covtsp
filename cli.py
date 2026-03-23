@@ -1,5 +1,8 @@
 """CLI entry point for the Open Transit Optimizer."""
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from datetime import date, datetime
 from pathlib import Path
 

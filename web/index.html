@@ -3,274 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Transit Optimizer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>covtsp — Transit Coverage Optimization</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#131313',
-                        accent: '#c00004',
-                        text: '#e5e2e1',
-                        muted: '#888',
-                        card: '#1a1a1a',
-                        border: '#2a2a2a',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Space Grotesk', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-bg text-text font-sans">
-    <!-- Nav -->
-    <nav class="fixed top-0 w-full bg-bg/90 backdrop-blur-sm border-b border-border z-50">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <a href="#" class="font-mono font-bold text-lg tracking-tight">Open Transit Optimizer</a>
-            <div class="hidden md:flex items-center gap-8 text-sm text-muted">
-                <a href="#problem" class="hover:text-text transition">Problem</a>
-                <a href="#methodology" class="hover:text-text transition">Methodology</a>
-                <a href="#results" class="hover:text-text transition">Results</a>
-                <a href="results.html" class="hover:text-text transition">Route Viewer</a>
-                <a href="#" class="hover:text-text transition">GitHub</a>
-            </div>
-            <button id="menu-toggle" class="md:hidden text-muted">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-3 text-sm text-muted">
-            <a href="#problem" class="block hover:text-text">Problem</a>
-            <a href="#methodology" class="block hover:text-text">Methodology</a>
-            <a href="#results" class="block hover:text-text">Results</a>
-            <a href="results.html" class="block hover:text-text">Route Viewer</a>
-            <a href="#" class="block hover:text-text">GitHub</a>
+<body>
+    <nav class="nav">
+        <a href="#" class="nav-brand">covtsp</a>
+        <div class="nav-right">
+            <a href="results.html?sample" class="nav-meta" style="text-decoration:none;">Route Viewer</a>
+            <a href="https://github.com/cmbenello/covtsp" class="nav-meta" style="text-decoration:none;">GitHub</a>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="pt-32 pb-20 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="pulse-dot"></span>
-                <span class="font-mono text-sm text-accent tracking-wider uppercase">Provably Near-Optimal</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">
-                Solving Transit Coverage<br>
-                <span class="text-accent">Optimization</span>
-            </h1>
-            <p class="text-lg text-muted max-w-2xl mb-10">
-                A research-grade Covering TSP solver on time-expanded graphs.
-                Formalizing a world-record London Tube Challenge solve into an
-                open-source framework with LP relaxation bounds for any city's GTFS data.
-            </p>
-            <div class="flex flex-wrap gap-4 mb-16">
-                <a href="#results" class="bg-accent hover:bg-red-700 text-white px-6 py-3 font-semibold rounded transition">
-                    View Results
-                </a>
-                <a href="#" class="border border-border hover:border-muted text-text px-6 py-3 font-semibold rounded transition">
-                    GitHub Repository
-                </a>
-            </div>
+    <div class="hero">
+        <div class="hero-tag">Covering TSP Solver</div>
+        <h1 class="hero-title">Transit Coverage<br>Optimization</h1>
+        <p class="hero-desc">
+            A research-grade solver for visiting every station on a transit network as fast as possible.
+            Formalizes a world-record London Tube Challenge into an open-source framework with LP relaxation bounds for any GTFS city.
+        </p>
+        <div class="hero-actions">
+            <a href="results.html?sample" class="btn-primary" style="text-decoration:none;">View Route</a>
+            <a href="https://github.com/cmbenello/covtsp" class="btn-secondary" style="text-decoration:none;display:inline-block;margin:0;">GitHub</a>
+        </div>
+    </div>
 
-            <!-- Stat bar -->
-            <div class="flex overflow-x-auto gap-0 border border-border rounded-lg divide-x divide-border scroll-snap">
-                <div class="stat-card">
-                    <span class="font-mono text-3xl font-bold text-accent">272</span>
-                    <span class="text-xs text-muted uppercase tracking-wider mt-1">Stations</span>
-                </div>
-                <div class="stat-card">
-                    <span class="font-mono text-3xl font-bold">500K+</span>
-                    <span class="text-xs text-muted uppercase tracking-wider mt-1">Graph Nodes</span>
-                </div>
-                <div class="stat-card">
-                    <span class="font-mono text-3xl font-bold">13h40m</span>
-                    <span class="text-xs text-muted uppercase tracking-wider mt-1">Record Time</span>
-                </div>
-                <div class="stat-card">
-                    <span class="font-mono text-3xl font-bold text-accent">&lt;X%</span>
-                    <span class="text-xs text-muted uppercase tracking-wider mt-1">LP Bound Gap</span>
-                </div>
+    <div class="section" id="problem">
+        <div class="section-label">The Problem</div>
+        <h2 class="section-title">Covering TSP on a Time-Expanded Graph</h2>
+        <p>
+            Visit every station on a transit network as fast as possible.
+            Unlike classical TSP, this is a <strong>Covering</strong> variant: visit a required set of nodes, don't return to start.
+        </p>
+        <p>
+            The graph is <strong>time-dependent</strong>: you can only take a train when it departs.
+            Modeled on a time-expanded graph where each node is a (station, time) pair.
+            Edge types: <strong>transit arcs</strong>, <strong>waiting arcs</strong>, and <strong>walking transfers</strong>.
+        </p>
+    </div>
+
+    <div class="section" id="methodology">
+        <div class="section-label">Methodology</div>
+        <h2 class="section-title">Three-Layer Algorithm</h2>
+        <div class="method-grid">
+            <div class="method-card">
+                <div class="method-num">01</div>
+                <h4>Time-Expanded Graph</h4>
+                <p>GTFS timetable data builds a directed graph with ~170K nodes for London. Dijkstra gives exact earliest-arrival queries.</p>
+            </div>
+            <div class="method-card">
+                <div class="method-num">02</div>
+                <h4>Greedy + Local Search</h4>
+                <p>Nearest-unvisited with beam search lookahead, improved by 2-opt and Or-opt moves on the station visit order.</p>
+            </div>
+            <div class="method-card">
+                <div class="method-num">03</div>
+                <h4>LP Relaxation Bound</h4>
+                <p>Flow-based LP provides a provable lower bound. The optimality gap tells you how close to optimal the solution is.</p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Problem -->
-    <section id="problem" class="py-20 px-6 border-t border-border">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="font-mono text-sm text-accent uppercase tracking-wider mb-4">The Problem</h2>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div>
-                    <h3 class="text-3xl font-bold mb-6">Covering TSP on a Time-Expanded Graph</h3>
-                    <p class="text-muted mb-4">
-                        Visit every station on a transit network as fast as possible.
-                        Unlike classical TSP, this is a <strong class="text-text">Covering</strong> variant:
-                        you must visit a required set of nodes (not all), and you don't return to start.
-                    </p>
-                    <p class="text-muted mb-4">
-                        The graph is <strong class="text-text">time-dependent</strong>: you can only take a
-                        train when it departs. This means the problem is modeled on a time-expanded graph
-                        where each node is a (station, time) pair.
-                    </p>
-                    <p class="text-muted">
-                        Edge types: <strong class="text-text">transit arcs</strong> (ride a train),
-                        <strong class="text-text">waiting arcs</strong> (wait for the next departure), and
-                        <strong class="text-text">walking transfers</strong> (walk between nearby stations).
-                    </p>
-                </div>
-                <div class="bg-card border border-border rounded-lg p-6 font-mono text-sm overflow-x-auto">
-<pre class="text-green-400">
-Time-Expanded Graph
-
-Station A ──(transit)──▸ Station B
-  t=08:00                 t=08:04
-     │                       │
-  (wait)                  (wait)
-     │                       │
-  t=08:10                 t=08:15
-     │                       │
-     └──────(transit)──────▸ │
-              t=08:10→08:14
-
-   ╌╌╌ Walking Transfer ╌╌╌
-Station A ~~(walk 3min)~~▸ Station C
-  t=08:04                  t=08:07
-
-Nodes: (station, departure_time)
-Edges: transit | wait | walk
-Weight: elapsed seconds
-</pre>
-                </div>
+    <div class="section" id="results">
+        <div class="section-label">Results</div>
+        <h2 class="section-title">London Tube Challenge</h2>
+        <div class="results-grid">
+            <div>
+                <div class="result-num accent">13h40m</div>
+                <div class="result-label">Record Time</div>
+                <div class="result-sub">vs 14h17m official record</div>
+            </div>
+            <div>
+                <div class="result-num">272</div>
+                <div class="result-label">Stations Visited</div>
+                <div class="result-sub">Every Underground station</div>
+            </div>
+            <div>
+                <div class="result-num accent">12h32m</div>
+                <div class="result-label">Solver Output</div>
+                <div class="result-sub">Automated solution</div>
             </div>
         </div>
-    </section>
-
-    <!-- Methodology -->
-    <section id="methodology" class="py-20 px-6 border-t border-border">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="font-mono text-sm text-accent uppercase tracking-wider mb-4">Methodology</h2>
-            <h3 class="text-3xl font-bold mb-12">Three-Layer Algorithm Stack</h3>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-card border border-border rounded-lg p-6">
-                    <div class="font-mono text-accent text-sm mb-3">01</div>
-                    <h4 class="text-xl font-bold mb-3">Problem Formulation</h4>
-                    <p class="text-sm text-muted">
-                        Covering TSP on a time-expanded directed graph built from GTFS timetable data.
-                        ~500K nodes for London. Decision variables: sequence of arcs minimizing total elapsed time.
-                    </p>
-                </div>
-                <div class="bg-card border border-border rounded-lg p-6">
-                    <div class="font-mono text-accent text-sm mb-3">02</div>
-                    <h4 class="text-xl font-bold mb-3">Heuristic Solver</h4>
-                    <p class="text-sm text-muted">
-                        Greedy nearest-unvisited with beam search lookahead, followed by
-                        local search (2-opt, Or-opt, 3-opt) on the station visit order.
-                        Re-simulates the full timed path after each move.
-                    </p>
-                </div>
-                <div class="bg-card border border-border rounded-lg p-6">
-                    <div class="font-mono text-accent text-sm mb-3">03</div>
-                    <h4 class="text-xl font-bold mb-3">LP Relaxation Bound</h4>
-                    <p class="text-sm text-muted">
-                        Flow-based LP relaxation provides a provable lower bound.
-                        The optimality gap = (heuristic - LP bound) / LP bound tells you
-                        how close to optimal the solution is. No algorithm can do better than the bound.
-                    </p>
-                </div>
-            </div>
+        <div style="text-align:center;">
+            <a href="results.html?sample" class="btn-secondary" style="display:inline-block;margin:0;text-decoration:none;">View Detailed Route</a>
         </div>
-    </section>
+    </div>
 
-    <!-- Results -->
-    <section id="results" class="py-20 px-6 border-t border-border">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="font-mono text-sm text-accent uppercase tracking-wider mb-4">Results</h2>
-            <h3 class="text-3xl font-bold mb-16">London Tube Challenge</h3>
-            <div class="grid md:grid-cols-3 gap-12 mb-16">
-                <div>
-                    <div class="font-mono text-6xl font-bold text-accent">13h40m</div>
-                    <div class="text-muted mt-2">Record Time</div>
-                    <div class="text-xs text-muted mt-1">vs 14h17m official world record</div>
-                </div>
-                <div>
-                    <div class="font-mono text-6xl font-bold">272</div>
-                    <div class="text-muted mt-2">Stations Visited</div>
-                    <div class="text-xs text-muted mt-1">Every London Underground station</div>
-                </div>
-                <div>
-                    <div class="font-mono text-6xl font-bold text-accent">&lt;X%</div>
-                    <div class="text-muted mt-2">Optimality Gap</div>
-                    <div class="text-xs text-muted mt-1">LP relaxation lower bound</div>
-                </div>
-            </div>
-            <a href="results.html" class="inline-block border border-border hover:border-muted text-text px-6 py-3 font-semibold rounded transition">
-                View Detailed Route
-            </a>
-        </div>
-    </section>
-
-    <!-- Cities -->
-    <section class="py-12 border-t border-border overflow-hidden">
-        <div class="cities-ticker font-mono text-sm text-muted">
-            <div class="ticker-track">
-                <span class="ticker-item">London Underground</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">NYC Subway</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">Berlin U+S Bahn</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">Tokyo Metro</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">Chicago CTA</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">London Underground</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">NYC Subway</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">Berlin U+S Bahn</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">Tokyo Metro</span>
-                <span class="ticker-sep">/</span>
-                <span class="ticker-item">Chicago CTA</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="py-20 px-6 border-t border-border">
-        <div class="max-w-6xl mx-auto text-center">
-            <h3 class="text-3xl font-bold mb-4">Open Source</h3>
-            <p class="text-muted mb-8 max-w-xl mx-auto">
-                The full solver, GTFS pipeline, and LP relaxation code are available on GitHub.
-                Add your city by dropping in a YAML config and a GTFS feed.
-            </p>
-            <a href="#" class="bg-accent hover:bg-red-700 text-white px-8 py-4 font-semibold rounded text-lg transition">
-                View on GitHub
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-8 px-6 border-t border-border">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted">
-            <div class="font-mono">Open Transit Optimizer</div>
-            <div>Built by Charles Benello</div>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-text transition">GitHub</a>
-                <a href="#" class="hover:text-text transition">Research</a>
-            </div>
-        </div>
+    <footer>
+        <span style="font-family:'JetBrains Mono',monospace;">covtsp</span>
+        <span>Built by Charles Benello</span>
+        <a href="https://github.com/cmbenello/covtsp">GitHub</a>
     </footer>
-
-    <script src="main.js"></script>
 </body>
 </html>

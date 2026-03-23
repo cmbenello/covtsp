@@ -30,8 +30,11 @@ class Route:
 
 
 def _format_time(seconds: int) -> str:
-    """Format seconds since midnight as HH:MM."""
-    h = seconds // 3600
+    """Format seconds since midnight as HH:MM.
+
+    Wraps hours >= 24 back to 00:XX (GTFS uses 24+ for post-midnight service).
+    """
+    h = (seconds // 3600) % 24
     m = (seconds % 3600) // 60
     return f"{h:02d}:{m:02d}"
 

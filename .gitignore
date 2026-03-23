@@ -10,3 +10,4 @@ data/nyc/
 data/berlin/
 results/
 .claude/
+**/walking_cache.json

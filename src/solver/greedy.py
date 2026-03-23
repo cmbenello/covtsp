@@ -125,3 +125,39 @@ class GreedySolver:
 
         arr_node, _, path = arrivals[best_first]
         return best_first, arr_node, path
+
+    def solve_fixed_order(self, station_order: list[str], start_time: int = 0) -> Route:
+        """Simulate traversal of a fixed station order through the TEG.
+
+        Unlike solve(), this doesn't choose which station to visit next —
+        it follows the given order exactly, using Dijkstra for each hop.
+
+        Args:
+            station_order: Ordered list of station IDs to visit.
+            start_time: Earliest departure time (seconds since midnight).
+
+        Returns:
+            Route with real TEG-based timing, or empty Route if unreachable.
+        """
+        if not station_order:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        start_nodes = self.graph.get_start_nodes(station_order[0], start_time)
+        if not start_nodes:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        current_node = start_nodes[0]
+        full_path: list[TENode] = [current_node]
+
+        for i in range(len(station_order) - 1):
+            target_sid = station_order[i + 1]
+            arr_node, travel_time, path = self.graph.earliest_arrival(
+                current_node, target_sid
+            )
+            if arr_node is None:
+                # Can't reach next station — return what we have so far
+                break
+            full_path.extend(path[1:])
+            current_node = arr_node
+
+        return self.graph.reconstruct_route(full_path, None)

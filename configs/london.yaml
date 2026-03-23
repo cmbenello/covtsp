@@ -10,3 +10,4 @@ time_window:
   start: "05:30"
   end: "00:30"
 excluded_stations: []
+use_google_walking: true

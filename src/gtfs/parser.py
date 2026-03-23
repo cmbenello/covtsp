@@ -176,11 +176,115 @@ class GTFSParser:
                 stations[station_id].child_stop_ids.append(stop_id)
             stop_to_station[stop_id] = station_id
 
+        # Fix stations with clearly wrong coordinates (use child platform average)
+        self._fix_bad_coordinates(stations, stops)
+
+        # Auto-merge orphan stops by normalized name
+        # Some GTFS feeds have stops without parent_station that duplicate existing stations
+        stations, stop_to_station = self._merge_orphan_stations(stations, stop_to_station)
+
         # Store mapping for segment parsing
         self._stop_to_station = stop_to_station
         self._valid_trips = valid_trips
 
         return stations
+
+    @staticmethod
+    def _fix_bad_coordinates(stations: dict[str, "Station"], stops_df) -> None:
+        """Fix stations with clearly wrong coordinates by averaging child platforms.
+
+        Some GTFS feeds have parent stations with coordinates far from the actual
+        platforms (e.g., Belsize Park in the London feed has Irish coordinates).
+        Detect by comparing parent coords against child platform coords.
+        """
+        import logging
+        logger = logging.getLogger(__name__)
+
+        for sid, station in stations.items():
+            # Get child platforms (exclude the parent station itself)
+            child_ids = [c for c in station.child_stop_ids if c != sid]
+            if not child_ids:
+                continue
+
+            child_rows = stops_df[stops_df["stop_id"].isin(child_ids)]
+            if child_rows.empty:
+                continue
+
+            child_lats = child_rows["stop_lat"].astype(float).values
+            child_lons = child_rows["stop_lon"].astype(float).values
+
+            avg_lat = float(child_lats.mean())
+            avg_lon = float(child_lons.mean())
+
+            # If parent is > 0.1 degrees (~11km) from child average, it's wrong
+            if abs(station.lat - avg_lat) > 0.1 or abs(station.lon - avg_lon) > 0.1:
+                logger.info(
+                    f"Fixing bad coordinates for {station.name}: "
+                    f"({station.lat:.4f}, {station.lon:.4f}) -> ({avg_lat:.4f}, {avg_lon:.4f})"
+                )
+                station.lat = avg_lat
+                station.lon = avg_lon
+
+    @staticmethod
+    def _normalize_station_name(name: str) -> str:
+        """Normalize a station name for fuzzy matching."""
+        name = name.lower().strip()
+        for suffix in [" underground station", " rail station", " dlr station", " station", " stn"]:
+            if name.endswith(suffix):
+                name = name[: -len(suffix)].strip()
+        # Normalize common variations
+        name = name.replace("'", "'").replace("'", "'").replace("&", "and")
+        return name
+
+    def _merge_orphan_stations(
+        self,
+        stations: dict[str, Station],
+        stop_to_station: dict[str, str],
+    ) -> tuple[dict[str, Station], dict[str, str]]:
+        """Merge orphan stops (no parent_station) into matching parent stations by name.
+
+        An orphan is a station whose station_id equals its stop_id (it was never
+        grouped under a parent). If its normalized name matches an existing parent
+        station, merge its child_stop_ids into that parent and update the mapping.
+        """
+        # Build normalized name -> station_id index for parent stations
+        parent_stations = {}
+        orphan_ids = []
+
+        for sid, station in stations.items():
+            # A station is a "parent" if it has children from different stop_ids
+            # or if its station_id doesn't match any of its child_stop_ids
+            is_orphan = len(station.child_stop_ids) == 1 and station.child_stop_ids[0] == sid
+            if is_orphan:
+                orphan_ids.append(sid)
+            else:
+                norm = self._normalize_station_name(station.name)
+                parent_stations[norm] = sid
+
+        merged_count = 0
+        for orphan_id in orphan_ids:
+            orphan = stations[orphan_id]
+            norm = self._normalize_station_name(orphan.name)
+
+            if norm in parent_stations:
+                target_id = parent_stations[norm]
+                target = stations[target_id]
+
+                # Merge child stops
+                for child in orphan.child_stop_ids:
+                    if child not in target.child_stop_ids:
+                        target.child_stop_ids.append(child)
+                    stop_to_station[child] = target_id
+
+                # Remove orphan
+                del stations[orphan_id]
+                merged_count += 1
+
+        if merged_count > 0:
+            import logging
+            logging.getLogger(__name__).info(f"Merged {merged_count} orphan stops by name match")
+
+        return stations, stop_to_station
 
     def _parse_segments(self, stations: dict[str, Station], target_date=None) -> list[TripSegment]:
         """Parse stop_times.txt into trip segments between stations."""
@@ -250,7 +354,13 @@ class GTFSParser:
         return segments
 
     def _compute_walking_transfers(self, stations: dict[str, Station]) -> list[WalkingTransfer]:
-        """Compute walking transfers between nearby stations using KD-tree."""
+        """Compute walking transfers between nearby stations.
+
+        Uses KD-tree to find candidate pairs within max_walk_distance_m.
+        If use_google_walking is enabled, fetches real walking times from
+        the Google Maps Distance Matrix API (with disk caching).
+        Falls back to Haversine-based estimates if API is unavailable.
+        """
         if not stations:
             return []
 
@@ -264,26 +374,40 @@ class GTFSParser:
         tree = KDTree(coords)
         pairs = tree.query_pairs(max_deg)
 
-        transfers = []
-        walk_speed_ms = self.config.walking_speed_kmh * 1000 / 3600  # m/s
-
+        # Build candidate pairs with Haversine distances
+        candidate_pairs = []
         for i, j in pairs:
             s1, s2 = station_list[i], station_list[j]
             dist = _haversine_meters(s1.lat, s1.lon, s2.lat, s2.lon)
-
             if dist <= self.config.max_walk_distance_m:
-                walk_time = int(dist / walk_speed_ms)
-                transfers.append(WalkingTransfer(
-                    from_station_id=s1.station_id,
-                    to_station_id=s2.station_id,
-                    walk_time_seconds=walk_time,
-                    distance_meters=dist,
-                ))
-                transfers.append(WalkingTransfer(
-                    from_station_id=s2.station_id,
-                    to_station_id=s1.station_id,
-                    walk_time_seconds=walk_time,
-                    distance_meters=dist,
-                ))
+                candidate_pairs.append((s1, s2, dist))
+
+        # Try Google Maps API if configured
+        if self.config.use_google_walking:
+            from src.gtfs.walking import compute_google_walking_transfers
+
+            cache_path = self.config.data_dir / "walking_cache.json"
+            result = compute_google_walking_transfers(candidate_pairs, cache_path)
+            if result is not None:
+                return result
+
+        # Fallback: Haversine-based walking times
+        transfers = []
+        walk_speed_ms = self.config.walking_speed_kmh * 1000 / 3600  # m/s
+
+        for s1, s2, dist in candidate_pairs:
+            walk_time = int(dist / walk_speed_ms)
+            transfers.append(WalkingTransfer(
+                from_station_id=s1.station_id,
+                to_station_id=s2.station_id,
+                walk_time_seconds=walk_time,
+                distance_meters=dist,
+            ))
+            transfers.append(WalkingTransfer(
+                from_station_id=s2.station_id,
+                to_station_id=s1.station_id,
+                walk_time_seconds=walk_time,
+                distance_meters=dist,
+            ))
 
         return transfers

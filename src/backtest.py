@@ -111,17 +111,31 @@ def backtest(
         unique_order, parsed.required_station_ids, max_iterations=local_search_iterations
     )
 
+    # Re-simulate the improved order through the real TEG to get actual timing.
+    # Local search uses static-graph approximations (fast but optimistic);
+    # we need the true timetable-aware travel time for reporting.
+    best_route = greedy_route
     if improved_time > 0 and improved_time < greedy_route.total_time_seconds:
         console.print(
-            f"  [green]Improved: {improved_time}s "
-            f"({improved_time // 3600}h{(improved_time % 3600) // 60}m) | "
-            f"Saved {greedy_route.total_time_seconds - improved_time}s[/green]"
+            f"  Local search static estimate: {improved_time}s "
+            f"({improved_time // 3600}h{(improved_time % 3600) // 60}m)"
         )
-        best_time = improved_time
+        console.print("[dim]Re-simulating improved order through TEG...[/dim]")
+        resim_route = solver.solve_fixed_order(improved_order, start_time)
+        if resim_route.total_time_seconds > 0 and resim_route.total_time_seconds < greedy_route.total_time_seconds:
+            console.print(
+                f"  [green]Improved: {resim_route.total_time_seconds}s "
+                f"({resim_route.total_time_seconds // 3600}h{(resim_route.total_time_seconds % 3600) // 60}m) | "
+                f"Saved {greedy_route.total_time_seconds - resim_route.total_time_seconds}s[/green]"
+            )
+            best_route = resim_route
+        else:
+            console.print("  TEG re-simulation showed no improvement over greedy")
     else:
         console.print("  Local search did not improve greedy solution")
-        best_time = greedy_route.total_time_seconds
         improved_order = unique_order
+
+    best_time = best_route.total_time_seconds
 
     # Step 5: LP lower bound
     console.print("[dim]Computing LP relaxation lower bound...[/dim]")
@@ -156,7 +170,7 @@ def backtest(
         "date": str(target_date),
         "total_time_seconds": best_time,
         "total_time_formatted": f"{best_time // 3600}h{(best_time % 3600) // 60}m",
-        "stations_visited": len(set(improved_order)),
+        "stations_visited": best_route.stations_visited,
         "stations_required": len(parsed.required_station_ids),
         "optimality_gap_pct": round(gap, 2) if gap is not None else None,
         "lp_lower_bound_seconds": lp_bound,
@@ -166,8 +180,8 @@ def backtest(
             sid: {"name": s.name, "lat": s.lat, "lon": s.lon}
             for sid, s in parsed.stations.items()
         },
-        "route": greedy_route.visits,
-        "walk_segments": greedy_route.walk_segments,
+        "route": best_route.visits,
+        "walk_segments": best_route.walk_segments,
         "graph_stats": {
             "teg_nodes": teg.node_count,
             "teg_edges": teg.edge_count,

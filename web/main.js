@@ -1,44 +1,6 @@
-// ── Theme management ──────────────────────────────────────────────
-
-function getTheme() {
-    return localStorage.getItem('oto-theme') || 'dark';
-}
-
-function setTheme(theme) {
-    localStorage.setItem('oto-theme', theme);
-    document.body.classList.remove('theme-dark', 'theme-light');
-    document.body.classList.add(`theme-${theme}`);
-
-    const sunIcon = document.getElementById('icon-sun');
-    const moonIcon = document.getElementById('icon-moon');
-    if (sunIcon && moonIcon) {
-        sunIcon.classList.toggle('hidden', theme === 'dark');
-        moonIcon.classList.toggle('hidden', theme === 'light');
-    }
-
-    // Update map tiles if map exists
-    if (window._map && window._tileLayer) {
-        window._tileLayer.setUrl(getTileUrl(theme));
-    }
-}
-
-function getTileUrl(theme) {
-    return theme === 'dark'
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-}
-
 // ── Line color mapping ───────────────────────────────────────────
 
 const LINE_COLORS = {
-    'red': '#c00004',
-    'blue': '#2563eb',
-    'green': '#16a34a',
-    'yellow': '#eab308',
-    'orange': '#ea580c',
-    'purple': '#9333ea',
-    'pink': '#ec4899',
-    'brown': '#92400e',
     'central': '#dc2626',
     'district': '#16a34a',
     'circle': '#eab308',
@@ -49,52 +11,33 @@ const LINE_COLORS = {
     'victoria': '#2563eb',
     'bakerloo': '#92400e',
     'hammersmith': '#ec4899',
+    'hammersmith & city': '#ec4899',
     'elizabeth': '#6d28d9',
     'overground': '#ea580c',
     'dlr': '#0891b2',
+    'waterloo & city': '#76c8b0',
 };
 
 const FALLBACK_COLORS = [
-    '#c00004', '#2563eb', '#16a34a', '#eab308', '#9333ea',
+    '#dc2626', '#2563eb', '#16a34a', '#eab308', '#9333ea',
     '#ea580c', '#ec4899', '#0891b2', '#737373', '#92400e',
 ];
 
 let colorIndex = 0;
 
 function getLineColor(lineName) {
-    if (!lineName) return '#c00004';
+    if (!lineName) return '#f05a28';
     const key = lineName.toLowerCase().trim();
     if (LINE_COLORS[key]) return LINE_COLORS[key];
-    if (!LINE_COLORS[key]) {
-        LINE_COLORS[key] = FALLBACK_COLORS[colorIndex % FALLBACK_COLORS.length];
-        colorIndex++;
-    }
+    // Auto-assign a color for unknown lines
+    LINE_COLORS[key] = FALLBACK_COLORS[colorIndex % FALLBACK_COLORS.length];
+    colorIndex++;
     return LINE_COLORS[key];
 }
 
 // ── Init ─────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-    setTheme(getTheme());
-
-    // Theme toggle
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            setTheme(getTheme() === 'dark' ? 'light' : 'dark');
-        });
-    }
-
-    // Mobile menu toggle (index page)
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        mobileMenu.querySelectorAll('a').forEach(a =>
-            a.addEventListener('click', () => mobileMenu.classList.add('hidden'))
-        );
-    }
-
     // File input (results page)
     const fileInput = document.getElementById('file-input');
     if (fileInput) {
@@ -104,8 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const reader = new FileReader();
             reader.onload = (ev) => {
                 try {
-                    const data = JSON.parse(ev.target.result);
-                    renderResults(data);
+                    renderResults(JSON.parse(ev.target.result));
                 } catch (err) {
                     alert('Invalid JSON: ' + err.message);
                 }
@@ -125,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Auto-load sample.json if ?sample is in the URL
+    // Auto-load if ?sample in URL
     if (window.location.search.includes('sample')) {
         fetch('sample.json')
             .then(r => r.json())
@@ -151,65 +93,54 @@ function renderResults(data) {
     document.getElementById('stat-time').textContent =
         data.total_time_formatted || formatTime(data.total_time_seconds);
     document.getElementById('stat-stations').textContent =
-        data.stations_visited + (data.stations_required ? '/' + data.stations_required : '');
+        data.stations_visited + (data.stations_required ? ' / ' + data.stations_required : '');
     document.getElementById('stat-gap').textContent =
         data.optimality_gap_pct != null ? data.optimality_gap_pct.toFixed(1) + '%' : 'N/A';
     document.getElementById('stat-bound').textContent =
         data.lp_lower_bound_seconds ? formatTime(data.lp_lower_bound_seconds) : 'N/A';
 
-    // Meta
+    // Nav meta
     document.getElementById('meta-city').textContent = data.city || '--';
     document.getElementById('meta-date').textContent = data.date || '--';
+
+    // Meta bar
     if (data.graph_stats) {
         document.getElementById('meta-graph').textContent =
-            (data.graph_stats.teg_nodes || 0).toLocaleString() + ' nodes';
+            (data.graph_stats.teg_nodes || 0).toLocaleString() + ' nodes / ' +
+            (data.graph_stats.teg_edges || 0).toLocaleString() + ' edges';
     }
     if (data.solver_params) {
-        document.getElementById('meta-start').textContent = data.solver_params.start_station || '--';
+        const stationName = data.stations?.[data.solver_params.start_station]?.name || data.solver_params.start_station;
+        document.getElementById('meta-start').textContent = stationName || '--';
     }
 
     // Watermark
     document.getElementById('wm-city').textContent = data.city || '';
     document.getElementById('wm-date').textContent = data.date || '';
 
-    // Build map (sets up segments but doesn't draw them yet)
     buildMap(data);
-
-    // Build timeline
     buildTimeline(data);
 }
 
 // ── Map ──────────────────────────────────────────────────────────
 
 function buildMap(data) {
-    const theme = getTheme();
+    // Destroy existing
+    if (window._anim) { window._anim.stop(); window._anim = null; }
+    if (window._map) { window._map.remove(); window._map = null; }
 
-    // Destroy existing map and animation
-    if (window._anim) {
-        window._anim.stop();
-        window._anim = null;
-    }
-    if (window._map) {
-        window._map.remove();
-        window._map = null;
-    }
-
-    const map = L.map('map', {
-        zoomControl: false,
-        attributionControl: true,
-    });
-
+    const map = L.map('map', { zoomControl: false, attributionControl: true });
     window._map = map;
-    window._tileLayer = L.tileLayer(getTileUrl(theme), {
+
+    // Light tiles always
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 18,
         attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
     }).addTo(map);
 
     L.control.zoom({ position: 'topright' }).addTo(map);
 
-    // Filter to visits with coordinates (skip waits)
     const visits = (data.route || []).filter(v => v.lat && v.lon && v.type !== 'wait');
-
     if (visits.length === 0) return;
 
     // Build segments
@@ -223,7 +154,7 @@ function buildMap(data) {
         });
     }
 
-    // Draw station dots as background layer (visible from start)
+    // Station dots (background)
     const seenStations = new Set();
     visits.forEach((v, i) => {
         if (seenStations.has(v.station_id)) return;
@@ -233,44 +164,39 @@ function buildMap(data) {
         const isEnd = i === visits.length - 1;
 
         if (isStart || isEnd) {
-            const className = isStart ? 'station-start' : 'station-end';
             L.marker([v.lat, v.lon], {
                 icon: L.divIcon({
-                    className: className,
-                    iconSize: [14, 14],
-                    iconAnchor: [7, 7],
+                    className: isStart ? 'station-start' : 'station-end',
+                    iconSize: [10, 10],
+                    iconAnchor: [5, 5],
                 }),
             }).addTo(map).bindTooltip(
                 `${isStart ? 'START' : 'END'}: ${v.station_name}`,
-                { permanent: false, direction: 'top', offset: [0, -10] }
+                { permanent: false, direction: 'top', offset: [0, -8] }
             );
         } else {
             L.circleMarker([v.lat, v.lon], {
-                radius: 3,
+                radius: 2.5,
                 color: 'transparent',
-                fillColor: theme === 'dark' ? '#444' : '#ccc',
+                fillColor: '#ccc',
                 fillOpacity: 0.5,
                 weight: 0,
             }).addTo(map).bindTooltip(
                 v.station_name,
-                { permanent: false, direction: 'top', offset: [0, -6] }
+                { permanent: false, direction: 'top', offset: [0, -4] }
             );
         }
     });
 
-    // Fit bounds with generous padding
     const bounds = L.latLngBounds(visits.map(v => [v.lat, v.lon]));
     map.fitBounds(bounds, { padding: [60, 60], maxZoom: 13 });
 
-    // Store segments and start animation
     window._segments = segments;
     window._visits = visits;
 
-    // Show animation controls
     const controls = document.getElementById('animation-controls');
     if (controls) controls.classList.remove('hidden');
 
-    // Create and auto-play animation
     window._anim = new AnimationController(map, segments, visits);
     window._anim.play();
 }
@@ -291,22 +217,18 @@ class AnimationController {
         this.speed = 5;
         this.stationsReached = new Set();
 
-        // Count first station
         if (visits.length > 0) {
             this.stationsReached.add(visits[0].station_id);
+            this.headMarker = L.marker([visits[0].lat, visits[0].lon], {
+                icon: L.divIcon({
+                    className: 'anim-head',
+                    iconSize: [10, 10],
+                    iconAnchor: [5, 5],
+                }),
+                zIndexOffset: 1000,
+            }).addTo(map);
         }
 
-        // Create head marker
-        this.headMarker = L.marker([visits[0].lat, visits[0].lon], {
-            icon: L.divIcon({
-                className: 'anim-head',
-                iconSize: [14, 14],
-                iconAnchor: [7, 7],
-            }),
-            zIndexOffset: 1000,
-        }).addTo(map);
-
-        // Bind controls
         this._bindControls();
         this._updateProgress();
     }
@@ -341,7 +263,8 @@ class AnimationController {
     _updateProgress() {
         const el = document.getElementById('anim-progress');
         if (el) {
-            el.textContent = `${this.stationsReached.size} / ${new Set(this.visits.map(v => v.station_id)).size} stations`;
+            const total = new Set(this.visits.map(v => v.station_id)).size;
+            el.textContent = `${this.stationsReached.size} / ${total} stations`;
         }
     }
 
@@ -352,39 +275,26 @@ class AnimationController {
         const playBtn = document.getElementById('anim-play');
         if (playBtn) playBtn.textContent = 'Pause';
 
-        this._intervalId = setInterval(() => {
+        const tick = () => {
             if (!this.playing) return;
-
             if (this.currentIndex < this.segments.length) {
                 this._drawSegment(this.currentIndex);
                 this.currentIndex++;
                 this._updateProgress();
                 this._syncTimeline();
             }
-
             if (this.currentIndex >= this.segments.length) {
                 this._onComplete();
             }
-        }, this._msPerSegment());
+        };
 
-        // Update interval when speed changes
+        this._intervalId = setInterval(tick, this._msPerSegment());
+
+        // Update interval on speed change
         const speedSlider = document.getElementById('anim-speed');
         this._speedHandler = () => {
-            if (this._intervalId) {
-                clearInterval(this._intervalId);
-                this._intervalId = setInterval(() => {
-                    if (!this.playing) return;
-                    if (this.currentIndex < this.segments.length) {
-                        this._drawSegment(this.currentIndex);
-                        this.currentIndex++;
-                        this._updateProgress();
-                        this._syncTimeline();
-                    }
-                    if (this.currentIndex >= this.segments.length) {
-                        this._onComplete();
-                    }
-                }, this._msPerSegment());
-            }
+            if (this._intervalId) clearInterval(this._intervalId);
+            this._intervalId = setInterval(tick, this._msPerSegment());
         };
         if (speedSlider) speedSlider.addEventListener('input', this._speedHandler);
     }
@@ -395,11 +305,7 @@ class AnimationController {
 
     pause() {
         this.playing = false;
-        if (this._intervalId) {
-            clearInterval(this._intervalId);
-            this._intervalId = null;
-        }
-
+        if (this._intervalId) { clearInterval(this._intervalId); this._intervalId = null; }
         const playBtn = document.getElementById('anim-play');
         if (playBtn) playBtn.textContent = 'Play';
     }
@@ -407,44 +313,29 @@ class AnimationController {
     stop() {
         this.pause();
         const speedSlider = document.getElementById('anim-speed');
-        if (speedSlider && this._speedHandler) {
-            speedSlider.removeEventListener('input', this._speedHandler);
-        }
-        if (this.headMarker) {
-            this.map.removeLayer(this.headMarker);
-            this.headMarker = null;
-        }
+        if (speedSlider && this._speedHandler) speedSlider.removeEventListener('input', this._speedHandler);
+        if (this.headMarker) { this.map.removeLayer(this.headMarker); this.headMarker = null; }
     }
 
     reset() {
         this.pause();
-        // Remove drawn polylines
         this.drawnLayers.forEach(l => this.map.removeLayer(l));
         this.drawnLayers = [];
         this.currentIndex = 0;
         this.stationsReached = new Set();
-        if (this.visits.length > 0) {
-            this.stationsReached.add(this.visits[0].station_id);
-        }
+        if (this.visits.length > 0) this.stationsReached.add(this.visits[0].station_id);
 
-        // Reset head marker position
         if (this.headMarker && this.visits.length > 0) {
             this.headMarker.setLatLng([this.visits[0].lat, this.visits[0].lon]);
         } else if (this.visits.length > 0) {
             this.headMarker = L.marker([this.visits[0].lat, this.visits[0].lon], {
-                icon: L.divIcon({
-                    className: 'anim-head',
-                    iconSize: [14, 14],
-                    iconAnchor: [7, 7],
-                }),
+                icon: L.divIcon({ className: 'anim-head', iconSize: [10, 10], iconAnchor: [5, 5] }),
                 zIndexOffset: 1000,
             }).addTo(this.map);
         }
 
-        // Reset timeline highlights
-        document.querySelectorAll('.timeline-item.active').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.timeline-row.active').forEach(el => el.classList.remove('active'));
         this._updateProgress();
-
         const playBtn = document.getElementById('anim-play');
         if (playBtn) playBtn.textContent = 'Play';
     }
@@ -457,70 +348,54 @@ class AnimationController {
 
         const polyline = L.polyline(coords, {
             color: isWalk ? '#f59e0b' : color,
-            weight: isWalk ? 3 : 3.5,
-            opacity: isWalk ? 0.8 : 0.85,
-            dashArray: isWalk ? '8 6' : null,
+            weight: isWalk ? 2.5 : 3,
+            opacity: isWalk ? 0.7 : 0.85,
+            dashArray: isWalk ? '6 5' : null,
             lineCap: 'round',
             lineJoin: 'round',
         }).addTo(this.map);
 
         this.drawnLayers.push(polyline);
-
-        // Track station
         this.stationsReached.add(seg.to.station_id);
 
-        // Color the station dot now that we've reached it
-        L.circleMarker([seg.to.lat, seg.to.lon], {
-            radius: 3.5,
+        // Color station dot
+        const dot = L.circleMarker([seg.to.lat, seg.to.lon], {
+            radius: 3,
             color: 'transparent',
             fillColor: isWalk ? '#f59e0b' : color,
             fillOpacity: 0.9,
             weight: 0,
         }).addTo(this.map);
+        this.drawnLayers.push(dot);
 
-        // Move head marker
-        if (this.headMarker) {
-            this.headMarker.setLatLng([seg.to.lat, seg.to.lon]);
-        }
+        if (this.headMarker) this.headMarker.setLatLng([seg.to.lat, seg.to.lon]);
     }
 
     _syncTimeline() {
-        // Highlight the corresponding timeline item
-        const items = document.querySelectorAll('.timeline-item');
-        items.forEach(el => el.classList.remove('active'));
+        const rows = document.querySelectorAll('.timeline-row');
+        rows.forEach(el => el.classList.remove('active'));
 
-        const targetIdx = Math.min(this.currentIndex, items.length - 1);
-        if (items[targetIdx]) {
-            items[targetIdx].classList.add('active');
-            // Only scroll within the timeline container, not the whole page
+        const targetIdx = Math.min(this.currentIndex, rows.length - 1);
+        if (rows[targetIdx]) {
+            rows[targetIdx].classList.add('active');
+            // Scroll within timeline container only
             const container = document.getElementById('timeline');
             if (container) {
-                const itemTop = items[targetIdx].offsetTop - container.offsetTop;
-                container.scrollTop = itemTop - container.clientHeight / 2;
+                const rowTop = rows[targetIdx].offsetTop - container.offsetTop;
+                container.scrollTop = rowTop - container.clientHeight / 2;
             }
         }
     }
 
     _onComplete() {
         this.playing = false;
-        if (this.animFrameId) {
-            cancelAnimationFrame(this.animFrameId);
-            this.animFrameId = null;
-        }
-
-        // Remove head marker
-        if (this.headMarker) {
-            this.map.removeLayer(this.headMarker);
-            this.headMarker = null;
-        }
-
+        if (this._intervalId) { clearInterval(this._intervalId); this._intervalId = null; }
+        if (this.headMarker) { this.map.removeLayer(this.headMarker); this.headMarker = null; }
         const playBtn = document.getElementById('anim-play');
         if (playBtn) playBtn.textContent = 'Replay';
-
         this._updateProgress();
     }
 
-    // Skip to end — draw all remaining segments instantly
     skipToEnd() {
         this.pause();
         while (this.currentIndex < this.segments.length) {
@@ -542,70 +417,55 @@ function buildTimeline(data) {
     let num = 0;
 
     visits.forEach((v, i) => {
-        // Walking transfer indicator
-        if (v.type === 'walk' && i > 0) {
-            const walkDiv = document.createElement('div');
-            walkDiv.className = 'timeline-walk';
-            const prev = visits[i - 1];
-            walkDiv.textContent = `Walk from ${prev.station_name}`;
-            container.appendChild(walkDiv);
-        }
-
         num++;
         const color = getLineColor(v.line);
         const isWalk = v.type === 'walk';
 
-        const item = document.createElement('div');
-        item.className = 'timeline-item';
-        item.innerHTML = `
-            <span class="timeline-num">${num}</span>
-            <span class="timeline-dot" style="background: ${v.type === 'start' ? '#c00004' : isWalk ? '#f59e0b' : color};"></span>
-            <span class="timeline-name" style="color: var(--text);">${v.station_name || v.station_id}</span>
-            <span class="timeline-line">${isWalk ? 'WALK' : (v.line || '')}</span>
-            <span class="timeline-time">${v.arrival || ''}</span>
+        const row = document.createElement('div');
+        row.className = 'timeline-row' + (isWalk ? ' walk-row' : '');
+        row.innerHTML = `
+            <span class="tr-num">${num}</span>
+            <span class="tr-time">${v.arrival || ''}</span>
+            <span class="tr-station">${v.station_name || v.station_id}</span>
+            <span class="tr-line"><span class="line-dot" style="background:${isWalk ? '#f59e0b' : color}"></span>${isWalk ? 'Walk' : (v.line || '')}</span>
         `;
 
-        // Hover to highlight on map
+        // Hover highlight on map
         if (v.lat && v.lon && window._map) {
-            item.addEventListener('mouseenter', () => {
+            row.addEventListener('mouseenter', () => {
                 if (window._highlight) window._map.removeLayer(window._highlight);
                 window._highlight = L.circleMarker([v.lat, v.lon], {
                     radius: 8,
-                    color: '#c00004',
-                    fillColor: '#c00004',
-                    fillOpacity: 0.4,
+                    color: '#f05a28',
+                    fillColor: '#f05a28',
+                    fillOpacity: 0.3,
                     weight: 2,
                 }).addTo(window._map);
             });
-            item.addEventListener('mouseleave', () => {
-                if (window._highlight) {
-                    window._map.removeLayer(window._highlight);
-                    window._highlight = null;
-                }
+            row.addEventListener('mouseleave', () => {
+                if (window._highlight) { window._map.removeLayer(window._highlight); window._highlight = null; }
             });
         }
 
-        container.appendChild(item);
+        container.appendChild(row);
     });
 }
 
 // ── Export PNG ────────────────────────────────────────────────────
 
 async function exportPNG() {
-    // Complete animation first if in progress
     if (window._anim && window._anim.currentIndex < window._anim.segments.length) {
         window._anim.skipToEnd();
     }
 
     const card = document.getElementById('export-card');
     const watermark = document.getElementById('watermark');
-
     watermark.classList.remove('hidden');
 
     try {
         const dataUrl = await htmlToImage.toPng(card, {
             pixelRatio: 2,
-            backgroundColor: getComputedStyle(document.body).getPropertyValue('--bg').trim(),
+            backgroundColor: '#fafafa',
         });
 
         const link = document.createElement('a');
@@ -616,13 +476,13 @@ async function exportPNG() {
         link.click();
     } catch (err) {
         console.error('Export failed:', err);
-        alert('Export failed. Try a smaller window or different browser.');
+        alert('Export failed. Try a smaller window.');
     } finally {
         watermark.classList.add('hidden');
     }
 }
 
-// ── Helpers ───────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────
 
 function formatTime(seconds) {
     if (!seconds && seconds !== 0) return '--';

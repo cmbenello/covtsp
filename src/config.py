@@ -42,6 +42,7 @@ class CityConfig:
     start_station: Optional[str] = None
     time_window: TimeWindow = field(default_factory=TimeWindow)
     excluded_stations: list[str] = field(default_factory=list)
+    use_google_walking: bool = False
 
     @property
     def data_dir(self) -> Path:
@@ -70,4 +71,5 @@ def load_config(config_path: str | Path) -> CityConfig:
         start_station=raw.get("start_station"),
         time_window=time_window,
         excluded_stations=raw.get("excluded_stations", []),
+        use_google_walking=raw.get("use_google_walking", False),
     )
