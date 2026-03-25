@@ -1,6 +1,7 @@
 """Greedy nearest-unvisited solver with lookahead beam search."""
 
 import itertools
+import random
 from dataclasses import dataclass
 
 from src.graph.time_expanded import Route, TENode, TimeExpandedGraph, _format_time
@@ -164,6 +165,225 @@ class GreedySolver:
 
         arr_node, _, path = arrivals[best_first]
         return best_first, arr_node, path
+
+    def solve_randomized(
+        self, start_station: str, required_stations: set[str],
+        start_time: int = 0, epsilon: float = 0.3,
+        forced_visits: list[tuple[str, int, int]] | None = None,
+        seed: int | None = None,
+    ) -> Route:
+        """Randomized nearest-neighbor: with probability epsilon, pick from
+        top-3 nearest instead of always the nearest. Run many times to find
+        a better solution than deterministic NN.
+
+        Also supports forced visits for limited-service stations.
+        """
+        rng = random.Random(seed)
+
+        start_nodes = self.graph.get_start_nodes(start_station, start_time)
+        if not start_nodes:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        current_node = start_nodes[0]
+        unvisited = set(required_stations)
+        unvisited.discard(start_station)
+
+        full_path: list[TENode] = [current_node]
+        forced = list(forced_visits or [])
+
+        while unvisited:
+            current_time = current_node[1]
+
+            # Check forced visits — only trigger when within 10 min of window
+            force_target = None
+            for f_sid, f_earliest, f_latest in forced:
+                if f_sid not in unvisited:
+                    continue
+                if f_earliest - 600 <= current_time <= f_latest:
+                    force_target = f_sid
+                    break
+
+            if force_target:
+                arr_node, travel_time, path = self.graph.earliest_arrival(
+                    current_node, force_target
+                )
+                if arr_node is not None:
+                    full_path.extend(path[1:])
+                    current_node = arr_node
+                    unvisited.discard(force_target)
+                    for p_node in path[1:]:
+                        if p_node[0] in unvisited:
+                            unvisited.discard(p_node[0])
+                    continue
+
+            # Get k nearest, then pick with randomization
+            k = 3
+            candidates = self.graph.earliest_arrival_k_nearest(
+                current_node, unvisited, k=k
+            )
+            if not candidates:
+                break
+
+            if len(candidates) == 1 or rng.random() > epsilon:
+                # Pick the nearest (greedy)
+                sid, node, travel_time, path = candidates[0]
+            else:
+                # Pick randomly from top candidates (exploration)
+                sid, node, travel_time, path = rng.choice(candidates[1:] if len(candidates) > 1 else candidates)
+
+            full_path.extend(path[1:])
+            current_node = node
+            unvisited.discard(sid)
+            for p_node in path[1:]:
+                if p_node[0] in unvisited:
+                    unvisited.discard(p_node[0])
+
+        return self.graph.reconstruct_route(full_path, None)
+
+    def solve_fast_with_forced(
+        self, start_station: str, required_stations: set[str],
+        start_time: int = 0, k_nearest: int = 1,
+        forced_visits: list[tuple[str, int, int]] | None = None,
+    ) -> Route:
+        """Fast greedy with forced detours for limited-service stations.
+
+        forced_visits: list of (station_id, earliest_time, latest_time).
+        When current_time enters a forced station's window and it's still
+        unvisited, the solver detours there immediately.
+        """
+        start_nodes = self.graph.get_start_nodes(start_station, start_time)
+        if not start_nodes:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        current_node = start_nodes[0]
+        unvisited = set(required_stations)
+        unvisited.discard(start_station)
+
+        full_path: list[TENode] = [current_node]
+        forced = list(forced_visits or [])
+
+        while unvisited:
+            current_time = current_node[1]
+
+            # Check if any forced station's window is now or approaching
+            force_target = None
+            for f_sid, f_earliest, f_latest in forced:
+                if f_sid not in unvisited:
+                    continue
+                # If we're within 45 min before the window or inside it, detour now
+                if f_earliest - 600 <= current_time <= f_latest:
+                    force_target = f_sid
+                    break
+
+            if force_target:
+                arr_node, travel_time, path = self.graph.earliest_arrival(
+                    current_node, force_target
+                )
+                if arr_node is not None:
+                    full_path.extend(path[1:])
+                    current_node = arr_node
+                    unvisited.discard(force_target)
+                    for p_node in path[1:]:
+                        p_sid = p_node[0]
+                        if p_sid in unvisited:
+                            unvisited.discard(p_sid)
+                    continue
+
+            # Normal NN step
+            sid, node, travel_time, path = self.graph.earliest_arrival_nearest(
+                current_node, unvisited
+            )
+            if sid is None:
+                break
+
+            full_path.extend(path[1:])
+            current_node = node
+            unvisited.discard(sid)
+            for p_node in path[1:]:
+                p_sid = p_node[0]
+                if p_sid in unvisited:
+                    unvisited.discard(p_sid)
+
+        return self.graph.reconstruct_route(full_path, None)
+
+    def solve_fast(
+        self, start_station: str, required_stations: set[str],
+        start_time: int = 0, k_nearest: int = 1
+    ) -> Route:
+        """Fast greedy using early-termination Dijkstra.
+
+        With k_nearest=1: pure nearest-neighbor (~100x faster than solve()).
+        With k_nearest>1: finds k nearest unvisited stations, then picks the
+        one that minimizes (travel_time + static_distance_to_next_nearest).
+        This is a cheap 2-step lookahead without full beam search.
+
+        Designed for mass multi-start sweeps where speed matters.
+        """
+        start_nodes = self.graph.get_start_nodes(start_station, start_time)
+        if not start_nodes:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        current_node = start_nodes[0]
+        unvisited = set(required_stations)
+        unvisited.discard(start_station)
+
+        full_path: list[TENode] = [current_node]
+
+        while unvisited:
+            if k_nearest <= 1:
+                sid, node, travel_time, path = self.graph.earliest_arrival_nearest(
+                    current_node, unvisited
+                )
+                if sid is None:
+                    break
+            else:
+                candidates = self.graph.earliest_arrival_k_nearest(
+                    current_node, unvisited, k=k_nearest
+                )
+                if not candidates:
+                    break
+
+                if len(candidates) == 1:
+                    sid, node, travel_time, path = candidates[0]
+                else:
+                    # 2-step lookahead: pick candidate that minimizes
+                    # arrival_time + estimated_time_to_next_nearest
+                    best_score = float("inf")
+                    sid, node, travel_time, path = candidates[0]
+
+                    for c_sid, c_node, c_time, c_path in candidates:
+                        # Estimate: after visiting c_sid, how far to nearest remaining?
+                        remaining = unvisited - {c_sid}
+                        # Discount pass-through stations
+                        for p in c_path[1:]:
+                            remaining.discard(p[0])
+
+                        if not remaining:
+                            # This candidate finishes the tour!
+                            score = c_node[1]  # absolute arrival time
+                        else:
+                            # Use static distances as estimate
+                            min_next = min(
+                                (self.graph.static_dist(c_sid, r) for r in remaining),
+                                default=0
+                            )
+                            score = c_node[1] + min_next
+
+                        if score < best_score:
+                            best_score = score
+                            sid, node, travel_time, path = c_sid, c_node, c_time, c_path
+
+            full_path.extend(path[1:])
+            current_node = node
+            unvisited.discard(sid)
+
+            # Also mark any pass-through stations as visited
+            for p_node in path[1:]:
+                p_sid = p_node[0]
+                if p_sid in unvisited:
+                    unvisited.discard(p_sid)
+
+        return self.graph.reconstruct_route(full_path, None)
 
     def solve_fixed_order(self, station_order: list[str], start_time: int = 0) -> Route:
         """Simulate traversal of a fixed station order through the TEG.

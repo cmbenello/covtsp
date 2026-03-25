@@ -40,7 +40,7 @@ def download(config, force):
 @click.option("--lookahead", default=3, help="Greedy solver lookahead depth")
 @click.option("--iterations", default=500, help="Local search iterations")
 @click.option("--teg-lp", is_flag=True, help="Also compute time-expanded LP bound")
-@click.option("--solver", default="greedy", type=click.Choice(["greedy", "segment", "static"]), help="Solver type (static = SA on static graph + multi-start TEG backtest)")
+@click.option("--solver", default="greedy", type=click.Choice(["greedy", "segment", "static", "sweep"]), help="Solver type (sweep = fast NN from every station)")
 @click.option("--run-mode", is_flag=True, help="Use running speed for transfers (overrides config)")
 @click.option("--run-speed", default=None, type=float, help="Running speed in km/h (overrides config)")
 def solve(config, target_date, output, lookahead, iterations, teg_lp, solver, run_mode, run_speed):
