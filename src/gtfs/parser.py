@@ -354,12 +354,15 @@ class GTFSParser:
         return segments
 
     def _compute_walking_transfers(self, stations: dict[str, Station]) -> list[WalkingTransfer]:
-        """Compute walking transfers between nearby stations.
+        """Compute walking/running transfers between nearby stations.
 
         Uses KD-tree to find candidate pairs within max_walk_distance_m.
         If use_google_walking is enabled, fetches real walking times from
         the Google Maps Distance Matrix API (with disk caching).
         Falls back to Haversine-based estimates if API is unavailable.
+
+        In run mode, uses distance-dependent speed (sprints are faster than
+        sustained runs) and considers larger distances.
         """
         if not stations:
             return []
@@ -388,26 +391,52 @@ class GTFSParser:
 
             cache_path = self.config.data_dir / "walking_cache.json"
             result = compute_google_walking_transfers(candidate_pairs, cache_path)
-            if result is not None:
+            if result is not None and len(result) > 0:
+                # Scale walking times for run mode
+                if self.config.movement_mode == "run":
+                    result = self._scale_transfers_for_running(result)
                 return result
 
-        # Fallback: Haversine-based walking times
+        # Fallback: Haversine-based times using effective speed
+        # In run mode, apply 1.4x routing factor: Haversine is straight-line
+        # but real pedestrian routes are ~40% longer due to streets/crossings
+        routing_factor = 1.4 if self.config.movement_mode == "run" else 1.0
         transfers = []
-        walk_speed_ms = self.config.walking_speed_kmh * 1000 / 3600  # m/s
 
         for s1, s2, dist in candidate_pairs:
-            walk_time = int(dist / walk_speed_ms)
+            routed_dist = dist * routing_factor
+            speed_kmh = self.config.effective_speed_for_distance(routed_dist)
+            speed_ms = speed_kmh * 1000 / 3600
+            transfer_time = int(routed_dist / speed_ms)
             transfers.append(WalkingTransfer(
                 from_station_id=s1.station_id,
                 to_station_id=s2.station_id,
-                walk_time_seconds=walk_time,
+                walk_time_seconds=transfer_time,
                 distance_meters=dist,
             ))
             transfers.append(WalkingTransfer(
                 from_station_id=s2.station_id,
                 to_station_id=s1.station_id,
-                walk_time_seconds=walk_time,
+                walk_time_seconds=transfer_time,
                 distance_meters=dist,
             ))
 
         return transfers
+
+    def _scale_transfers_for_running(self, transfers: list[WalkingTransfer]) -> list[WalkingTransfer]:
+        """Scale Google Maps walking times to running times.
+
+        Google Maps returns walking times at ~5 km/h. We scale each transfer
+        by the ratio of walking speed to distance-dependent running speed.
+        """
+        scaled = []
+        for t in transfers:
+            run_speed = self.config.effective_speed_for_distance(t.distance_meters)
+            scale = self.config.walking_speed_kmh / run_speed
+            scaled.append(WalkingTransfer(
+                from_station_id=t.from_station_id,
+                to_station_id=t.to_station_id,
+                walk_time_seconds=max(1, int(t.walk_time_seconds * scale)),
+                distance_meters=t.distance_meters,
+            ))
+        return scaled

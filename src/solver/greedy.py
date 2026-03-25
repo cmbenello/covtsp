@@ -11,14 +11,29 @@ class GreedySolver:
 
     At each step, evaluates the best sequence of the next `lookahead` stations
     to visit via beam search, choosing the move that minimizes cumulative time.
+
+    With line_aware=True, applies a bonus to continuing along the same line,
+    which prevents premature line-switching that causes backtracking.
     """
 
-    def __init__(self, graph: TimeExpandedGraph, lookahead: int = 3):
+    def __init__(self, graph: TimeExpandedGraph, lookahead: int = 3, line_aware: bool = False):
         self.graph = graph
         self.lookahead = lookahead
+        self.line_aware = line_aware
+        self._current_line: str | None = None
+        self._deadlines: dict[str, int] = {}  # station_id -> latest TEG time
+
+    def set_deadlines(self):
+        """Compute service deadlines from TEG node data."""
+        for sid, nodes in self.graph._station_nodes.items():
+            if nodes:
+                self._deadlines[sid] = nodes[-1][1]
 
     def solve(self, start_station: str, required_stations: set[str], start_time: int = 0) -> Route:
         """Find a route visiting all required stations.
+
+        If deadlines are set, stations with early deadlines (limited service)
+        are visited first in a forced phase before the normal greedy phase.
 
         Args:
             start_station: Station ID to start from.
@@ -35,28 +50,34 @@ class GreedySolver:
 
         current_node = start_nodes[0]
         unvisited = set(required_stations)
-        unvisited.discard(start_station)  # starting station counts as visited
+        unvisited.discard(start_station)
 
         full_path: list[TENode] = [current_node]
         visited_order: list[str] = [start_station]
 
+        self._current_line = None
+
+        # Main greedy phase
         while unvisited:
-            # Use lookahead to find the best next move
             next_station, next_node, path_segment = self._best_next_move(
                 current_node, unvisited
             )
 
             if next_node is None:
-                # No reachable unvisited stations — stop
                 break
 
-            # Add path segment (skip the first node, it's the current position)
+            if self.line_aware and len(path_segment) >= 2:
+                edge_data = self.graph.graph.get_edge_data(
+                    path_segment[-2], path_segment[-1]
+                )
+                if edge_data:
+                    self._current_line = edge_data.get("route_name")
+
             full_path.extend(path_segment[1:])
             current_node = next_node
             unvisited.discard(next_station)
             visited_order.append(next_station)
 
-            # Check if intermediate nodes in the path visit any required stations
             for node in path_segment[1:]:
                 sid = node[0]
                 if sid in unvisited:
@@ -83,17 +104,25 @@ class GreedySolver:
         if not arrivals:
             return None, None, []
 
+        # Score function: lower is better. Considers travel time and line bonus.
+        def score(sid: str) -> float:
+            arr_node, travel_time, path = arrivals[sid]
+            t = travel_time
+            if self.line_aware and self._current_line and path and len(path) >= 2:
+                edge_data = self.graph.graph.get_edge_data(path[-2], path[-1])
+                if edge_data and edge_data.get("route_name") == self._current_line:
+                    t *= 0.7  # 30% bonus for staying on the same line
+            return t
+
         # Pure nearest neighbor — path already in hand, no second Dijkstra
-        best_sid = min(arrivals, key=lambda s: arrivals[s][1])
+        best_sid = min(arrivals, key=score)
 
         if self.lookahead <= 1 or len(arrivals) <= 1:
             arr_node, _, path = arrivals[best_sid]
             return best_sid, arr_node, path
 
         # Beam search: rank candidate sequences using static distances for inner hops.
-        # This avoids running extra full TEG Dijkstras — the static distances are a
-        # fast lower-bound proxy that still captures the ordering correctly.
-        candidates = sorted(arrivals.keys(), key=lambda s: arrivals[s][1])
+        candidates = sorted(arrivals.keys(), key=score)
         candidates = candidates[: self.lookahead * 2]
 
         k = min(self.lookahead, len(candidates))
@@ -105,7 +134,17 @@ class GreedySolver:
             first_arr_node, first_time, _ = arrivals[perm[0]]
             total_time = first_arr_node[1] - current[1]
 
-            # Subsequent hops: approximate via static graph (precomputed once per call)
+            # Apply line bonus for first hop
+            if self.line_aware and self._current_line:
+                first_path = arrivals[perm[0]][2]
+                if first_path and len(first_path) >= 2:
+                    edge_data = self.graph.graph.get_edge_data(
+                        first_path[-2], first_path[-1]
+                    )
+                    if edge_data and edge_data.get("route_name") == self._current_line:
+                        total_time *= 0.7
+
+            # Subsequent hops: approximate via static graph
             sim_station = perm[0]
             valid = True
             for sid in perm[1:]:
@@ -155,8 +194,8 @@ class GreedySolver:
                 current_node, target_sid
             )
             if arr_node is None:
-                # Can't reach next station — return what we have so far
-                break
+                # Can't reach next station — skip it and try the next one
+                continue
             full_path.extend(path[1:])
             current_node = arr_node
 

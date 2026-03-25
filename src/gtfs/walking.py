@@ -113,10 +113,12 @@ def compute_google_walking_transfers(
     candidate_pairs: list[tuple[Station, Station, float]],
     cache_path: Path,
 ) -> list[WalkingTransfer] | None:
-    """Fetch real walking times from Google Maps Distance Matrix API.
+    """Load real walking times from the pre-populated Routes API cache.
 
-    Uses a disk cache to avoid re-querying known pairs. Falls back to None
-    (signaling caller to use Haversine) if API key is missing or API fails.
+    Cache is populated offline via scripts/compute_all_walking.py using the
+    Google Routes API. At solve time we are cache-only — no live API calls.
+    Pairs missing from the cache are silently skipped (caller falls back to
+    Haversine for those pairs).
 
     Args:
         candidate_pairs: List of (from_station, to_station, haversine_distance) tuples,
@@ -124,51 +126,20 @@ def compute_google_walking_transfers(
         cache_path: Path to the JSON cache file (e.g., data/london/walking_cache.json).
 
     Returns:
-        List of WalkingTransfer objects with real walking times, or None if API unavailable.
+        List of WalkingTransfer objects with real walking times, or None if cache missing.
     """
-    api_key = os.environ.get("GOOGLE_MAPS_API_KEY")
-    if not api_key:
-        logger.info("GOOGLE_MAPS_API_KEY not set, falling back to Haversine")
+    if not cache_path.exists():
+        logger.info("No walking cache found, falling back to Haversine")
         return None
 
     cache = load_walking_cache(cache_path)
+    logger.info(f"Walking cache loaded: {len(cache)} entries")
 
-    # Find uncached pairs (bidirectional)
-    uncached = []
-    for s1, s2, _ in candidate_pairs:
-        fwd_key = f"{s1.station_id}|{s2.station_id}"
-        rev_key = f"{s2.station_id}|{s1.station_id}"
-        if fwd_key not in cache:
-            uncached.append((s1.station_id, s1.lat, s1.lon, s2.station_id, s2.lat, s2.lon))
-        if rev_key not in cache:
-            uncached.append((s2.station_id, s2.lat, s2.lon, s1.station_id, s1.lat, s1.lon))
-
-    # Deduplicate
-    seen = set()
-    deduped = []
-    for pair in uncached:
-        key = (pair[0], pair[3])
-        if key not in seen:
-            seen.add(key)
-            deduped.append(pair)
-    uncached = deduped
-
-    if uncached:
-        logger.info(f"Fetching {len(uncached)} walking routes from Google Maps API...")
-        try:
-            new_results = _batch_google_distances(uncached, api_key)
-            cache.update(new_results)
-            save_walking_cache(cache_path, cache)
-            logger.info(f"Walking cache updated: {len(cache)} total entries")
-        except Exception as e:
-            logger.warning(f"Google Maps API failed: {e}, falling back to Haversine")
-            return None
-    else:
-        logger.info(f"All {len(candidate_pairs)} walking pairs found in cache")
-
-    # Build transfers from cache
+    # Build transfers from cache only — no live API calls
     transfers = []
-    for s1, s2, haversine_dist in candidate_pairs:
+    cache_hits = 0
+    cache_misses = 0
+    for s1, s2, _ in candidate_pairs:
         fwd_key = f"{s1.station_id}|{s2.station_id}"
         rev_key = f"{s2.station_id}|{s1.station_id}"
 
@@ -180,6 +151,9 @@ def compute_google_walking_transfers(
                 walk_time_seconds=d["walk_time_seconds"],
                 distance_meters=d["distance_meters"],
             ))
+            cache_hits += 1
+        else:
+            cache_misses += 1
 
         if rev_key in cache:
             d = cache[rev_key]
@@ -190,4 +164,5 @@ def compute_google_walking_transfers(
                 distance_meters=d["distance_meters"],
             ))
 
+    logger.info(f"Walking transfers: {len(transfers)} from cache ({cache_misses} pairs not cached, using Haversine fallback)")
     return transfers

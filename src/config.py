@@ -43,10 +43,39 @@ class CityConfig:
     time_window: TimeWindow = field(default_factory=TimeWindow)
     excluded_stations: list[str] = field(default_factory=list)
     use_google_walking: bool = False
+    running_speed_kmh: float = 10.0
+    movement_mode: str = "walk"  # "walk" or "run"
 
     @property
     def data_dir(self) -> Path:
         return Path("data") / self.gtfs_path
+
+    @property
+    def effective_speed_kmh(self) -> float:
+        """Base effective speed for the configured movement mode."""
+        if self.movement_mode == "run":
+            return self.running_speed_kmh
+        return self.walking_speed_kmh
+
+    def effective_speed_for_distance(self, distance_m: float) -> float:
+        """Distance-dependent speed in km/h.
+
+        Base speed is treated as 10k race pace. Piecewise model:
+          - <500m:      1.15x base (short sprint, faster than 10k pace)
+          - 500m-10km:  1.0x base  (10k race pace — this is what base means)
+          - >10km:      0.9x base  (slight fatigue for very long legs)
+
+        In walk mode, returns flat walking speed regardless of distance.
+        """
+        if self.movement_mode != "run":
+            return self.walking_speed_kmh
+        base = self.running_speed_kmh
+        if distance_m < 500:
+            return base * 1.15
+        elif distance_m < 10000:
+            return base * 1.0
+        else:
+            return base * 0.9
 
 
 def load_config(config_path: str | Path) -> CityConfig:
@@ -72,4 +101,6 @@ def load_config(config_path: str | Path) -> CityConfig:
         time_window=time_window,
         excluded_stations=raw.get("excluded_stations", []),
         use_google_walking=raw.get("use_google_walking", False),
+        running_speed_kmh=raw.get("running_speed_kmh", 10.0),
+        movement_mode=raw.get("movement_mode", "walk"),
     )

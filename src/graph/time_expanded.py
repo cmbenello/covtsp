@@ -151,33 +151,53 @@ class TimeExpandedGraph:
     def earliest_arrival(self, from_node: TENode, to_station_id: str) -> tuple[TENode | None, int, list]:
         """Find earliest arrival at a station from a given node.
 
+        Uses a custom Dijkstra that terminates as soon as any node at the
+        target station is settled, avoiding exploring the full graph.
+
         Returns:
             (destination_node, travel_time, path) or (None, -1, []) if unreachable.
         """
+        import heapq
+
         target_nodes = set(self._station_nodes.get(to_station_id, []))
         if not target_nodes:
             return None, -1, []
 
-        try:
-            # Dijkstra from source to all reachable nodes
-            lengths, paths = nx.single_source_dijkstra(
-                self.graph, from_node, weight="weight"
-            )
-        except nx.NodeNotFound:
+        if from_node not in self.graph:
             return None, -1, []
 
-        # Find earliest reachable target node
-        best_node = None
-        best_time = float("inf")
-        for node in target_nodes:
-            if node in lengths and lengths[node] < best_time:
-                best_time = lengths[node]
-                best_node = node
+        # Custom Dijkstra with multi-target early termination
+        dist = {from_node: 0}
+        prev = {from_node: None}
+        heap = [(0, id(from_node), from_node)]
+        visited = set()
 
-        if best_node is None:
-            return None, -1, []
+        while heap:
+            d, _, u = heapq.heappop(heap)
+            if u in visited:
+                continue
+            visited.add(u)
 
-        return best_node, int(best_time), paths[best_node]
+            # Early termination: found shortest path to target station
+            if u in target_nodes:
+                # Reconstruct path
+                path = []
+                node = u
+                while node is not None:
+                    path.append(node)
+                    node = prev[node]
+                path.reverse()
+                return u, int(d), path
+
+            for v, edge_data in self.graph[u].items():
+                w = edge_data.get("weight", 1)
+                new_dist = d + w
+                if v not in dist or new_dist < dist[v]:
+                    dist[v] = new_dist
+                    prev[v] = u
+                    heapq.heappush(heap, (new_dist, id(v), v))
+
+        return None, -1, []
 
     def static_distances_from(self, station_id: str) -> dict[str, float]:
         """Get approximate travel times from a station using min edge weights.
@@ -252,8 +272,7 @@ class TimeExpandedGraph:
 
             if sid not in visited_stations or edge_type not in ("wait", "walk"):
                 # Only count transit/start arrivals toward stations_visited
-                if edge_type != "walk":
-                    visited_stations.add(sid)
+                visited_stations.add(sid)  # count all arrivals, including walks
                 # Determine departure time (next edge's departure or same as arrival)
                 dep_time = time
                 if i < len(path) - 1:

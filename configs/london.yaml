@@ -4,7 +4,9 @@ gtfs_path: london
 station_count: 272
 route_type_filter: [1]  # 1 = Metro/Subway
 walking_speed_kmh: 5.0
-max_walk_distance_m: 500
+max_walk_distance_m: 20000  # 20km covers even long running legs between stations
+running_speed_kmh: 18.0    # base running speed (piecewise: 22/18/14 km/h by distance) — super athletic young male, ~10k in 33min
+movement_mode: run          # "walk" or "run" — run mode for tube challenge
 start_station: null  # solver picks best start
 time_window:
   start: "05:30"

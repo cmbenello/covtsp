@@ -40,9 +40,18 @@ def download(config, force):
 @click.option("--lookahead", default=3, help="Greedy solver lookahead depth")
 @click.option("--iterations", default=500, help="Local search iterations")
 @click.option("--teg-lp", is_flag=True, help="Also compute time-expanded LP bound")
-def solve(config, target_date, output, lookahead, iterations, teg_lp):
+@click.option("--solver", default="greedy", type=click.Choice(["greedy", "segment", "static"]), help="Solver type (static = SA on static graph + multi-start TEG backtest)")
+@click.option("--run-mode", is_flag=True, help="Use running speed for transfers (overrides config)")
+@click.option("--run-speed", default=None, type=float, help="Running speed in km/h (overrides config)")
+def solve(config, target_date, output, lookahead, iterations, teg_lp, solver, run_mode, run_speed):
     """Run the full solver on a city's GTFS data for a given date."""
     cfg = load_config(config)
+
+    if run_mode:
+        cfg.movement_mode = "run"
+    if run_speed is not None:
+        cfg.running_speed_kmh = run_speed
+        cfg.movement_mode = "run"
 
     try:
         dt = datetime.strptime(target_date, "%Y-%m-%d").date()
@@ -59,6 +68,7 @@ def solve(config, target_date, output, lookahead, iterations, teg_lp):
         lookahead=lookahead,
         local_search_iterations=iterations,
         compute_teg_lp=teg_lp,
+        solver_type=solver,
     )
 
     if "error" in results:
@@ -118,7 +128,10 @@ def info(config):
     table.add_row("Expected stations", str(cfg.station_count))
     table.add_row("Route type filter", str(cfg.route_type_filter))
     table.add_row("Walking speed", f"{cfg.walking_speed_kmh} km/h")
-    table.add_row("Max walk distance", f"{cfg.max_walk_distance_m} m")
+    table.add_row("Running speed", f"{cfg.running_speed_kmh} km/h")
+    table.add_row("Movement mode", cfg.movement_mode)
+    table.add_row("Effective speed", f"{cfg.effective_speed_kmh} km/h")
+    table.add_row("Max transfer distance", f"{cfg.max_walk_distance_m} m")
     table.add_row("Start station", cfg.start_station or "(auto)")
     table.add_row("Time window", f"{cfg.time_window.start} - {cfg.time_window.end}")
     table.add_row("Data exists", str(cfg.data_dir.exists()))

@@ -157,3 +157,131 @@ class TestParserIntegration:
         # Should fall back to Haversine and return transfers
         assert len(transfers) == 2  # bidirectional
         assert all(isinstance(t, WalkingTransfer) for t in transfers)
+
+
+class TestRunningMode:
+    """Tests for the running mode speed model and transfer scaling."""
+
+    def test_effective_speed_walk_mode(self):
+        from src.config import CityConfig
+
+        cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path="test",
+            station_count=0, movement_mode="walk",
+        )
+        assert cfg.effective_speed_kmh == 5.0
+        assert cfg.effective_speed_for_distance(100) == 5.0
+        assert cfg.effective_speed_for_distance(3000) == 5.0
+
+    def test_effective_speed_run_mode(self):
+        from src.config import CityConfig
+
+        cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path="test",
+            station_count=0, movement_mode="run", running_speed_kmh=10.0,
+        )
+        assert cfg.effective_speed_kmh == 10.0
+        # Short sprint: 1.2x base
+        assert cfg.effective_speed_for_distance(200) == 12.0
+        # Medium: 1.0x base
+        assert cfg.effective_speed_for_distance(1000) == 10.0
+        # Long: 0.8x base
+        assert cfg.effective_speed_for_distance(3000) == 8.0
+
+    def test_effective_speed_custom_base(self):
+        from src.config import CityConfig
+
+        cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path="test",
+            station_count=0, movement_mode="run", running_speed_kmh=12.0,
+        )
+        assert abs(cfg.effective_speed_for_distance(200) - 14.4) < 0.01
+        assert cfg.effective_speed_for_distance(1000) == 12.0
+        assert abs(cfg.effective_speed_for_distance(3000) - 9.6) < 0.01
+
+    def test_run_mode_transfers_faster_than_walk(self, tmp_path):
+        """Running mode should produce faster transfer times than walking."""
+        from src.config import CityConfig
+        from src.gtfs.parser import GTFSParser
+
+        stations = {
+            "S1": Station(station_id="S1", name="A", lat=51.5226, lon=-0.1571),
+            "S2": Station(station_id="S2", name="B", lat=51.5225, lon=-0.1631),
+        }
+
+        walk_cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path=str(tmp_path),
+            station_count=2, max_walk_distance_m=800, movement_mode="walk",
+        )
+        run_cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path=str(tmp_path),
+            station_count=2, max_walk_distance_m=800, movement_mode="run",
+            running_speed_kmh=10.0,
+        )
+
+        walk_parser = GTFSParser(walk_cfg)
+        run_parser = GTFSParser(run_cfg)
+
+        with patch.dict(os.environ, {}, clear=True):
+            os.environ.pop("GOOGLE_MAPS_API_KEY", None)
+            walk_transfers = walk_parser._compute_walking_transfers(stations)
+            run_transfers = run_parser._compute_walking_transfers(stations)
+
+        assert len(walk_transfers) == len(run_transfers) == 2
+        # Running should be faster
+        for wt, rt in zip(
+            sorted(walk_transfers, key=lambda t: (t.from_station_id, t.to_station_id)),
+            sorted(run_transfers, key=lambda t: (t.from_station_id, t.to_station_id)),
+        ):
+            assert rt.walk_time_seconds < wt.walk_time_seconds
+
+    def test_google_maps_scaling(self):
+        """Scaling Google Maps walk times to run times."""
+        from src.config import CityConfig
+        from src.gtfs.parser import GTFSParser
+
+        cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path="test",
+            station_count=0, movement_mode="run", running_speed_kmh=10.0,
+            walking_speed_kmh=5.0,
+        )
+        parser = GTFSParser(cfg)
+
+        transfers = [
+            WalkingTransfer("S1", "S2", walk_time_seconds=300, distance_meters=400),
+            WalkingTransfer("S2", "S1", walk_time_seconds=310, distance_meters=400),
+        ]
+
+        scaled = parser._scale_transfers_for_running(transfers)
+        # 400m is <500m, so run speed = 12 km/h. Scale = 5/12 ≈ 0.417
+        assert scaled[0].walk_time_seconds == int(300 * 5.0 / 12.0)
+        assert scaled[1].walk_time_seconds == int(310 * 5.0 / 12.0)
+
+    def test_larger_max_distance_more_pairs(self, tmp_path):
+        """Larger max_walk_distance_m should find more station pairs."""
+        from src.config import CityConfig
+        from src.gtfs.parser import GTFSParser
+
+        # Three stations: S1-S2 close (~400m), S1-S3 far (~1200m)
+        stations = {
+            "S1": Station(station_id="S1", name="A", lat=51.5226, lon=-0.1571),
+            "S2": Station(station_id="S2", name="B", lat=51.5225, lon=-0.1631),
+            "S3": Station(station_id="S3", name="C", lat=51.5320, lon=-0.1571),
+        }
+
+        small_cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path=str(tmp_path),
+            station_count=3, max_walk_distance_m=500, movement_mode="walk",
+        )
+        large_cfg = CityConfig(
+            city_name="Test", gtfs_url="", gtfs_path=str(tmp_path),
+            station_count=3, max_walk_distance_m=2000, movement_mode="run",
+            running_speed_kmh=10.0,
+        )
+
+        with patch.dict(os.environ, {}, clear=True):
+            os.environ.pop("GOOGLE_MAPS_API_KEY", None)
+            small_transfers = GTFSParser(small_cfg)._compute_walking_transfers(stations)
+            large_transfers = GTFSParser(large_cfg)._compute_walking_transfers(stations)
+
+        assert len(large_transfers) >= len(small_transfers)
