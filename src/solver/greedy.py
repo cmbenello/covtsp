@@ -308,14 +308,15 @@ class GreedySolver:
 
     def solve_fast(
         self, start_station: str, required_stations: set[str],
-        start_time: int = 0, k_nearest: int = 1
+        start_time: int = 0, k_nearest: int = 1,
+        urgency_weight: float = 0.0,
     ) -> Route:
         """Fast greedy using early-termination Dijkstra.
 
         With k_nearest=1: pure nearest-neighbor (~100x faster than solve()).
-        With k_nearest>1: finds k nearest unvisited stations, then picks the
-        one that minimizes (travel_time + static_distance_to_next_nearest).
-        This is a cheap 2-step lookahead without full beam search.
+        With k_nearest>1: finds k nearest, picks best by 2-step lookahead.
+        With urgency_weight>0: among k nearest, prefer stations whose
+        last service time is approaching (prevents missing branch-end stations).
 
         Designed for mass multi-start sweeps where speed matters.
         """
@@ -329,16 +330,25 @@ class GreedySolver:
 
         full_path: list[TENode] = [current_node]
 
+        # Pre-compute service deadlines for urgency scoring
+        deadlines: dict[str, int] = {}
+        if urgency_weight > 0:
+            for sid in required_stations:
+                nodes = self.graph._station_nodes.get(sid, [])
+                if nodes:
+                    deadlines[sid] = nodes[-1][1]
+
         while unvisited:
-            if k_nearest <= 1:
+            if k_nearest <= 1 and urgency_weight <= 0:
                 sid, node, travel_time, path = self.graph.earliest_arrival_nearest(
                     current_node, unvisited
                 )
                 if sid is None:
                     break
             else:
+                k = max(k_nearest, 5 if urgency_weight > 0 else 1)
                 candidates = self.graph.earliest_arrival_k_nearest(
-                    current_node, unvisited, k=k_nearest
+                    current_node, unvisited, k=k
                 )
                 if not candidates:
                     break
@@ -346,28 +356,32 @@ class GreedySolver:
                 if len(candidates) == 1:
                     sid, node, travel_time, path = candidates[0]
                 else:
-                    # 2-step lookahead: pick candidate that minimizes
-                    # arrival_time + estimated_time_to_next_nearest
                     best_score = float("inf")
                     sid, node, travel_time, path = candidates[0]
+                    current_time = current_node[1]
 
                     for c_sid, c_node, c_time, c_path in candidates:
-                        # Estimate: after visiting c_sid, how far to nearest remaining?
-                        remaining = unvisited - {c_sid}
-                        # Discount pass-through stations
-                        for p in c_path[1:]:
-                            remaining.discard(p[0])
+                        # Base score: arrival time
+                        score = float(c_node[1])
 
-                        if not remaining:
-                            # This candidate finishes the tour!
-                            score = c_node[1]  # absolute arrival time
-                        else:
-                            # Use static distances as estimate
-                            min_next = min(
-                                (self.graph.static_dist(c_sid, r) for r in remaining),
-                                default=0
-                            )
-                            score = c_node[1] + min_next
+                        # Urgency: bonus for visiting stations close to deadline
+                        if urgency_weight > 0 and c_sid in deadlines:
+                            time_left = deadlines[c_sid] - current_time
+                            if time_left < 7200:  # < 2h left
+                                # Strong pull toward stations about to lose service
+                                score -= urgency_weight * (7200 - time_left)
+
+                        # 2-step lookahead if k_nearest > 1
+                        if k_nearest > 1:
+                            remaining = unvisited - {c_sid}
+                            for p in c_path[1:]:
+                                remaining.discard(p[0])
+                            if remaining:
+                                min_next = min(
+                                    (self.graph.static_dist(c_sid, r) for r in remaining),
+                                    default=0
+                                )
+                                score += min_next
 
                         if score < best_score:
                             best_score = score
@@ -377,7 +391,6 @@ class GreedySolver:
             current_node = node
             unvisited.discard(sid)
 
-            # Also mark any pass-through stations as visited
             for p_node in path[1:]:
                 p_sid = p_node[0]
                 if p_sid in unvisited:
@@ -390,6 +403,7 @@ class GreedySolver:
 
         Unlike solve(), this doesn't choose which station to visit next —
         it follows the given order exactly, using Dijkstra for each hop.
+        Unreachable stations are skipped but retried at the end via NN.
 
         Args:
             station_order: Ordered list of station IDs to visit.
@@ -407,16 +421,134 @@ class GreedySolver:
 
         current_node = start_nodes[0]
         full_path: list[TENode] = [current_node]
+        visited: set[str] = {station_order[0]}
+        skipped: list[str] = []
 
         for i in range(len(station_order) - 1):
             target_sid = station_order[i + 1]
+            if target_sid in visited:
+                continue
             arr_node, travel_time, path = self.graph.earliest_arrival(
                 current_node, target_sid
             )
             if arr_node is None:
-                # Can't reach next station — skip it and try the next one
+                skipped.append(target_sid)
                 continue
             full_path.extend(path[1:])
             current_node = arr_node
+            visited.add(target_sid)
+            # Mark pass-through stations
+            for p in path[1:]:
+                visited.add(p[0])
+
+        # Retry skipped stations via nearest-neighbor
+        if skipped:
+            unvisited = set(s for s in skipped if s not in visited)
+            while unvisited:
+                sid, node, _, path = self.graph.earliest_arrival_nearest(
+                    current_node, unvisited
+                )
+                if sid is None:
+                    break
+                full_path.extend(path[1:])
+                current_node = node
+                unvisited.discard(sid)
+                visited.add(sid)
+                for p in path[1:]:
+                    if p[0] in unvisited:
+                        unvisited.discard(p[0])
+                        visited.add(p[0])
 
         return self.graph.reconstruct_route(full_path, None)
+
+    def teg_local_search(
+        self, route: Route, required_stations: set[str],
+        start_time: int, max_iterations: int = 2000,
+        console=None,
+    ) -> Route:
+        """Improve a route via 2-opt/or-opt evaluated directly on the TEG.
+
+        Unlike static local search, every move is evaluated by simulating
+        through the real timetable. This respects train schedules but is
+        slower (~0.3s per evaluation → ~10 min for 2000 iterations).
+
+        Moves tried:
+        - 2opt: reverse a segment of the visit order
+        - oropt: relocate 1-3 consecutive stations to a new position
+        - block: swap two segments of similar length
+        """
+        # Extract unique station visit order
+        seen: set[str] = set()
+        order: list[str] = []
+        for v in route.visits:
+            sid = v["station_id"]
+            if sid not in seen and sid in required_stations:
+                seen.add(sid)
+                order.append(sid)
+
+        if len(order) < 4:
+            return route
+
+        best_order = list(order)
+        best_time = route.total_time_seconds
+        best_visited = route.stations_visited
+        n = len(order)
+        rng = random.Random(42)
+
+        no_improve = 0
+        for iteration in range(max_iterations):
+            move = rng.choice(["2opt", "oropt1", "oropt2", "oropt3", "block"])
+
+            trial_order = list(best_order)
+
+            if move == "2opt":
+                i = rng.randint(1, n - 2)
+                j = rng.randint(i + 1, n - 1)
+                trial_order[i:j+1] = reversed(trial_order[i:j+1])
+
+            elif move.startswith("oropt"):
+                seg_len = int(move[-1])
+                if n - seg_len < 2:
+                    continue
+                i = rng.randint(1, n - seg_len)
+                seg = trial_order[i:i + seg_len]
+                del trial_order[i:i + seg_len]
+                j = rng.randint(1, len(trial_order) - 1)
+                trial_order[j:j] = seg
+
+            elif move == "block":
+                block_size = rng.randint(2, min(8, n // 4))
+                if n < 2 * block_size + 2:
+                    continue
+                i = rng.randint(1, n - 2 * block_size)
+                j = rng.randint(i + block_size, n - block_size)
+                trial_order[i:i+block_size], trial_order[j:j+block_size] = (
+                    trial_order[j:j+block_size], trial_order[i:i+block_size]
+                )
+
+            trial_route = self.solve_fixed_order(trial_order, start_time=start_time)
+
+            if trial_route.total_time_seconds <= 0:
+                continue
+
+            if (trial_route.stations_visited > best_visited
+                or (trial_route.stations_visited == best_visited
+                    and trial_route.total_time_seconds < best_time)):
+                best_order = trial_order
+                best_time = trial_route.total_time_seconds
+                best_visited = trial_route.stations_visited
+                no_improve = 0
+
+                if console:
+                    console.print(
+                        f"  [{iteration}] {move}: "
+                        f"{best_visited}/{len(required_stations)} "
+                        f"{best_time // 3600}h{(best_time % 3600) // 60:02d}m"
+                    )
+            else:
+                no_improve += 1
+
+            if no_improve > 500:
+                break
+
+        return self.solve_fixed_order(best_order, start_time=start_time)
