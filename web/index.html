@@ -4,98 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>covtsp — Transit Coverage Optimization</title>
+    <meta name="description" content="Open-source Covering TSP solver for transit networks. Finds near-optimal routes through any city's GTFS data with LP relaxation bounds.">
+    <meta property="og:title" content="covtsp — Transit Coverage Optimization">
+    <meta property="og:description" content="Open-source Covering TSP solver for transit networks with provable quality bounds.">
+    <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-theme="dark">
+    <!-- Nav -->
     <nav class="nav">
         <a href="#" class="nav-brand">covtsp</a>
         <div class="nav-right">
-            <a href="results.html?sample" class="nav-meta" style="text-decoration:none;">Route Viewer</a>
-            <a href="https://github.com/cmbenello/covtsp" class="nav-meta" style="text-decoration:none;">GitHub</a>
+            <a href="https://github.com/cmbenello/covtsp" class="nav-link">GitHub</a>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
     </nav>
 
-    <div class="hero">
-        <div class="hero-tag">Covering TSP Solver</div>
-        <h1 class="hero-title">Transit Coverage<br>Optimization</h1>
+    <!-- Hero -->
+    <section class="hero-compact">
+        <div class="hero-tag">Open-Source Transit Solver</div>
+        <h1 class="hero-title">Visit every station, as fast as possible.</h1>
         <p class="hero-desc">
-            A research-grade solver for visiting every station on a transit network as fast as possible.
-            Formalizes a world-record London Tube Challenge into an open-source framework with LP relaxation bounds for any GTFS city.
+            Covering TSP solver on time-expanded graphs. Parses any city's GTFS feed, builds a schedule-aware graph, and computes near-optimal routes with LP relaxation bounds.
         </p>
-        <div class="hero-actions">
-            <a href="results.html?sample" class="btn-primary" style="text-decoration:none;">View Route</a>
-            <a href="https://github.com/cmbenello/covtsp" class="btn-secondary" style="text-decoration:none;display:inline-block;margin:0;">GitHub</a>
-        </div>
-    </div>
-
-    <div class="section" id="problem">
-        <div class="section-label">The Problem</div>
-        <h2 class="section-title">Covering TSP on a Time-Expanded Graph</h2>
-        <p>
-            Visit every station on a transit network as fast as possible.
-            Unlike classical TSP, this is a <strong>Covering</strong> variant: visit a required set of nodes, don't return to start.
-        </p>
-        <p>
-            The graph is <strong>time-dependent</strong>: you can only take a train when it departs.
-            Modeled on a time-expanded graph where each node is a (station, time) pair.
-            Edge types: <strong>transit arcs</strong>, <strong>waiting arcs</strong>, and <strong>walking transfers</strong>.
-        </p>
-    </div>
-
-    <div class="section" id="methodology">
-        <div class="section-label">Methodology</div>
-        <h2 class="section-title">Three-Layer Algorithm</h2>
-        <div class="method-grid">
-            <div class="method-card">
-                <div class="method-num">01</div>
-                <h4>Time-Expanded Graph</h4>
-                <p>GTFS timetable data builds a directed graph with ~170K nodes for London. Dijkstra gives exact earliest-arrival queries.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-value">13h40m</span>
+                <span class="hero-stat-label">London record</span>
             </div>
-            <div class="method-card">
-                <div class="method-num">02</div>
-                <h4>Greedy + Local Search</h4>
-                <p>Nearest-unvisited with beam search lookahead, improved by 2-opt and Or-opt moves on the station visit order.</p>
+            <div class="hero-stat">
+                <span class="hero-stat-value">3 cities</span>
+                <span class="hero-stat-label">Solved</span>
             </div>
-            <div class="method-card">
-                <div class="method-num">03</div>
-                <h4>LP Relaxation Bound</h4>
-                <p>Flow-based LP provides a provable lower bound. The optimality gap tells you how close to optimal the solution is.</p>
+            <div class="hero-stat">
+                <span class="hero-stat-value">160K+</span>
+                <span class="hero-stat-label">TEG nodes</span>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="section" id="results">
-        <div class="section-label">Results</div>
+    <!-- Cities — immediately visible -->
+    <section class="section cities-section">
+        <div class="city-grid">
+            <a href="results.html?sample" class="city-card active">
+                <h3>London Underground</h3>
+                <span class="city-stat">272 stations</span>
+                <span class="city-status solved">18h05m</span>
+            </a>
+            <a href="results.html?city=nyc" class="city-card active">
+                <h3>NYC Subway</h3>
+                <span class="city-stat">475 stations</span>
+                <span class="city-status solved">21h35m</span>
+            </a>
+            <a href="results.html?city=berlin" class="city-card active" id="city-berlin">
+                <h3>Berlin U-Bahn</h3>
+                <span class="city-stat">170 stations</span>
+                <span class="city-status solved">7h53m</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Record Comparison -->
+    <section class="section record-section reveal">
+        <div class="section-label">Background</div>
         <h2 class="section-title">London Tube Challenge</h2>
-        <div class="results-grid">
-            <div>
-                <div class="result-num accent">13h40m</div>
-                <div class="result-label">Record Time</div>
-                <div class="result-sub">vs 14h17m official record</div>
+        <p class="section-desc">
+            Visit all 272 Underground stations as fast as possible. Charles completed it in <strong>13h40m</strong>, beating the Guinness World Record of 14h17m. This project formalizes that strategy into a general-purpose solver.
+        </p>
+        <div class="record-bars">
+            <div class="record-row">
+                <div class="record-info">
+                    <span class="record-name">Charles Benello</span>
+                    <span class="record-time accent">13h40m</span>
+                </div>
+                <div class="record-bar">
+                    <div class="record-bar-fill charles" data-width="75.7"></div>
+                </div>
             </div>
-            <div>
-                <div class="result-num">272</div>
-                <div class="result-label">Stations Visited</div>
-                <div class="result-sub">Every Underground station</div>
+            <div class="record-row">
+                <div class="record-info">
+                    <span class="record-name">Guinness World Record</span>
+                    <span class="record-time">14h17m</span>
+                </div>
+                <div class="record-bar">
+                    <div class="record-bar-fill world-record" data-width="79.1"></div>
+                </div>
             </div>
-            <div>
-                <div class="result-num accent">12h32m</div>
-                <div class="result-label">Solver Output</div>
-                <div class="result-sub">Automated solution</div>
+            <div class="record-row">
+                <div class="record-info">
+                    <span class="record-name">Automated Solver</span>
+                    <span class="record-time">18h05m</span>
+                </div>
+                <div class="record-bar">
+                    <div class="record-bar-fill solver" data-width="100"></div>
+                </div>
             </div>
         </div>
-        <div style="text-align:center;">
-            <a href="results.html?sample" class="btn-secondary" style="display:inline-block;margin:0;text-decoration:none;">View Detailed Route</a>
-        </div>
-    </div>
+    </section>
 
+    <!-- Algorithm Pipeline -->
+    <section class="section pipeline-section reveal">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Algorithm Pipeline</h2>
+        <div class="pipeline">
+            <div class="pipeline-step">
+                <div class="step-num">01</div>
+                <h3>Time-Expanded Graph</h3>
+                <p>Build a directed graph from GTFS timetable data. Each node is a (station, time) pair. Edges are train legs, waiting arcs, and walking transfers.</p>
+                <span class="step-stat">160K nodes / 1.26M edges</span>
+            </div>
+            <div class="pipeline-arrow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-num">02</div>
+                <h3>Greedy + Local Search</h3>
+                <p>Nearest-unvisited heuristic with beam search lookahead and urgency scoring, refined by 2-opt and Or-opt moves on visit order.</p>
+                <span class="step-stat">272/272 stations covered</span>
+            </div>
+            <div class="pipeline-arrow">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+            <div class="pipeline-step">
+                <div class="step-num">03</div>
+                <h3>LP Relaxation Bound</h3>
+                <p>Flow-based LP gives a provable lower bound. The optimality gap quantifies how close the heuristic solution is to optimal.</p>
+                <span class="step-stat">7h43m lower bound</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section class="section tech-section reveal">
+        <div class="section-label">Details</div>
+        <h2 class="section-title">Technical Details</h2>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h4>Time-Expanded Graph</h4>
+                <p>Unlike classical TSP, transit networks are time-dependent. Each node is a (station, departure_time) pair. Edges represent train legs, waiting arcs, and walking transfers.</p>
+            </div>
+            <div class="tech-card">
+                <h4>Covering TSP</h4>
+                <p>Visit a required set of nodes without returning to start. NP-hard in general. We use heuristics and compute LP relaxation bounds to prove solution quality.</p>
+            </div>
+            <div class="tech-card">
+                <h4>GTFS Pipeline</h4>
+                <p>Parses any city's General Transit Feed Specification data. Handles calendar filtering, service patterns, and computes walking transfers via KDTree spatial index.</p>
+            </div>
+            <div class="tech-card">
+                <h4>LP Relaxation</h4>
+                <p>Relaxing integer constraints gives a valid lower bound on the optimal solution. The integrality gap proves solution quality without exhaustive search.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <span style="font-family:'JetBrains Mono',monospace;">covtsp</span>
-        <span>Built by Charles Benello</span>
-        <a href="https://github.com/cmbenello/covtsp">GitHub</a>
+        <div class="footer-left">
+            <span class="footer-brand">covtsp</span>
+            <span class="footer-sep">/</span>
+            <span>Built by Charles Benello</span>
+        </div>
+        <div class="footer-right">
+            <a href="https://github.com/cmbenello/covtsp">GitHub</a>
+        </div>
     </footer>
+
+    <script src="index.js"></script>
 </body>
 </html>

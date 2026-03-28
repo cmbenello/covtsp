@@ -1,0 +1,3524 @@
+{
+  "city": "Berlin U-Bahn",
+  "date": "2026-03-31",
+  "total_time_seconds": 28410,
+  "total_time_formatted": "7h53m",
+  "stations_visited": 165,
+  "stations_required": 170,
+  "optimality_gap_pct": 61.24,
+  "lp_lower_bound_seconds": 17620,
+  "lp_static": {
+    "lp_bound_seconds": 17620,
+    "status": "Optimal",
+    "active_edges": 177,
+    "detail": "LP solved with 441 variables, 339 constraints"
+  },
+  "lp_time_expanded": null,
+  "stations": {
+    "de:11000:900160004": {
+      "name": "S+U Lichtenberg Bhf (Berlin)",
+      "lat": 52.510672,
+      "lon": 13.498359
+    },
+    "de:11000:900100003": {
+      "name": "S+U Alexanderplatz Bhf (Berlin)",
+      "lat": 52.521512,
+      "lon": 13.411267
+    },
+    "de:11000:900023201": {
+      "name": "S+U Zoologischer Garten Bhf (Berlin)",
+      "lat": 52.506921,
+      "lon": 13.332707
+    },
+    "de:11000:900002201": {
+      "name": "U Birkenstr. (Berlin)",
+      "lat": 52.532269,
+      "lon": 13.341418
+    },
+    "de:11000:900003101": {
+      "name": "U Hansaplatz (Berlin)",
+      "lat": 52.518111,
+      "lon": 13.342165
+    },
+    "de:11000:900003104": {
+      "name": "U Turmstr. (Berlin)",
+      "lat": 52.525938,
+      "lon": 13.341417
+    },
+    "de:11000:900003201": {
+      "name": "S+U Berlin Hauptbahnhof",
+      "lat": 52.525605,
+      "lon": 13.369075
+    },
+    "de:11000:900005201": {
+      "name": "U Kurf\u00fcrstenstr. (Berlin)",
+      "lat": 52.499778,
+      "lon": 13.362857
+    },
+    "de:11000:900005252": {
+      "name": "U Mendelssohn-Bartholdy-Park (Berlin)",
+      "lat": 52.503185,
+      "lon": 13.374679
+    },
+    "de:11000:900007102": {
+      "name": "S+U Gesundbrunnen Bhf (Berlin)",
+      "lat": 52.548637,
+      "lon": 13.388372
+    },
+    "de:11000:900007103": {
+      "name": "U Voltastr. (Berlin)",
+      "lat": 52.54193,
+      "lon": 13.393157
+    },
+    "de:11000:900007110": {
+      "name": "U Bernauer Str. (Berlin)",
+      "lat": 52.537994,
+      "lon": 13.396231
+    },
+    "de:11000:900008102": {
+      "name": "U Reinickendorfer Str. (Berlin)",
+      "lat": 52.539887,
+      "lon": 13.370382
+    },
+    "de:11000:900009101": {
+      "name": "U Amrumer Str. (Berlin)",
+      "lat": 52.542202,
+      "lon": 13.349534
+    },
+    "de:11000:900009102": {
+      "name": "U Leopoldplatz (Berlin)",
+      "lat": 52.546493,
+      "lon": 13.359395
+    },
+    "de:11000:900009103": {
+      "name": "U Seestr. (Berlin)",
+      "lat": 52.55047,
+      "lon": 13.351969
+    },
+    "de:11000:900009104": {
+      "name": "S+U Wedding (Berlin)",
+      "lat": 52.542732,
+      "lon": 13.36606
+    },
+    "de:11000:900009201": {
+      "name": "U Nauener Platz (Berlin)",
+      "lat": 52.551524,
+      "lon": 13.367365
+    },
+    "de:11000:900009202": {
+      "name": "U Osloer Str. (Berlin)",
+      "lat": 52.557107,
+      "lon": 13.373279
+    },
+    "de:11000:900009203": {
+      "name": "U Pankstr. (Berlin)",
+      "lat": 52.55228,
+      "lon": 13.381437
+    },
+    "de:11000:900011101": {
+      "name": "U Rehberge (Berlin)",
+      "lat": 52.55667,
+      "lon": 13.341013
+    },
+    "de:11000:900011102": {
+      "name": "U Afrikanische Str. (Berlin)",
+      "lat": 52.560862,
+      "lon": 13.333502
+    },
+    "de:11000:900012102": {
+      "name": "U Kochstr. (Checkpoint Charlie) (Berlin)",
+      "lat": 52.506673,
+      "lon": 13.390863
+    },
+    "de:11000:900012103": {
+      "name": "U Hallesches Tor (Berlin)",
+      "lat": 52.497774,
+      "lon": 13.39176
+    },
+    "de:11000:900013101": {
+      "name": "U Moritzplatz (Berlin)",
+      "lat": 52.503739,
+      "lon": 13.410947
+    },
+    "de:11000:900013102": {
+      "name": "U Kottbusser Tor (Berlin)",
+      "lat": 52.499047,
+      "lon": 13.417748
+    },
+    "de:11000:900013103": {
+      "name": "U Prinzenstr. (Berlin)",
+      "lat": 52.498327,
+      "lon": 13.406551
+    },
+    "de:11000:900014101": {
+      "name": "U G\u00f6rlitzer Bahnhof (Berlin)",
+      "lat": 52.499145,
+      "lon": 13.427145
+    },
+    "de:11000:900014102": {
+      "name": "U Schlesisches Tor (Berlin)",
+      "lat": 52.501147,
+      "lon": 13.441791
+    },
+    "de:11000:900016101": {
+      "name": "U Gneisenaustr. (Berlin)",
+      "lat": 52.491252,
+      "lon": 13.395382
+    },
+    "de:11000:900016201": {
+      "name": "U Sch\u00f6nleinstr. (Berlin)",
+      "lat": 52.493341,
+      "lon": 13.421912
+    },
+    "de:11000:900016202": {
+      "name": "U S\u00fcdstern (Berlin)",
+      "lat": 52.489219,
+      "lon": 13.407685
+    },
+    "de:11000:900017101": {
+      "name": "U Mehringdamm (Berlin)",
+      "lat": 52.493567,
+      "lon": 13.38814
+    },
+    "de:11000:900017102": {
+      "name": "U Platz der Luftbr\u00fccke (Berlin)",
+      "lat": 52.48487,
+      "lon": 13.385927
+    },
+    "de:11000:900017103": {
+      "name": "U Gleisdreieck (Berlin)",
+      "lat": 52.499587,
+      "lon": 13.374293
+    },
+    "de:11000:900017104": {
+      "name": "U M\u00f6ckernbr\u00fccke (Berlin)",
+      "lat": 52.498944,
+      "lon": 13.383256
+    },
+    "de:11000:900018101": {
+      "name": "U Jakob-Kaiser-Platz (Berlin)",
+      "lat": 52.536985,
+      "lon": 13.293661
+    },
+    "de:11000:900018102": {
+      "name": "U Halemweg (Berlin)",
+      "lat": 52.536703,
+      "lon": 13.286578
+    },
+    "de:11000:900019204": {
+      "name": "U Mierendorffplatz (Berlin)",
+      "lat": 52.525978,
+      "lon": 13.305715
+    },
+    "de:11000:900020201": {
+      "name": "S+U Jungfernheide Bhf (Berlin)",
+      "lat": 52.530452,
+      "lon": 13.300124
+    },
+    "de:11000:900022101": {
+      "name": "U Sophie-Charlotte-Platz (Berlin)",
+      "lat": 52.51097,
+      "lon": 13.297463
+    },
+    "de:11000:900022201": {
+      "name": "U Deutsche Oper (Berlin)",
+      "lat": 52.511827,
+      "lon": 13.30942
+    },
+    "de:11000:900022202": {
+      "name": "U Richard-Wagner-Platz (Berlin)",
+      "lat": 52.517154,
+      "lon": 13.307221
+    },
+    "de:11000:900023101": {
+      "name": "U Ernst-Reuter-Platz (Berlin)",
+      "lat": 52.511582,
+      "lon": 13.322581
+    },
+    "de:11000:900023202": {
+      "name": "U Augsburger Str. (Berlin)",
+      "lat": 52.500442,
+      "lon": 13.336461
+    },
+    "de:11000:900023203": {
+      "name": "U Kurf\u00fcrstendamm (Berlin)",
+      "lat": 52.503763,
+      "lon": 13.331419
+    },
+    "de:11000:900023301": {
+      "name": "U Uhlandstr. (Berlin)",
+      "lat": 52.502742,
+      "lon": 13.326233
+    },
+    "de:11000:900023302": {
+      "name": "U Adenauerplatz (Berlin)",
+      "lat": 52.500086,
+      "lon": 13.307348
+    },
+    "de:11000:900024201": {
+      "name": "U Bismarckstr. (Berlin)",
+      "lat": 52.511543,
+      "lon": 13.305335
+    },
+    "de:11000:900024202": {
+      "name": "U Wilmersdorfer Str. (Berlin)",
+      "lat": 52.506415,
+      "lon": 13.306774
+    },
+    "de:11000:900025202": {
+      "name": "U Ruhleben (Berlin)",
+      "lat": 52.525587,
+      "lon": 13.241902
+    },
+    "de:11000:900025203": {
+      "name": "U Olympia-Stadion (Berlin)",
+      "lat": 52.517048,
+      "lon": 13.2505
+    },
+    "de:11000:900026101": {
+      "name": "U Neu-Westend (Berlin)",
+      "lat": 52.516409,
+      "lon": 13.25991
+    },
+    "de:11000:900026201": {
+      "name": "U Theodor-Heuss-Platz (Berlin)",
+      "lat": 52.509798,
+      "lon": 13.272977
+    },
+    "de:11000:900026202": {
+      "name": "U Kaiserdamm (Berlin)",
+      "lat": 52.509985,
+      "lon": 13.281695
+    },
+    "de:11000:900029301": {
+      "name": "U Altstadt Spandau (Berlin)",
+      "lat": 52.539161,
+      "lon": 13.206763
+    },
+    "de:11000:900029302": {
+      "name": "S+U Rathaus Spandau (Berlin)",
+      "lat": 52.535641,
+      "lon": 13.199837
+    },
+    "de:11000:900033101": {
+      "name": "U Zitadelle (Berlin)",
+      "lat": 52.537522,
+      "lon": 13.217625
+    },
+    "de:11000:900034101": {
+      "name": "U Paulsternstr. (Berlin)",
+      "lat": 52.538127,
+      "lon": 13.248065
+    },
+    "de:11000:900034102": {
+      "name": "U Haselhorst (Berlin)",
+      "lat": 52.538687,
+      "lon": 13.231946
+    },
+    "de:11000:900035101": {
+      "name": "U Siemensdamm (Berlin)",
+      "lat": 52.537026,
+      "lon": 13.273323
+    },
+    "de:11000:900036101": {
+      "name": "U Rohrdamm (Berlin)",
+      "lat": 52.536904,
+      "lon": 13.26287
+    },
+    "de:11000:900041101": {
+      "name": "U Fehrbelliner Platz (Berlin)",
+      "lat": 52.490365,
+      "lon": 13.314405
+    },
+    "de:11000:900041102": {
+      "name": "U Blissestr. (Berlin)",
+      "lat": 52.486478,
+      "lon": 13.320545
+    },
+    "de:11000:900041201": {
+      "name": "U Konstanzer Str. (Berlin)",
+      "lat": 52.493567,
+      "lon": 13.310084
+    },
+    "de:11000:900042101": {
+      "name": "U Spichernstr. (Berlin)",
+      "lat": 52.496582,
+      "lon": 13.330613
+    },
+    "de:11000:900043101": {
+      "name": "U Hohenzollernplatz (Berlin)",
+      "lat": 52.493833,
+      "lon": 13.324051
+    },
+    "de:11000:900043201": {
+      "name": "U G\u00fcntzelstr. (Berlin)",
+      "lat": 52.491992,
+      "lon": 13.33121
+    },
+    "de:11000:900044201": {
+      "name": "U Berliner Str. (Berlin)",
+      "lat": 52.487047,
+      "lon": 13.331355
+    },
+    "de:11000:900044202": {
+      "name": "S+U Bundesplatz (Berlin)",
+      "lat": 52.477667,
+      "lon": 13.328626
+    },
+    "de:11000:900045101": {
+      "name": "U R\u00fcdesheimer Platz (Berlin)",
+      "lat": 52.472462,
+      "lon": 13.314387
+    },
+    "de:11000:900045102": {
+      "name": "S+U Heidelberger Platz (Berlin)",
+      "lat": 52.480124,
+      "lon": 13.31229
+    },
+    "de:11000:900050282": {
+      "name": "U Onkel Toms H\u00fctte (Berlin)",
+      "lat": 52.450146,
+      "lon": 13.254016
+    },
+    "de:11000:900051201": {
+      "name": "U Freie Universit\u00e4t (Thielplatz) (Berlin)",
+      "lat": 52.451,
+      "lon": 13.281651
+    },
+    "de:11000:900051202": {
+      "name": "U Breitenbachplatz (Berlin)",
+      "lat": 52.467342,
+      "lon": 13.309276
+    },
+    "de:11000:900051301": {
+      "name": "U Oskar-Helene-Heim (Berlin)",
+      "lat": 52.450419,
+      "lon": 13.26891
+    },
+    "de:11000:900051302": {
+      "name": "U Podbielskiallee (Berlin)",
+      "lat": 52.464172,
+      "lon": 13.295203
+    },
+    "de:11000:900051303": {
+      "name": "U Dahlem-Dorf (Berlin)",
+      "lat": 52.457695,
+      "lon": 13.290011
+    },
+    "de:11000:900054101": {
+      "name": "U Rathaus Sch\u00f6neberg (Berlin)",
+      "lat": 52.483332,
+      "lon": 13.341989
+    },
+    "de:11000:900054102": {
+      "name": "U Kleistpark (Berlin)",
+      "lat": 52.490686,
+      "lon": 13.360543
+    },
+    "de:11000:900054103": {
+      "name": "U Eisenacher Str. (Berlin)",
+      "lat": 52.489477,
+      "lon": 13.350284
+    },
+    "de:11000:900054105": {
+      "name": "S+U Innsbrucker Platz (Berlin)",
+      "lat": 52.4781,
+      "lon": 13.342875
+    },
+    "de:11000:900055101": {
+      "name": "U Viktoria-Luise-Platz (Berlin)",
+      "lat": 52.496169,
+      "lon": 13.343264
+    },
+    "de:11000:900055102": {
+      "name": "U Bayerischer Platz (Berlin)",
+      "lat": 52.488654,
+      "lon": 13.340237
+    },
+    "de:11000:900056101": {
+      "name": "U Wittenbergplatz (Berlin)",
+      "lat": 52.502109,
+      "lon": 13.342561
+    },
+    "de:11000:900056102": {
+      "name": "U Nollendorfplatz (Berlin)",
+      "lat": 52.499644,
+      "lon": 13.353825
+    },
+    "de:11000:900056104": {
+      "name": "U B\u00fclowstr. (Berlin)",
+      "lat": 52.497627,
+      "lon": 13.362456
+    },
+    "de:11000:900058103": {
+      "name": "S+U Yorckstr. (Berlin)",
+      "lat": 52.492358,
+      "lon": 13.372212
+    },
+    "de:11000:900061101": {
+      "name": "U Walther-Schreiber-Platz (Berlin)",
+      "lat": 52.464998,
+      "lon": 13.328409
+    },
+    "de:11000:900061102": {
+      "name": "U Friedrich-Wilhelm-Platz (Berlin)",
+      "lat": 52.471439,
+      "lon": 13.328676
+    },
+    "de:11000:900062202": {
+      "name": "S+U Rathaus Steglitz (Berlin)",
+      "lat": 52.455066,
+      "lon": 13.322152
+    },
+    "de:11000:900062203": {
+      "name": "U Schlo\u00dfstr. (Berlin)",
+      "lat": 52.461183,
+      "lon": 13.324836
+    },
+    "de:11000:900068101": {
+      "name": "U Paradestr. (Berlin)",
+      "lat": 52.478142,
+      "lon": 13.386725
+    },
+    "de:11000:900068201": {
+      "name": "S+U Tempelhof (Berlin)",
+      "lat": 52.470574,
+      "lon": 13.3859
+    },
+    "de:11000:900068202": {
+      "name": "U Alt-Tempelhof (Berlin)",
+      "lat": 52.46593,
+      "lon": 13.385796
+    },
+    "de:11000:900068302": {
+      "name": "U Kaiserin-Augusta-Str. (Berlin)",
+      "lat": 52.460512,
+      "lon": 13.384905
+    },
+    "de:11000:900069271": {
+      "name": "U Ullsteinstr. (Berlin)",
+      "lat": 52.45345,
+      "lon": 13.384771
+    },
+    "de:11000:900070101": {
+      "name": "U Westphalweg (Berlin)",
+      "lat": 52.445646,
+      "lon": 13.385744
+    },
+    "de:11000:900070301": {
+      "name": "U Alt-Mariendorf (Berlin)",
+      "lat": 52.438609,
+      "lon": 13.38792
+    },
+    "de:11000:900078101": {
+      "name": "U Hermannplatz (Berlin)",
+      "lat": 52.486957,
+      "lon": 13.42472
+    },
+    "de:11000:900078102": {
+      "name": "U Rathaus Neuk\u00f6lln (Berlin)",
+      "lat": 52.481146,
+      "lon": 13.434807
+    },
+    "de:11000:900078103": {
+      "name": "U Karl-Marx-Str. (Berlin)",
+      "lat": 52.476429,
+      "lon": 13.439805
+    },
+    "de:11000:900078201": {
+      "name": "S+U Neuk\u00f6lln (Berlin)",
+      "lat": 52.469282,
+      "lon": 13.443692
+    },
+    "de:11000:900079201": {
+      "name": "U Leinestr. (Berlin)",
+      "lat": 52.472874,
+      "lon": 13.4284
+    },
+    "de:11000:900079202": {
+      "name": "U Boddinstr. (Berlin)",
+      "lat": 52.479745,
+      "lon": 13.425782
+    },
+    "de:11000:900079221": {
+      "name": "S+U Hermannstr. (Berlin)",
+      "lat": 52.467181,
+      "lon": 13.431704
+    },
+    "de:11000:900080201": {
+      "name": "U Blaschkoallee (Berlin)",
+      "lat": 52.452743,
+      "lon": 13.448976
+    },
+    "de:11000:900080202": {
+      "name": "U Grenzallee (Berlin)",
+      "lat": 52.463516,
+      "lon": 13.444828
+    },
+    "de:11000:900080401": {
+      "name": "U Parchimer Allee (Berlin)",
+      "lat": 52.445299,
+      "lon": 13.449967
+    },
+    "de:11000:900080402": {
+      "name": "U Britz-S\u00fcd (Berlin)",
+      "lat": 52.437076,
+      "lon": 13.447668
+    },
+    "de:11000:900082201": {
+      "name": "U Lipschitzallee (Berlin)",
+      "lat": 52.424645,
+      "lon": 13.463109
+    },
+    "de:11000:900082202": {
+      "name": "U Johannisthaler Chaussee (Berlin)",
+      "lat": 52.429253,
+      "lon": 13.453851
+    },
+    "de:11000:900083101": {
+      "name": "U Zwickauer Damm (Berlin)",
+      "lat": 52.423032,
+      "lon": 13.484371
+    },
+    "de:11000:900083102": {
+      "name": "U Wutzkyallee (Berlin)",
+      "lat": 52.423152,
+      "lon": 13.47482
+    },
+    "de:11000:900083201": {
+      "name": "U Rudow (Berlin)",
+      "lat": 52.415714,
+      "lon": 13.496527
+    },
+    "de:11000:900085104": {
+      "name": "U Paracelsus-Bad (Berlin)",
+      "lat": 52.574432,
+      "lon": 13.347301
+    },
+    "de:11000:900085202": {
+      "name": "U Franz-Neumann-Platz (Berlin)",
+      "lat": 52.563854,
+      "lon": 13.364283
+    },
+    "de:11000:900085203": {
+      "name": "U Residenzstr. (Berlin)",
+      "lat": 52.570843,
+      "lon": 13.360635
+    },
+    "de:11000:900086102": {
+      "name": "U Kurt-Schumacher-Platz (Berlin)",
+      "lat": 52.563483,
+      "lon": 13.327328
+    },
+    "de:11000:900086160": {
+      "name": "U Lindauer Allee (Berlin)",
+      "lat": 52.575386,
+      "lon": 13.339036
+    },
+    "de:11000:900096101": {
+      "name": "S+U Wittenau (Berlin)",
+      "lat": 52.596392,
+      "lon": 13.335481
+    },
+    "de:11000:900096410": {
+      "name": "U Rathaus Reinickendorf (Berlin)",
+      "lat": 52.588218,
+      "lon": 13.325568
+    },
+    "de:11000:900096458": {
+      "name": "S+U Karl-Bonhoeffer-Nervenklinik (Berlin)",
+      "lat": 52.578169,
+      "lon": 13.332921
+    },
+    "de:11000:900100001": {
+      "name": "S+U Friedrichstr. Bhf (Berlin)",
+      "lat": 52.520304,
+      "lon": 13.387253
+    },
+    "de:11000:900100004": {
+      "name": "S+U Jannowitzbr\u00fccke (Berlin)",
+      "lat": 52.5155,
+      "lon": 13.418027
+    },
+    "de:11000:900100008": {
+      "name": "U Heinrich-Heine-Str. (Berlin)",
+      "lat": 52.510558,
+      "lon": 13.416124
+    },
+    "de:11000:900100009": {
+      "name": "U Naturkundemuseum (Berlin)",
+      "lat": 52.531254,
+      "lon": 13.382415
+    },
+    "de:11000:900100010": {
+      "name": "U Anton-Wilhelm-Amo-Str. (Berlin)",
+      "lat": 52.511519,
+      "lon": 13.383798
+    },
+    "de:11000:900100011": {
+      "name": "U Stadtmitte (Berlin)",
+      "lat": 52.511495,
+      "lon": 13.389719
+    },
+    "de:11000:900100012": {
+      "name": "U Hausvogteiplatz (Berlin)",
+      "lat": 52.513361,
+      "lon": 13.395346
+    },
+    "de:11000:900100013": {
+      "name": "U Spittelmarkt (Berlin)",
+      "lat": 52.511411,
+      "lon": 13.402031
+    },
+    "de:11000:900100014": {
+      "name": "U M\u00e4rkisches Museum (Berlin)",
+      "lat": 52.512007,
+      "lon": 13.408767
+    },
+    "de:11000:900100015": {
+      "name": "U Klosterstr. (Berlin)",
+      "lat": 52.517229,
+      "lon": 13.412455
+    },
+    "de:11000:900100016": {
+      "name": "U Rosa-Luxemburg-Platz (Berlin)",
+      "lat": 52.528191,
+      "lon": 13.410405
+    },
+    "de:11000:900100017": {
+      "name": "U Schillingstr. (Berlin)",
+      "lat": 52.520316,
+      "lon": 13.421895
+    },
+    "de:11000:900100019": {
+      "name": "U Oranienburger Tor (Berlin)",
+      "lat": 52.525163,
+      "lon": 13.387587
+    },
+    "de:11000:900100020": {
+      "name": "S+U Potsdamer Platz Bhf (Berlin)",
+      "lat": 52.509358,
+      "lon": 13.376547
+    },
+    "de:11000:900100023": {
+      "name": "U Rosenthaler Platz (Berlin)",
+      "lat": 52.529781,
+      "lon": 13.401393
+    },
+    "de:11000:900100025": {
+      "name": "S+U Brandenburger Tor (Berlin)",
+      "lat": 52.516511,
+      "lon": 13.381937
+    },
+    "de:11000:900100045": {
+      "name": "U Rotes Rathaus (Berlin)",
+      "lat": 52.518462,
+      "lon": 13.407061
+    },
+    "de:11000:900100051": {
+      "name": "U Weinmeisterstr. (Berlin)",
+      "lat": 52.525376,
+      "lon": 13.405305
+    },
+    "de:11000:900100501": {
+      "name": "U Schwartzkopffstr. (Berlin)",
+      "lat": 52.535397,
+      "lon": 13.377033
+    },
+    "de:11000:900100513": {
+      "name": "U Unter den Linden (Berlin)",
+      "lat": 52.516996,
+      "lon": 13.388876
+    },
+    "de:11000:900100537": {
+      "name": "U Museumsinsel (Berlin)",
+      "lat": 52.518086,
+      "lon": 13.400394
+    },
+    "de:11000:900110001": {
+      "name": "S+U Sch\u00f6nhauser Allee (Berlin)",
+      "lat": 52.549336,
+      "lon": 13.415138
+    },
+    "de:11000:900110005": {
+      "name": "U Senefelderplatz (Berlin)",
+      "lat": 52.532622,
+      "lon": 13.412625
+    },
+    "de:11000:900110006": {
+      "name": "U Eberswalder Str. (Berlin)",
+      "lat": 52.541085,
+      "lon": 13.41216
+    },
+    "de:11000:900120001": {
+      "name": "S+U Frankfurter Allee (Berlin)",
+      "lat": 52.51358,
+      "lon": 13.475848
+    },
+    "de:11000:900120004": {
+      "name": "S+U Warschauer Str. (Berlin)",
+      "lat": 52.505765,
+      "lon": 13.449159
+    },
+    "de:11000:900120006": {
+      "name": "U Strausberger Platz (Berlin)",
+      "lat": 52.518025,
+      "lon": 13.432208
+    },
+    "de:11000:900120008": {
+      "name": "U Frankfurter Tor (Berlin)",
+      "lat": 52.515772,
+      "lon": 13.454085
+    },
+    "de:11000:900120009": {
+      "name": "U Samariterstr. (Berlin)",
+      "lat": 52.514662,
+      "lon": 13.465347
+    },
+    "de:11000:900120025": {
+      "name": "U Weberwiese (Berlin)",
+      "lat": 52.516848,
+      "lon": 13.443278
+    },
+    "de:11000:900130002": {
+      "name": "S+U Pankow (Berlin)",
+      "lat": 52.567281,
+      "lon": 13.412279
+    },
+    "de:11000:900130011": {
+      "name": "U Vinetastr. (Berlin)",
+      "lat": 52.559517,
+      "lon": 13.41377
+    },
+    "de:11000:900160005": {
+      "name": "U Magdalenenstr. (Berlin)",
+      "lat": 52.512457,
+      "lon": 13.487492
+    },
+    "de:11000:900161002": {
+      "name": "U Tierpark (Berlin)",
+      "lat": 52.497236,
+      "lon": 13.523626
+    },
+    "de:11000:900161512": {
+      "name": "U Friedrichsfelde (Berlin)",
+      "lat": 52.505464,
+      "lon": 13.513544
+    },
+    "de:11000:900171005": {
+      "name": "U Biesdorf-S\u00fcd (Berlin)",
+      "lat": 52.499517,
+      "lon": 13.547326
+    },
+    "de:11000:900171006": {
+      "name": "U Elsterwerdaer Platz (Berlin)",
+      "lat": 52.505133,
+      "lon": 13.560646
+    },
+    "de:11000:900175001": {
+      "name": "S+U Wuhletal (Berlin)",
+      "lat": 52.512724,
+      "lon": 13.574536
+    },
+    "de:11000:900175004": {
+      "name": "U Kaulsdorf-Nord (Berlin)",
+      "lat": 52.521436,
+      "lon": 13.588763
+    },
+    "de:11000:900175005": {
+      "name": "U Kienberg (G\u00e4rten der Welt) (Berlin)",
+      "lat": 52.52849,
+      "lon": 13.59055
+    },
+    "de:11000:900175006": {
+      "name": "U Cottbusser Platz (Berlin)",
+      "lat": 52.533963,
+      "lon": 13.596894
+    },
+    "de:11000:900175007": {
+      "name": "U Hellersdorf (Berlin)",
+      "lat": 52.536328,
+      "lon": 13.605323
+    },
+    "de:11000:900175010": {
+      "name": "U H\u00f6now (Berlin)",
+      "lat": 52.538105,
+      "lon": 13.634541
+    },
+    "de:11000:900175015": {
+      "name": "U Louis-Lewin-Str. (Berlin)",
+      "lat": 52.539135,
+      "lon": 13.619707
+    },
+    "de:11000:900050201": {
+      "name": "U Krumme Lanke (Berlin)",
+      "lat": 52.442615,
+      "lon": 13.24036
+    },
+    "de:11000:900001201": {
+      "name": "S+U Westhafen (Berlin)",
+      "lat": 52.536183,
+      "lon": 13.343837
+    },
+    "de:11000:900003254": {
+      "name": "U Bundestag (Berlin)",
+      "lat": 52.52011,
+      "lon": 13.372952
+    }
+  },
+  "route": [
+    {
+      "station_id": "de:11000:900096410",
+      "station_name": "U Rathaus Reinickendorf (Berlin)",
+      "arrival": "08:02",
+      "departure": "08:02",
+      "line": "",
+      "type": "start",
+      "lat": 52.588218,
+      "lon": 13.325568
+    },
+    {
+      "station_id": "de:11000:900096101",
+      "station_name": "S+U Wittenau (Berlin)",
+      "arrival": "08:04",
+      "departure": "08:06",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.596392,
+      "lon": 13.335481
+    },
+    {
+      "station_id": "de:11000:900096410",
+      "station_name": "U Rathaus Reinickendorf (Berlin)",
+      "arrival": "08:08",
+      "departure": "08:08",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.588218,
+      "lon": 13.325568
+    },
+    {
+      "station_id": "de:11000:900096458",
+      "station_name": "S+U Karl-Bonhoeffer-Nervenklinik (Berlin)",
+      "arrival": "08:10",
+      "departure": "08:10",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.578169,
+      "lon": 13.332921
+    },
+    {
+      "station_id": "de:11000:900086160",
+      "station_name": "U Lindauer Allee (Berlin)",
+      "arrival": "08:11",
+      "departure": "08:11",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.575386,
+      "lon": 13.339036
+    },
+    {
+      "station_id": "de:11000:900085104",
+      "station_name": "U Paracelsus-Bad (Berlin)",
+      "arrival": "08:12",
+      "departure": "08:12",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.574432,
+      "lon": 13.347301
+    },
+    {
+      "station_id": "de:11000:900085203",
+      "station_name": "U Residenzstr. (Berlin)",
+      "arrival": "08:14",
+      "departure": "08:14",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.570843,
+      "lon": 13.360635
+    },
+    {
+      "station_id": "de:11000:900085202",
+      "station_name": "U Franz-Neumann-Platz (Berlin)",
+      "arrival": "08:15",
+      "departure": "08:15",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.563854,
+      "lon": 13.364283
+    },
+    {
+      "station_id": "de:11000:900009202",
+      "station_name": "U Osloer Str. (Berlin)",
+      "arrival": "08:18",
+      "departure": "08:18",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.557107,
+      "lon": 13.373279
+    },
+    {
+      "station_id": "de:11000:900009203",
+      "station_name": "U Pankstr. (Berlin)",
+      "arrival": "08:19",
+      "departure": "08:19",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.55228,
+      "lon": 13.381437
+    },
+    {
+      "station_id": "de:11000:900007102",
+      "station_name": "S+U Gesundbrunnen Bhf (Berlin)",
+      "arrival": "08:21",
+      "departure": "08:21",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.548637,
+      "lon": 13.388372
+    },
+    {
+      "station_id": "de:11000:900007103",
+      "station_name": "U Voltastr. (Berlin)",
+      "arrival": "08:22",
+      "departure": "08:22",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.54193,
+      "lon": 13.393157
+    },
+    {
+      "station_id": "de:11000:900007110",
+      "station_name": "U Bernauer Str. (Berlin)",
+      "arrival": "08:24",
+      "departure": "08:24",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.537994,
+      "lon": 13.396231
+    },
+    {
+      "station_id": "de:11000:900100023",
+      "station_name": "U Rosenthaler Platz (Berlin)",
+      "arrival": "08:25",
+      "departure": "08:25",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.529781,
+      "lon": 13.401393
+    },
+    {
+      "station_id": "de:11000:900100051",
+      "station_name": "U Weinmeisterstr. (Berlin)",
+      "arrival": "08:27",
+      "departure": "08:27",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.525376,
+      "lon": 13.405305
+    },
+    {
+      "station_id": "de:11000:900100003",
+      "station_name": "S+U Alexanderplatz Bhf (Berlin)",
+      "arrival": "08:29",
+      "departure": "08:29",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.521512,
+      "lon": 13.411267
+    },
+    {
+      "station_id": "de:11000:900100004",
+      "station_name": "S+U Jannowitzbr\u00fccke (Berlin)",
+      "arrival": "08:30",
+      "departure": "08:30",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.5155,
+      "lon": 13.418027
+    },
+    {
+      "station_id": "de:11000:900100008",
+      "station_name": "U Heinrich-Heine-Str. (Berlin)",
+      "arrival": "08:32",
+      "departure": "08:32",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.510558,
+      "lon": 13.416124
+    },
+    {
+      "station_id": "de:11000:900013101",
+      "station_name": "U Moritzplatz (Berlin)",
+      "arrival": "08:33",
+      "departure": "08:33",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.503739,
+      "lon": 13.410947
+    },
+    {
+      "station_id": "de:11000:900013102",
+      "station_name": "U Kottbusser Tor (Berlin)",
+      "arrival": "08:35",
+      "departure": "08:35",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.499047,
+      "lon": 13.417748
+    },
+    {
+      "station_id": "de:11000:900016201",
+      "station_name": "U Sch\u00f6nleinstr. (Berlin)",
+      "arrival": "08:37",
+      "departure": "08:37",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.493341,
+      "lon": 13.421912
+    },
+    {
+      "station_id": "de:11000:900078101",
+      "station_name": "U Hermannplatz (Berlin)",
+      "arrival": "08:39",
+      "departure": "08:39",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.486957,
+      "lon": 13.42472
+    },
+    {
+      "station_id": "de:11000:900079202",
+      "station_name": "U Boddinstr. (Berlin)",
+      "arrival": "08:40",
+      "departure": "08:40",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.479745,
+      "lon": 13.425782
+    },
+    {
+      "station_id": "de:11000:900079201",
+      "station_name": "U Leinestr. (Berlin)",
+      "arrival": "08:42",
+      "departure": "08:42",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.472874,
+      "lon": 13.4284
+    },
+    {
+      "station_id": "de:11000:900079221",
+      "station_name": "S+U Hermannstr. (Berlin)",
+      "arrival": "08:43",
+      "departure": "08:47",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.467181,
+      "lon": 13.431704
+    },
+    {
+      "station_id": "de:11000:900079201",
+      "station_name": "U Leinestr. (Berlin)",
+      "arrival": "08:49",
+      "departure": "08:49",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.472874,
+      "lon": 13.4284
+    },
+    {
+      "station_id": "de:11000:900079202",
+      "station_name": "U Boddinstr. (Berlin)",
+      "arrival": "08:50",
+      "departure": "08:50",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.479745,
+      "lon": 13.425782
+    },
+    {
+      "station_id": "de:11000:900078101",
+      "station_name": "U Hermannplatz (Berlin)",
+      "arrival": "08:52",
+      "departure": "08:53",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.486957,
+      "lon": 13.42472
+    },
+    {
+      "station_id": "de:11000:900016202",
+      "station_name": "U S\u00fcdstern (Berlin)",
+      "arrival": "08:55",
+      "departure": "08:55",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.489219,
+      "lon": 13.407685
+    },
+    {
+      "station_id": "de:11000:900016101",
+      "station_name": "U Gneisenaustr. (Berlin)",
+      "arrival": "08:56",
+      "departure": "08:56",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.491252,
+      "lon": 13.395382
+    },
+    {
+      "station_id": "de:11000:900017101",
+      "station_name": "U Mehringdamm (Berlin)",
+      "arrival": "08:58",
+      "departure": "08:58",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.493567,
+      "lon": 13.38814
+    },
+    {
+      "station_id": "de:11000:900017104",
+      "station_name": "U M\u00f6ckernbr\u00fccke (Berlin)",
+      "arrival": "09:00",
+      "departure": "09:00",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.498944,
+      "lon": 13.383256
+    },
+    {
+      "station_id": "de:11000:900058103",
+      "station_name": "S+U Yorckstr. (Berlin)",
+      "arrival": "09:01",
+      "departure": "09:01",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.492358,
+      "lon": 13.372212
+    },
+    {
+      "station_id": "de:11000:900054102",
+      "station_name": "U Kleistpark (Berlin)",
+      "arrival": "09:03",
+      "departure": "09:03",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.490686,
+      "lon": 13.360543
+    },
+    {
+      "station_id": "de:11000:900054103",
+      "station_name": "U Eisenacher Str. (Berlin)",
+      "arrival": "09:04",
+      "departure": "09:04",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.489477,
+      "lon": 13.350284
+    },
+    {
+      "station_id": "de:11000:900055102",
+      "station_name": "U Bayerischer Platz (Berlin)",
+      "arrival": "09:05",
+      "departure": "09:05",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.488654,
+      "lon": 13.340237
+    },
+    {
+      "station_id": "de:11000:900044201",
+      "station_name": "U Berliner Str. (Berlin)",
+      "arrival": "09:07",
+      "departure": "09:07",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.487047,
+      "lon": 13.331355
+    },
+    {
+      "station_id": "de:11000:900041102",
+      "station_name": "U Blissestr. (Berlin)",
+      "arrival": "09:08",
+      "departure": "09:08",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.486478,
+      "lon": 13.320545
+    },
+    {
+      "station_id": "de:11000:900041101",
+      "station_name": "U Fehrbelliner Platz (Berlin)",
+      "arrival": "09:09",
+      "departure": "09:09",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.490365,
+      "lon": 13.314405
+    },
+    {
+      "station_id": "de:11000:900041201",
+      "station_name": "U Konstanzer Str. (Berlin)",
+      "arrival": "09:11",
+      "departure": "09:11",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.493567,
+      "lon": 13.310084
+    },
+    {
+      "station_id": "de:11000:900023302",
+      "station_name": "U Adenauerplatz (Berlin)",
+      "arrival": "09:12",
+      "departure": "09:12",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.500086,
+      "lon": 13.307348
+    },
+    {
+      "station_id": "de:11000:900024202",
+      "station_name": "U Wilmersdorfer Str. (Berlin)",
+      "arrival": "09:13",
+      "departure": "09:13",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.506415,
+      "lon": 13.306774
+    },
+    {
+      "station_id": "de:11000:900024201",
+      "station_name": "U Bismarckstr. (Berlin)",
+      "arrival": "09:15",
+      "departure": "09:15",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.511543,
+      "lon": 13.305335
+    },
+    {
+      "station_id": "de:11000:900022202",
+      "station_name": "U Richard-Wagner-Platz (Berlin)",
+      "arrival": "09:16",
+      "departure": "09:16",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.517154,
+      "lon": 13.307221
+    },
+    {
+      "station_id": "de:11000:900019204",
+      "station_name": "U Mierendorffplatz (Berlin)",
+      "arrival": "09:18",
+      "departure": "09:18",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.525978,
+      "lon": 13.305715
+    },
+    {
+      "station_id": "de:11000:900020201",
+      "station_name": "S+U Jungfernheide Bhf (Berlin)",
+      "arrival": "09:19",
+      "departure": "09:19",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.530452,
+      "lon": 13.300124
+    },
+    {
+      "station_id": "de:11000:900018101",
+      "station_name": "U Jakob-Kaiser-Platz (Berlin)",
+      "arrival": "09:20",
+      "departure": "09:20",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.536985,
+      "lon": 13.293661
+    },
+    {
+      "station_id": "de:11000:900018102",
+      "station_name": "U Halemweg (Berlin)",
+      "arrival": "09:22",
+      "departure": "09:22",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.536703,
+      "lon": 13.286578
+    },
+    {
+      "station_id": "de:11000:900035101",
+      "station_name": "U Siemensdamm (Berlin)",
+      "arrival": "09:23",
+      "departure": "09:23",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.537026,
+      "lon": 13.273323
+    },
+    {
+      "station_id": "de:11000:900036101",
+      "station_name": "U Rohrdamm (Berlin)",
+      "arrival": "09:24",
+      "departure": "09:24",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.536904,
+      "lon": 13.26287
+    },
+    {
+      "station_id": "de:11000:900034101",
+      "station_name": "U Paulsternstr. (Berlin)",
+      "arrival": "09:26",
+      "departure": "09:26",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.538127,
+      "lon": 13.248065
+    },
+    {
+      "station_id": "de:11000:900034102",
+      "station_name": "U Haselhorst (Berlin)",
+      "arrival": "09:28",
+      "departure": "09:28",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.538687,
+      "lon": 13.231946
+    },
+    {
+      "station_id": "de:11000:900033101",
+      "station_name": "U Zitadelle (Berlin)",
+      "arrival": "09:29",
+      "departure": "09:29",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.537522,
+      "lon": 13.217625
+    },
+    {
+      "station_id": "de:11000:900029301",
+      "station_name": "U Altstadt Spandau (Berlin)",
+      "arrival": "09:31",
+      "departure": "09:31",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.539161,
+      "lon": 13.206763
+    },
+    {
+      "station_id": "de:11000:900029302",
+      "station_name": "S+U Rathaus Spandau (Berlin)",
+      "arrival": "09:32",
+      "departure": "09:36",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.535641,
+      "lon": 13.199837
+    },
+    {
+      "station_id": "de:11000:900029301",
+      "station_name": "U Altstadt Spandau (Berlin)",
+      "arrival": "09:37",
+      "departure": "09:37",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.539161,
+      "lon": 13.206763
+    },
+    {
+      "station_id": "de:11000:900033101",
+      "station_name": "U Zitadelle (Berlin)",
+      "arrival": "09:39",
+      "departure": "09:39",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.537522,
+      "lon": 13.217625
+    },
+    {
+      "station_id": "de:11000:900034102",
+      "station_name": "U Haselhorst (Berlin)",
+      "arrival": "09:41",
+      "departure": "09:41",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.538687,
+      "lon": 13.231946
+    },
+    {
+      "station_id": "de:11000:900034101",
+      "station_name": "U Paulsternstr. (Berlin)",
+      "arrival": "09:42",
+      "departure": "09:42",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.538127,
+      "lon": 13.248065
+    },
+    {
+      "station_id": "de:11000:900036101",
+      "station_name": "U Rohrdamm (Berlin)",
+      "arrival": "09:44",
+      "departure": "09:44",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.536904,
+      "lon": 13.26287
+    },
+    {
+      "station_id": "de:11000:900035101",
+      "station_name": "U Siemensdamm (Berlin)",
+      "arrival": "09:45",
+      "departure": "09:45",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.537026,
+      "lon": 13.273323
+    },
+    {
+      "station_id": "de:11000:900018102",
+      "station_name": "U Halemweg (Berlin)",
+      "arrival": "09:47",
+      "departure": "09:47",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.536703,
+      "lon": 13.286578
+    },
+    {
+      "station_id": "de:11000:900018101",
+      "station_name": "U Jakob-Kaiser-Platz (Berlin)",
+      "arrival": "09:48",
+      "departure": "09:48",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.536985,
+      "lon": 13.293661
+    },
+    {
+      "station_id": "de:11000:900020201",
+      "station_name": "S+U Jungfernheide Bhf (Berlin)",
+      "arrival": "09:49",
+      "departure": "09:49",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.530452,
+      "lon": 13.300124
+    },
+    {
+      "station_id": "de:11000:900019204",
+      "station_name": "U Mierendorffplatz (Berlin)",
+      "arrival": "09:51",
+      "departure": "09:51",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.525978,
+      "lon": 13.305715
+    },
+    {
+      "station_id": "de:11000:900022202",
+      "station_name": "U Richard-Wagner-Platz (Berlin)",
+      "arrival": "09:52",
+      "departure": "09:52",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.517154,
+      "lon": 13.307221
+    },
+    {
+      "station_id": "de:11000:900024201",
+      "station_name": "U Bismarckstr. (Berlin)",
+      "arrival": "09:54",
+      "departure": "09:55",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.511543,
+      "lon": 13.305335
+    },
+    {
+      "station_id": "de:11000:900022101",
+      "station_name": "U Sophie-Charlotte-Platz (Berlin)",
+      "arrival": "09:58",
+      "departure": "09:58",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.51097,
+      "lon": 13.297463
+    },
+    {
+      "station_id": "de:11000:900026202",
+      "station_name": "U Kaiserdamm (Berlin)",
+      "arrival": "09:59",
+      "departure": "09:59",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.509985,
+      "lon": 13.281695
+    },
+    {
+      "station_id": "de:11000:900026201",
+      "station_name": "U Theodor-Heuss-Platz (Berlin)",
+      "arrival": "10:01",
+      "departure": "10:01",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.509798,
+      "lon": 13.272977
+    },
+    {
+      "station_id": "de:11000:900026101",
+      "station_name": "U Neu-Westend (Berlin)",
+      "arrival": "10:03",
+      "departure": "10:03",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.516409,
+      "lon": 13.25991
+    },
+    {
+      "station_id": "de:11000:900025203",
+      "station_name": "U Olympia-Stadion (Berlin)",
+      "arrival": "10:04",
+      "departure": "10:04",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.517048,
+      "lon": 13.2505
+    },
+    {
+      "station_id": "de:11000:900025202",
+      "station_name": "U Ruhleben (Berlin)",
+      "arrival": "10:06",
+      "departure": "10:13",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.525587,
+      "lon": 13.241902
+    },
+    {
+      "station_id": "de:11000:900025203",
+      "station_name": "U Olympia-Stadion (Berlin)",
+      "arrival": "10:15",
+      "departure": "10:15",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.517048,
+      "lon": 13.2505
+    },
+    {
+      "station_id": "de:11000:900026101",
+      "station_name": "U Neu-Westend (Berlin)",
+      "arrival": "10:17",
+      "departure": "10:17",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.516409,
+      "lon": 13.25991
+    },
+    {
+      "station_id": "de:11000:900026201",
+      "station_name": "U Theodor-Heuss-Platz (Berlin)",
+      "arrival": "10:19",
+      "departure": "10:19",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.509798,
+      "lon": 13.272977
+    },
+    {
+      "station_id": "de:11000:900026202",
+      "station_name": "U Kaiserdamm (Berlin)",
+      "arrival": "10:20",
+      "departure": "10:20",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.509985,
+      "lon": 13.281695
+    },
+    {
+      "station_id": "de:11000:900022101",
+      "station_name": "U Sophie-Charlotte-Platz (Berlin)",
+      "arrival": "10:22",
+      "departure": "10:22",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.51097,
+      "lon": 13.297463
+    },
+    {
+      "station_id": "de:11000:900024201",
+      "station_name": "U Bismarckstr. (Berlin)",
+      "arrival": "10:23",
+      "departure": "10:23",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.511543,
+      "lon": 13.305335
+    },
+    {
+      "station_id": "de:11000:900022201",
+      "station_name": "U Deutsche Oper (Berlin)",
+      "arrival": "10:24",
+      "departure": "10:24",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.511827,
+      "lon": 13.30942
+    },
+    {
+      "station_id": "de:11000:900023101",
+      "station_name": "U Ernst-Reuter-Platz (Berlin)",
+      "arrival": "10:26",
+      "departure": "10:26",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.511582,
+      "lon": 13.322581
+    },
+    {
+      "station_id": "de:11000:900023201",
+      "station_name": "S+U Zoologischer Garten Bhf (Berlin)",
+      "arrival": "10:28",
+      "departure": "10:28",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.506921,
+      "lon": 13.332707
+    },
+    {
+      "station_id": "de:11000:900056101",
+      "station_name": "U Wittenbergplatz (Berlin)",
+      "arrival": "10:30",
+      "departure": "10:30",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.502109,
+      "lon": 13.342561
+    },
+    {
+      "station_id": "de:11000:900056102",
+      "station_name": "U Nollendorfplatz (Berlin)",
+      "arrival": "10:32",
+      "departure": "10:32",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.499644,
+      "lon": 13.353825
+    },
+    {
+      "station_id": "de:11000:900056104",
+      "station_name": "U B\u00fclowstr. (Berlin)",
+      "arrival": "10:33",
+      "departure": "10:33",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.497627,
+      "lon": 13.362456
+    },
+    {
+      "station_id": "de:11000:900017103",
+      "station_name": "U Gleisdreieck (Berlin)",
+      "arrival": "10:35",
+      "departure": "10:35",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.499587,
+      "lon": 13.374293
+    },
+    {
+      "station_id": "de:11000:900005252",
+      "station_name": "U Mendelssohn-Bartholdy-Park (Berlin)",
+      "arrival": "10:37",
+      "departure": "10:37",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.503185,
+      "lon": 13.374679
+    },
+    {
+      "station_id": "de:11000:900100020",
+      "station_name": "S+U Potsdamer Platz Bhf (Berlin)",
+      "arrival": "10:38",
+      "departure": "10:38",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.509358,
+      "lon": 13.376547
+    },
+    {
+      "station_id": "de:11000:900100010",
+      "station_name": "U Anton-Wilhelm-Amo-Str. (Berlin)",
+      "arrival": "10:40",
+      "departure": "10:40",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.511519,
+      "lon": 13.383798
+    },
+    {
+      "station_id": "de:11000:900100011",
+      "station_name": "U Stadtmitte (Berlin)",
+      "arrival": "10:41",
+      "departure": "10:41",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.511495,
+      "lon": 13.389719
+    },
+    {
+      "station_id": "de:11000:900100012",
+      "station_name": "U Hausvogteiplatz (Berlin)",
+      "arrival": "10:42",
+      "departure": "10:42",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.513361,
+      "lon": 13.395346
+    },
+    {
+      "station_id": "de:11000:900100013",
+      "station_name": "U Spittelmarkt (Berlin)",
+      "arrival": "10:44",
+      "departure": "10:44",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.511411,
+      "lon": 13.402031
+    },
+    {
+      "station_id": "de:11000:900100014",
+      "station_name": "U M\u00e4rkisches Museum (Berlin)",
+      "arrival": "10:45",
+      "departure": "10:45",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.512007,
+      "lon": 13.408767
+    },
+    {
+      "station_id": "de:11000:900100015",
+      "station_name": "U Klosterstr. (Berlin)",
+      "arrival": "10:46",
+      "departure": "10:46",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.517229,
+      "lon": 13.412455
+    },
+    {
+      "station_id": "de:11000:900100003",
+      "station_name": "S+U Alexanderplatz Bhf (Berlin)",
+      "arrival": "10:48",
+      "departure": "10:48",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.521512,
+      "lon": 13.411267
+    },
+    {
+      "station_id": "de:11000:900100045",
+      "station_name": "U Rotes Rathaus (Berlin)",
+      "arrival": "10:49",
+      "departure": "10:49",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.518462,
+      "lon": 13.407061
+    },
+    {
+      "station_id": "de:11000:900100537",
+      "station_name": "U Museumsinsel (Berlin)",
+      "arrival": "10:51",
+      "departure": "10:51",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.518086,
+      "lon": 13.400394
+    },
+    {
+      "station_id": "de:11000:900100513",
+      "station_name": "U Unter den Linden (Berlin)",
+      "arrival": "10:52",
+      "departure": "10:52",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.516996,
+      "lon": 13.388876
+    },
+    {
+      "station_id": "de:11000:900100025",
+      "station_name": "S+U Brandenburger Tor (Berlin)",
+      "arrival": "10:53",
+      "departure": "10:53",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.516511,
+      "lon": 13.381937
+    },
+    {
+      "station_id": "de:11000:900003254",
+      "station_name": "U Bundestag (Berlin)",
+      "arrival": "10:55",
+      "departure": "10:55",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.52011,
+      "lon": 13.372952
+    },
+    {
+      "station_id": "de:11000:900003201",
+      "station_name": "S+U Berlin Hauptbahnhof",
+      "arrival": "10:56",
+      "departure": "10:58",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.525605,
+      "lon": 13.369075
+    },
+    {
+      "station_id": "de:11000:900003254",
+      "station_name": "U Bundestag (Berlin)",
+      "arrival": "11:00",
+      "departure": "11:00",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.52011,
+      "lon": 13.372952
+    },
+    {
+      "station_id": "de:11000:900100025",
+      "station_name": "S+U Brandenburger Tor (Berlin)",
+      "arrival": "11:01",
+      "departure": "11:01",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.516511,
+      "lon": 13.381937
+    },
+    {
+      "station_id": "de:11000:900100513",
+      "station_name": "U Unter den Linden (Berlin)",
+      "arrival": "11:02",
+      "departure": "11:03",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.516996,
+      "lon": 13.388876
+    },
+    {
+      "station_id": "de:11000:900100001",
+      "station_name": "S+U Friedrichstr. Bhf (Berlin)",
+      "arrival": "11:04",
+      "departure": "11:04",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.520304,
+      "lon": 13.387253
+    },
+    {
+      "station_id": "de:11000:900100019",
+      "station_name": "U Oranienburger Tor (Berlin)",
+      "arrival": "11:05",
+      "departure": "11:05",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.525163,
+      "lon": 13.387587
+    },
+    {
+      "station_id": "de:11000:900100009",
+      "station_name": "U Naturkundemuseum (Berlin)",
+      "arrival": "11:07",
+      "departure": "11:07",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.531254,
+      "lon": 13.382415
+    },
+    {
+      "station_id": "de:11000:900100501",
+      "station_name": "U Schwartzkopffstr. (Berlin)",
+      "arrival": "11:08",
+      "departure": "11:08",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.535397,
+      "lon": 13.377033
+    },
+    {
+      "station_id": "de:11000:900008102",
+      "station_name": "U Reinickendorfer Str. (Berlin)",
+      "arrival": "11:09",
+      "departure": "11:09",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.539887,
+      "lon": 13.370382
+    },
+    {
+      "station_id": "de:11000:900009104",
+      "station_name": "S+U Wedding (Berlin)",
+      "arrival": "11:10",
+      "departure": "11:10",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.542732,
+      "lon": 13.36606
+    },
+    {
+      "station_id": "de:11000:900009102",
+      "station_name": "U Leopoldplatz (Berlin)",
+      "arrival": "11:12",
+      "departure": "11:12",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.546493,
+      "lon": 13.359395
+    },
+    {
+      "station_id": "de:11000:900009103",
+      "station_name": "U Seestr. (Berlin)",
+      "arrival": "11:13",
+      "departure": "11:13",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.55047,
+      "lon": 13.351969
+    },
+    {
+      "station_id": "de:11000:900011101",
+      "station_name": "U Rehberge (Berlin)",
+      "arrival": "11:14",
+      "departure": "11:14",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.55667,
+      "lon": 13.341013
+    },
+    {
+      "station_id": "de:11000:900011102",
+      "station_name": "U Afrikanische Str. (Berlin)",
+      "arrival": "11:16",
+      "departure": "11:16",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.560862,
+      "lon": 13.333502
+    },
+    {
+      "station_id": "de:11000:900086102",
+      "station_name": "U Kurt-Schumacher-Platz (Berlin)",
+      "arrival": "11:17",
+      "departure": "11:19",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.563483,
+      "lon": 13.327328
+    },
+    {
+      "station_id": "de:11000:900011102",
+      "station_name": "U Afrikanische Str. (Berlin)",
+      "arrival": "11:20",
+      "departure": "11:20",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.560862,
+      "lon": 13.333502
+    },
+    {
+      "station_id": "de:11000:900011101",
+      "station_name": "U Rehberge (Berlin)",
+      "arrival": "11:21",
+      "departure": "11:21",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.55667,
+      "lon": 13.341013
+    },
+    {
+      "station_id": "de:11000:900009102",
+      "station_name": "U Leopoldplatz (Berlin)",
+      "arrival": "11:25",
+      "departure": "11:26",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.546493,
+      "lon": 13.359395
+    },
+    {
+      "station_id": "de:11000:900009201",
+      "station_name": "U Nauener Platz (Berlin)",
+      "arrival": "11:28",
+      "departure": "11:32",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.551524,
+      "lon": 13.367365
+    },
+    {
+      "station_id": "de:11000:900009102",
+      "station_name": "U Leopoldplatz (Berlin)",
+      "arrival": "11:34",
+      "departure": "11:34",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.546493,
+      "lon": 13.359395
+    },
+    {
+      "station_id": "de:11000:900009101",
+      "station_name": "U Amrumer Str. (Berlin)",
+      "arrival": "11:36",
+      "departure": "11:36",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.542202,
+      "lon": 13.349534
+    },
+    {
+      "station_id": "de:11000:900001201",
+      "station_name": "S+U Westhafen (Berlin)",
+      "arrival": "11:37",
+      "departure": "11:37",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.536183,
+      "lon": 13.343837
+    },
+    {
+      "station_id": "de:11000:900002201",
+      "station_name": "U Birkenstr. (Berlin)",
+      "arrival": "11:38",
+      "departure": "11:38",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.532269,
+      "lon": 13.341418
+    },
+    {
+      "station_id": "de:11000:900003104",
+      "station_name": "U Turmstr. (Berlin)",
+      "arrival": "11:39",
+      "departure": "11:39",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.525938,
+      "lon": 13.341417
+    },
+    {
+      "station_id": "de:11000:900003101",
+      "station_name": "U Hansaplatz (Berlin)",
+      "arrival": "11:41",
+      "departure": "11:41",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.518111,
+      "lon": 13.342165
+    },
+    {
+      "station_id": "de:11000:900023201",
+      "station_name": "S+U Zoologischer Garten Bhf (Berlin)",
+      "arrival": "11:43",
+      "departure": "11:43",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.506921,
+      "lon": 13.332707
+    },
+    {
+      "station_id": "de:11000:900023203",
+      "station_name": "U Kurf\u00fcrstendamm (Berlin)",
+      "arrival": "11:44",
+      "departure": "11:44",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.503763,
+      "lon": 13.331419
+    },
+    {
+      "station_id": "de:11000:900042101",
+      "station_name": "U Spichernstr. (Berlin)",
+      "arrival": "11:45",
+      "departure": "11:45",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.496582,
+      "lon": 13.330613
+    },
+    {
+      "station_id": "de:11000:900043201",
+      "station_name": "U G\u00fcntzelstr. (Berlin)",
+      "arrival": "11:46",
+      "departure": "11:46",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.491992,
+      "lon": 13.33121
+    },
+    {
+      "station_id": "de:11000:900044201",
+      "station_name": "U Berliner Str. (Berlin)",
+      "arrival": "11:47",
+      "departure": "11:47",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.487047,
+      "lon": 13.331355
+    },
+    {
+      "station_id": "de:11000:900044202",
+      "station_name": "S+U Bundesplatz (Berlin)",
+      "arrival": "11:49",
+      "departure": "11:49",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.477667,
+      "lon": 13.328626
+    },
+    {
+      "station_id": "de:11000:900061102",
+      "station_name": "U Friedrich-Wilhelm-Platz (Berlin)",
+      "arrival": "11:50",
+      "departure": "11:50",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.471439,
+      "lon": 13.328676
+    },
+    {
+      "station_id": "de:11000:900061101",
+      "station_name": "U Walther-Schreiber-Platz (Berlin)",
+      "arrival": "11:52",
+      "departure": "11:52",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.464998,
+      "lon": 13.328409
+    },
+    {
+      "station_id": "de:11000:900062203",
+      "station_name": "U Schlo\u00dfstr. (Berlin)",
+      "arrival": "11:53",
+      "departure": "11:53",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.461183,
+      "lon": 13.324836
+    },
+    {
+      "station_id": "de:11000:900062202",
+      "station_name": "S+U Rathaus Steglitz (Berlin)",
+      "arrival": "11:54",
+      "departure": "11:56",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.455066,
+      "lon": 13.322152
+    },
+    {
+      "station_id": "de:11000:900062203",
+      "station_name": "U Schlo\u00dfstr. (Berlin)",
+      "arrival": "11:57",
+      "departure": "11:57",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.461183,
+      "lon": 13.324836
+    },
+    {
+      "station_id": "de:11000:900061101",
+      "station_name": "U Walther-Schreiber-Platz (Berlin)",
+      "arrival": "11:58",
+      "departure": "11:58",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.464998,
+      "lon": 13.328409
+    },
+    {
+      "station_id": "de:11000:900061102",
+      "station_name": "U Friedrich-Wilhelm-Platz (Berlin)",
+      "arrival": "11:59",
+      "departure": "11:59",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.471439,
+      "lon": 13.328676
+    },
+    {
+      "station_id": "de:11000:900044202",
+      "station_name": "S+U Bundesplatz (Berlin)",
+      "arrival": "12:01",
+      "departure": "12:01",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.477667,
+      "lon": 13.328626
+    },
+    {
+      "station_id": "de:11000:900044201",
+      "station_name": "U Berliner Str. (Berlin)",
+      "arrival": "12:02",
+      "departure": "12:02",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.487047,
+      "lon": 13.331355
+    },
+    {
+      "station_id": "de:11000:900042101",
+      "station_name": "U Spichernstr. (Berlin)",
+      "arrival": "12:05",
+      "departure": "12:05",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.496582,
+      "lon": 13.330613
+    },
+    {
+      "station_id": "de:11000:900023203",
+      "station_name": "U Kurf\u00fcrstendamm (Berlin)",
+      "arrival": "12:06",
+      "departure": "12:08",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.503763,
+      "lon": 13.331419
+    },
+    {
+      "station_id": "de:11000:900023301",
+      "station_name": "U Uhlandstr. (Berlin)",
+      "arrival": "12:09",
+      "departure": "12:09",
+      "line": "U1",
+      "type": "transit",
+      "lat": 52.502742,
+      "lon": 13.326233
+    },
+    {
+      "station_id": "de:11000:900042101",
+      "station_name": "U Spichernstr. (Berlin)",
+      "arrival": "12:15",
+      "departure": "12:16",
+      "line": "U9",
+      "type": "transit",
+      "lat": 52.496582,
+      "lon": 13.330613
+    },
+    {
+      "station_id": "de:11000:900043101",
+      "station_name": "U Hohenzollernplatz (Berlin)",
+      "arrival": "12:19",
+      "departure": "12:19",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.493833,
+      "lon": 13.324051
+    },
+    {
+      "station_id": "de:11000:900041101",
+      "station_name": "U Fehrbelliner Platz (Berlin)",
+      "arrival": "12:20",
+      "departure": "12:20",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.490365,
+      "lon": 13.314405
+    },
+    {
+      "station_id": "de:11000:900045102",
+      "station_name": "S+U Heidelberger Platz (Berlin)",
+      "arrival": "12:22",
+      "departure": "12:22",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.480124,
+      "lon": 13.31229
+    },
+    {
+      "station_id": "de:11000:900045101",
+      "station_name": "U R\u00fcdesheimer Platz (Berlin)",
+      "arrival": "12:24",
+      "departure": "12:24",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.472462,
+      "lon": 13.314387
+    },
+    {
+      "station_id": "de:11000:900051202",
+      "station_name": "U Breitenbachplatz (Berlin)",
+      "arrival": "12:25",
+      "departure": "12:25",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.467342,
+      "lon": 13.309276
+    },
+    {
+      "station_id": "de:11000:900051302",
+      "station_name": "U Podbielskiallee (Berlin)",
+      "arrival": "12:27",
+      "departure": "12:27",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.464172,
+      "lon": 13.295203
+    },
+    {
+      "station_id": "de:11000:900051303",
+      "station_name": "U Dahlem-Dorf (Berlin)",
+      "arrival": "12:28",
+      "departure": "12:28",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.457695,
+      "lon": 13.290011
+    },
+    {
+      "station_id": "de:11000:900051201",
+      "station_name": "U Freie Universit\u00e4t (Thielplatz) (Berlin)",
+      "arrival": "12:30",
+      "departure": "12:30",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.451,
+      "lon": 13.281651
+    },
+    {
+      "station_id": "de:11000:900051301",
+      "station_name": "U Oskar-Helene-Heim (Berlin)",
+      "arrival": "12:32",
+      "departure": "12:32",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.450419,
+      "lon": 13.26891
+    },
+    {
+      "station_id": "de:11000:900050282",
+      "station_name": "U Onkel Toms H\u00fctte (Berlin)",
+      "arrival": "12:34",
+      "departure": "12:34",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.450146,
+      "lon": 13.254016
+    },
+    {
+      "station_id": "de:11000:900050201",
+      "station_name": "U Krumme Lanke (Berlin)",
+      "arrival": "12:36",
+      "departure": "12:37",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.442615,
+      "lon": 13.24036
+    },
+    {
+      "station_id": "de:11000:900050282",
+      "station_name": "U Onkel Toms H\u00fctte (Berlin)",
+      "arrival": "12:39",
+      "departure": "12:39",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.450146,
+      "lon": 13.254016
+    },
+    {
+      "station_id": "de:11000:900051301",
+      "station_name": "U Oskar-Helene-Heim (Berlin)",
+      "arrival": "12:41",
+      "departure": "12:41",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.450419,
+      "lon": 13.26891
+    },
+    {
+      "station_id": "de:11000:900051201",
+      "station_name": "U Freie Universit\u00e4t (Thielplatz) (Berlin)",
+      "arrival": "12:42",
+      "departure": "12:42",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.451,
+      "lon": 13.281651
+    },
+    {
+      "station_id": "de:11000:900051303",
+      "station_name": "U Dahlem-Dorf (Berlin)",
+      "arrival": "12:44",
+      "departure": "12:44",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.457695,
+      "lon": 13.290011
+    },
+    {
+      "station_id": "de:11000:900051302",
+      "station_name": "U Podbielskiallee (Berlin)",
+      "arrival": "12:46",
+      "departure": "12:46",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.464172,
+      "lon": 13.295203
+    },
+    {
+      "station_id": "de:11000:900051202",
+      "station_name": "U Breitenbachplatz (Berlin)",
+      "arrival": "12:47",
+      "departure": "12:47",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.467342,
+      "lon": 13.309276
+    },
+    {
+      "station_id": "de:11000:900045101",
+      "station_name": "U R\u00fcdesheimer Platz (Berlin)",
+      "arrival": "12:49",
+      "departure": "12:49",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.472462,
+      "lon": 13.314387
+    },
+    {
+      "station_id": "de:11000:900045102",
+      "station_name": "S+U Heidelberger Platz (Berlin)",
+      "arrival": "12:50",
+      "departure": "12:50",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.480124,
+      "lon": 13.31229
+    },
+    {
+      "station_id": "de:11000:900041101",
+      "station_name": "U Fehrbelliner Platz (Berlin)",
+      "arrival": "12:52",
+      "departure": "12:54",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.490365,
+      "lon": 13.314405
+    },
+    {
+      "station_id": "de:11000:900041102",
+      "station_name": "U Blissestr. (Berlin)",
+      "arrival": "12:55",
+      "departure": "12:55",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.486478,
+      "lon": 13.320545
+    },
+    {
+      "station_id": "de:11000:900044201",
+      "station_name": "U Berliner Str. (Berlin)",
+      "arrival": "12:56",
+      "departure": "12:56",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.487047,
+      "lon": 13.331355
+    },
+    {
+      "station_id": "de:11000:900055102",
+      "station_name": "U Bayerischer Platz (Berlin)",
+      "arrival": "12:58",
+      "departure": "12:58",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.488654,
+      "lon": 13.340237
+    },
+    {
+      "station_id": "de:11000:900054103",
+      "station_name": "U Eisenacher Str. (Berlin)",
+      "arrival": "12:59",
+      "departure": "12:59",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.489477,
+      "lon": 13.350284
+    },
+    {
+      "station_id": "de:11000:900054102",
+      "station_name": "U Kleistpark (Berlin)",
+      "arrival": "13:00",
+      "departure": "13:00",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.490686,
+      "lon": 13.360543
+    },
+    {
+      "station_id": "de:11000:900058103",
+      "station_name": "S+U Yorckstr. (Berlin)",
+      "arrival": "13:02",
+      "departure": "13:02",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.492358,
+      "lon": 13.372212
+    },
+    {
+      "station_id": "de:11000:900017104",
+      "station_name": "U M\u00f6ckernbr\u00fccke (Berlin)",
+      "arrival": "13:03",
+      "departure": "13:05",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.498944,
+      "lon": 13.383256
+    },
+    {
+      "station_id": "de:11000:900012103",
+      "station_name": "U Hallesches Tor (Berlin)",
+      "arrival": "13:06",
+      "departure": "13:06",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.497774,
+      "lon": 13.39176
+    },
+    {
+      "station_id": "de:11000:900013103",
+      "station_name": "U Prinzenstr. (Berlin)",
+      "arrival": "13:08",
+      "departure": "13:08",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.498327,
+      "lon": 13.406551
+    },
+    {
+      "station_id": "de:11000:900013102",
+      "station_name": "U Kottbusser Tor (Berlin)",
+      "arrival": "13:10",
+      "departure": "13:10",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.499047,
+      "lon": 13.417748
+    },
+    {
+      "station_id": "de:11000:900014101",
+      "station_name": "U G\u00f6rlitzer Bahnhof (Berlin)",
+      "arrival": "13:12",
+      "departure": "13:12",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.499145,
+      "lon": 13.427145
+    },
+    {
+      "station_id": "de:11000:900014102",
+      "station_name": "U Schlesisches Tor (Berlin)",
+      "arrival": "13:14",
+      "departure": "13:14",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.501147,
+      "lon": 13.441791
+    },
+    {
+      "station_id": "de:11000:900120004",
+      "station_name": "S+U Warschauer Str. (Berlin)",
+      "arrival": "13:16",
+      "departure": "13:19",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.505765,
+      "lon": 13.449159
+    },
+    {
+      "station_id": "de:11000:900014102",
+      "station_name": "U Schlesisches Tor (Berlin)",
+      "arrival": "13:21",
+      "departure": "13:21",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.501147,
+      "lon": 13.441791
+    },
+    {
+      "station_id": "de:11000:900014101",
+      "station_name": "U G\u00f6rlitzer Bahnhof (Berlin)",
+      "arrival": "13:23",
+      "departure": "13:23",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.499145,
+      "lon": 13.427145
+    },
+    {
+      "station_id": "de:11000:900013102",
+      "station_name": "U Kottbusser Tor (Berlin)",
+      "arrival": "13:24",
+      "departure": "13:24",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.499047,
+      "lon": 13.417748
+    },
+    {
+      "station_id": "de:11000:900013103",
+      "station_name": "U Prinzenstr. (Berlin)",
+      "arrival": "13:26",
+      "departure": "13:26",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.498327,
+      "lon": 13.406551
+    },
+    {
+      "station_id": "de:11000:900012103",
+      "station_name": "U Hallesches Tor (Berlin)",
+      "arrival": "13:28",
+      "departure": "13:29",
+      "line": "U3",
+      "type": "transit",
+      "lat": 52.497774,
+      "lon": 13.39176
+    },
+    {
+      "station_id": "de:11000:900012102",
+      "station_name": "U Kochstr. (Checkpoint Charlie) (Berlin)",
+      "arrival": "13:30",
+      "departure": "13:31",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.506673,
+      "lon": 13.390863
+    },
+    {
+      "station_id": "de:11000:900012103",
+      "station_name": "U Hallesches Tor (Berlin)",
+      "arrival": "13:32",
+      "departure": "13:32",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.497774,
+      "lon": 13.39176
+    },
+    {
+      "station_id": "de:11000:900017101",
+      "station_name": "U Mehringdamm (Berlin)",
+      "arrival": "13:34",
+      "departure": "13:34",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.493567,
+      "lon": 13.38814
+    },
+    {
+      "station_id": "de:11000:900017102",
+      "station_name": "U Platz der Luftbr\u00fccke (Berlin)",
+      "arrival": "13:36",
+      "departure": "13:36",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.48487,
+      "lon": 13.385927
+    },
+    {
+      "station_id": "de:11000:900068101",
+      "station_name": "U Paradestr. (Berlin)",
+      "arrival": "13:37",
+      "departure": "13:37",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.478142,
+      "lon": 13.386725
+    },
+    {
+      "station_id": "de:11000:900068201",
+      "station_name": "S+U Tempelhof (Berlin)",
+      "arrival": "13:39",
+      "departure": "13:39",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.470574,
+      "lon": 13.3859
+    },
+    {
+      "station_id": "de:11000:900068202",
+      "station_name": "U Alt-Tempelhof (Berlin)",
+      "arrival": "13:40",
+      "departure": "13:40",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.46593,
+      "lon": 13.385796
+    },
+    {
+      "station_id": "de:11000:900068302",
+      "station_name": "U Kaiserin-Augusta-Str. (Berlin)",
+      "arrival": "13:41",
+      "departure": "13:41",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.460512,
+      "lon": 13.384905
+    },
+    {
+      "station_id": "de:11000:900069271",
+      "station_name": "U Ullsteinstr. (Berlin)",
+      "arrival": "13:42",
+      "departure": "13:42",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.45345,
+      "lon": 13.384771
+    },
+    {
+      "station_id": "de:11000:900070101",
+      "station_name": "U Westphalweg (Berlin)",
+      "arrival": "13:44",
+      "departure": "13:44",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.445646,
+      "lon": 13.385744
+    },
+    {
+      "station_id": "de:11000:900070301",
+      "station_name": "U Alt-Mariendorf (Berlin)",
+      "arrival": "13:45",
+      "departure": "13:46",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.438609,
+      "lon": 13.38792
+    },
+    {
+      "station_id": "de:11000:900070101",
+      "station_name": "U Westphalweg (Berlin)",
+      "arrival": "13:47",
+      "departure": "13:47",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.445646,
+      "lon": 13.385744
+    },
+    {
+      "station_id": "de:11000:900069271",
+      "station_name": "U Ullsteinstr. (Berlin)",
+      "arrival": "13:48",
+      "departure": "13:48",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.45345,
+      "lon": 13.384771
+    },
+    {
+      "station_id": "de:11000:900068302",
+      "station_name": "U Kaiserin-Augusta-Str. (Berlin)",
+      "arrival": "13:50",
+      "departure": "13:50",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.460512,
+      "lon": 13.384905
+    },
+    {
+      "station_id": "de:11000:900068202",
+      "station_name": "U Alt-Tempelhof (Berlin)",
+      "arrival": "13:51",
+      "departure": "13:51",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.46593,
+      "lon": 13.385796
+    },
+    {
+      "station_id": "de:11000:900068201",
+      "station_name": "S+U Tempelhof (Berlin)",
+      "arrival": "13:52",
+      "departure": "13:52",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.470574,
+      "lon": 13.3859
+    },
+    {
+      "station_id": "de:11000:900068101",
+      "station_name": "U Paradestr. (Berlin)",
+      "arrival": "13:54",
+      "departure": "13:54",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.478142,
+      "lon": 13.386725
+    },
+    {
+      "station_id": "de:11000:900017102",
+      "station_name": "U Platz der Luftbr\u00fccke (Berlin)",
+      "arrival": "13:55",
+      "departure": "13:55",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.48487,
+      "lon": 13.385927
+    },
+    {
+      "station_id": "de:11000:900017101",
+      "station_name": "U Mehringdamm (Berlin)",
+      "arrival": "13:57",
+      "departure": "13:58",
+      "line": "U6",
+      "type": "transit",
+      "lat": 52.493567,
+      "lon": 13.38814
+    },
+    {
+      "station_id": "de:11000:900016101",
+      "station_name": "U Gneisenaustr. (Berlin)",
+      "arrival": "14:02",
+      "departure": "14:02",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.491252,
+      "lon": 13.395382
+    },
+    {
+      "station_id": "de:11000:900016202",
+      "station_name": "U S\u00fcdstern (Berlin)",
+      "arrival": "14:03",
+      "departure": "14:03",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.489219,
+      "lon": 13.407685
+    },
+    {
+      "station_id": "de:11000:900078101",
+      "station_name": "U Hermannplatz (Berlin)",
+      "arrival": "14:05",
+      "departure": "14:05",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.486957,
+      "lon": 13.42472
+    },
+    {
+      "station_id": "de:11000:900078102",
+      "station_name": "U Rathaus Neuk\u00f6lln (Berlin)",
+      "arrival": "14:07",
+      "departure": "14:07",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.481146,
+      "lon": 13.434807
+    },
+    {
+      "station_id": "de:11000:900078103",
+      "station_name": "U Karl-Marx-Str. (Berlin)",
+      "arrival": "14:08",
+      "departure": "14:08",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.476429,
+      "lon": 13.439805
+    },
+    {
+      "station_id": "de:11000:900078201",
+      "station_name": "S+U Neuk\u00f6lln (Berlin)",
+      "arrival": "14:10",
+      "departure": "14:10",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.469282,
+      "lon": 13.443692
+    },
+    {
+      "station_id": "de:11000:900080202",
+      "station_name": "U Grenzallee (Berlin)",
+      "arrival": "14:11",
+      "departure": "14:11",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.463516,
+      "lon": 13.444828
+    },
+    {
+      "station_id": "de:11000:900080201",
+      "station_name": "U Blaschkoallee (Berlin)",
+      "arrival": "14:13",
+      "departure": "14:13",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.452743,
+      "lon": 13.448976
+    },
+    {
+      "station_id": "de:11000:900080401",
+      "station_name": "U Parchimer Allee (Berlin)",
+      "arrival": "14:14",
+      "departure": "14:14",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.445299,
+      "lon": 13.449967
+    },
+    {
+      "station_id": "de:11000:900080402",
+      "station_name": "U Britz-S\u00fcd (Berlin)",
+      "arrival": "14:16",
+      "departure": "14:16",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.437076,
+      "lon": 13.447668
+    },
+    {
+      "station_id": "de:11000:900082202",
+      "station_name": "U Johannisthaler Chaussee (Berlin)",
+      "arrival": "14:17",
+      "departure": "14:17",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.429253,
+      "lon": 13.453851
+    },
+    {
+      "station_id": "de:11000:900082201",
+      "station_name": "U Lipschitzallee (Berlin)",
+      "arrival": "14:19",
+      "departure": "14:19",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.424645,
+      "lon": 13.463109
+    },
+    {
+      "station_id": "de:11000:900083102",
+      "station_name": "U Wutzkyallee (Berlin)",
+      "arrival": "14:20",
+      "departure": "14:20",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.423152,
+      "lon": 13.47482
+    },
+    {
+      "station_id": "de:11000:900083101",
+      "station_name": "U Zwickauer Damm (Berlin)",
+      "arrival": "14:21",
+      "departure": "14:21",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.423032,
+      "lon": 13.484371
+    },
+    {
+      "station_id": "de:11000:900083201",
+      "station_name": "U Rudow (Berlin)",
+      "arrival": "14:23",
+      "departure": "14:25",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.415714,
+      "lon": 13.496527
+    },
+    {
+      "station_id": "de:11000:900083101",
+      "station_name": "U Zwickauer Damm (Berlin)",
+      "arrival": "14:27",
+      "departure": "14:27",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.423032,
+      "lon": 13.484371
+    },
+    {
+      "station_id": "de:11000:900083102",
+      "station_name": "U Wutzkyallee (Berlin)",
+      "arrival": "14:28",
+      "departure": "14:28",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.423152,
+      "lon": 13.47482
+    },
+    {
+      "station_id": "de:11000:900082201",
+      "station_name": "U Lipschitzallee (Berlin)",
+      "arrival": "14:29",
+      "departure": "14:29",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.424645,
+      "lon": 13.463109
+    },
+    {
+      "station_id": "de:11000:900082202",
+      "station_name": "U Johannisthaler Chaussee (Berlin)",
+      "arrival": "14:31",
+      "departure": "14:31",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.429253,
+      "lon": 13.453851
+    },
+    {
+      "station_id": "de:11000:900080402",
+      "station_name": "U Britz-S\u00fcd (Berlin)",
+      "arrival": "14:33",
+      "departure": "14:33",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.437076,
+      "lon": 13.447668
+    },
+    {
+      "station_id": "de:11000:900080401",
+      "station_name": "U Parchimer Allee (Berlin)",
+      "arrival": "14:34",
+      "departure": "14:34",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.445299,
+      "lon": 13.449967
+    },
+    {
+      "station_id": "de:11000:900080201",
+      "station_name": "U Blaschkoallee (Berlin)",
+      "arrival": "14:35",
+      "departure": "14:35",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.452743,
+      "lon": 13.448976
+    },
+    {
+      "station_id": "de:11000:900080202",
+      "station_name": "U Grenzallee (Berlin)",
+      "arrival": "14:37",
+      "departure": "14:37",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.463516,
+      "lon": 13.444828
+    },
+    {
+      "station_id": "de:11000:900078201",
+      "station_name": "S+U Neuk\u00f6lln (Berlin)",
+      "arrival": "14:39",
+      "departure": "14:39",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.469282,
+      "lon": 13.443692
+    },
+    {
+      "station_id": "de:11000:900078103",
+      "station_name": "U Karl-Marx-Str. (Berlin)",
+      "arrival": "14:40",
+      "departure": "14:40",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.476429,
+      "lon": 13.439805
+    },
+    {
+      "station_id": "de:11000:900078102",
+      "station_name": "U Rathaus Neuk\u00f6lln (Berlin)",
+      "arrival": "14:41",
+      "departure": "14:41",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.481146,
+      "lon": 13.434807
+    },
+    {
+      "station_id": "de:11000:900078101",
+      "station_name": "U Hermannplatz (Berlin)",
+      "arrival": "14:43",
+      "departure": "14:44",
+      "line": "U7",
+      "type": "transit",
+      "lat": 52.486957,
+      "lon": 13.42472
+    },
+    {
+      "station_id": "de:11000:900016201",
+      "station_name": "U Sch\u00f6nleinstr. (Berlin)",
+      "arrival": "14:49",
+      "departure": "14:49",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.493341,
+      "lon": 13.421912
+    },
+    {
+      "station_id": "de:11000:900013102",
+      "station_name": "U Kottbusser Tor (Berlin)",
+      "arrival": "14:51",
+      "departure": "14:51",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.499047,
+      "lon": 13.417748
+    },
+    {
+      "station_id": "de:11000:900013101",
+      "station_name": "U Moritzplatz (Berlin)",
+      "arrival": "14:53",
+      "departure": "14:53",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.503739,
+      "lon": 13.410947
+    },
+    {
+      "station_id": "de:11000:900100008",
+      "station_name": "U Heinrich-Heine-Str. (Berlin)",
+      "arrival": "14:55",
+      "departure": "14:55",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.510558,
+      "lon": 13.416124
+    },
+    {
+      "station_id": "de:11000:900100004",
+      "station_name": "S+U Jannowitzbr\u00fccke (Berlin)",
+      "arrival": "14:56",
+      "departure": "14:56",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.5155,
+      "lon": 13.418027
+    },
+    {
+      "station_id": "de:11000:900100003",
+      "station_name": "S+U Alexanderplatz Bhf (Berlin)",
+      "arrival": "14:58",
+      "departure": "14:58",
+      "line": "U8",
+      "type": "transit",
+      "lat": 52.521512,
+      "lon": 13.411267
+    },
+    {
+      "station_id": "de:11000:900100016",
+      "station_name": "U Rosa-Luxemburg-Platz (Berlin)",
+      "arrival": "15:01",
+      "departure": "15:01",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.528191,
+      "lon": 13.410405
+    },
+    {
+      "station_id": "de:11000:900110006",
+      "station_name": "U Eberswalder Str. (Berlin)",
+      "arrival": "15:05",
+      "departure": "15:05",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.541085,
+      "lon": 13.41216
+    },
+    {
+      "station_id": "de:11000:900110001",
+      "station_name": "S+U Sch\u00f6nhauser Allee (Berlin)",
+      "arrival": "15:07",
+      "departure": "15:07",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.549336,
+      "lon": 13.415138
+    },
+    {
+      "station_id": "de:11000:900130011",
+      "station_name": "U Vinetastr. (Berlin)",
+      "arrival": "15:09",
+      "departure": "15:09",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.559517,
+      "lon": 13.41377
+    },
+    {
+      "station_id": "de:11000:900130002",
+      "station_name": "S+U Pankow (Berlin)",
+      "arrival": "15:11",
+      "departure": "15:11",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.567281,
+      "lon": 13.412279
+    },
+    {
+      "station_id": "de:11000:900130011",
+      "station_name": "U Vinetastr. (Berlin)",
+      "arrival": "15:12",
+      "departure": "15:12",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.559517,
+      "lon": 13.41377
+    },
+    {
+      "station_id": "de:11000:900110001",
+      "station_name": "S+U Sch\u00f6nhauser Allee (Berlin)",
+      "arrival": "15:14",
+      "departure": "15:14",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.549336,
+      "lon": 13.415138
+    },
+    {
+      "station_id": "de:11000:900110006",
+      "station_name": "U Eberswalder Str. (Berlin)",
+      "arrival": "15:16",
+      "departure": "15:16",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.541085,
+      "lon": 13.41216
+    },
+    {
+      "station_id": "de:11000:900110005",
+      "station_name": "U Senefelderplatz (Berlin)",
+      "arrival": "15:18",
+      "departure": "15:18",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.532622,
+      "lon": 13.412625
+    },
+    {
+      "station_id": "de:11000:900100003",
+      "station_name": "S+U Alexanderplatz Bhf (Berlin)",
+      "arrival": "15:22",
+      "departure": "15:23",
+      "line": "U2",
+      "type": "transit",
+      "lat": 52.521512,
+      "lon": 13.411267
+    },
+    {
+      "station_id": "de:11000:900100017",
+      "station_name": "U Schillingstr. (Berlin)",
+      "arrival": "15:25",
+      "departure": "15:25",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.520316,
+      "lon": 13.421895
+    },
+    {
+      "station_id": "de:11000:900120006",
+      "station_name": "U Strausberger Platz (Berlin)",
+      "arrival": "15:26",
+      "departure": "15:26",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.518025,
+      "lon": 13.432208
+    },
+    {
+      "station_id": "de:11000:900120025",
+      "station_name": "U Weberwiese (Berlin)",
+      "arrival": "15:28",
+      "departure": "15:28",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.516848,
+      "lon": 13.443278
+    },
+    {
+      "station_id": "de:11000:900120008",
+      "station_name": "U Frankfurter Tor (Berlin)",
+      "arrival": "15:29",
+      "departure": "15:29",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.515772,
+      "lon": 13.454085
+    },
+    {
+      "station_id": "de:11000:900120009",
+      "station_name": "U Samariterstr. (Berlin)",
+      "arrival": "15:30",
+      "departure": "15:30",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.514662,
+      "lon": 13.465347
+    },
+    {
+      "station_id": "de:11000:900120001",
+      "station_name": "S+U Frankfurter Allee (Berlin)",
+      "arrival": "15:32",
+      "departure": "15:32",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.51358,
+      "lon": 13.475848
+    },
+    {
+      "station_id": "de:11000:900160005",
+      "station_name": "U Magdalenenstr. (Berlin)",
+      "arrival": "15:33",
+      "departure": "15:33",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.512457,
+      "lon": 13.487492
+    },
+    {
+      "station_id": "de:11000:900160004",
+      "station_name": "S+U Lichtenberg Bhf (Berlin)",
+      "arrival": "15:35",
+      "departure": "15:35",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.510672,
+      "lon": 13.498359
+    },
+    {
+      "station_id": "de:11000:900161512",
+      "station_name": "U Friedrichsfelde (Berlin)",
+      "arrival": "15:37",
+      "departure": "15:37",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.505464,
+      "lon": 13.513544
+    },
+    {
+      "station_id": "de:11000:900161002",
+      "station_name": "U Tierpark (Berlin)",
+      "arrival": "15:39",
+      "departure": "15:39",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.497236,
+      "lon": 13.523626
+    },
+    {
+      "station_id": "de:11000:900171005",
+      "station_name": "U Biesdorf-S\u00fcd (Berlin)",
+      "arrival": "15:41",
+      "departure": "15:41",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.499517,
+      "lon": 13.547326
+    },
+    {
+      "station_id": "de:11000:900171006",
+      "station_name": "U Elsterwerdaer Platz (Berlin)",
+      "arrival": "15:43",
+      "departure": "15:43",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.505133,
+      "lon": 13.560646
+    },
+    {
+      "station_id": "de:11000:900175001",
+      "station_name": "S+U Wuhletal (Berlin)",
+      "arrival": "15:45",
+      "departure": "15:45",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.512724,
+      "lon": 13.574536
+    },
+    {
+      "station_id": "de:11000:900175004",
+      "station_name": "U Kaulsdorf-Nord (Berlin)",
+      "arrival": "15:48",
+      "departure": "15:48",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.521436,
+      "lon": 13.588763
+    },
+    {
+      "station_id": "de:11000:900175005",
+      "station_name": "U Kienberg (G\u00e4rten der Welt) (Berlin)",
+      "arrival": "15:49",
+      "departure": "15:49",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.52849,
+      "lon": 13.59055
+    },
+    {
+      "station_id": "de:11000:900175006",
+      "station_name": "U Cottbusser Platz (Berlin)",
+      "arrival": "15:51",
+      "departure": "15:51",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.533963,
+      "lon": 13.596894
+    },
+    {
+      "station_id": "de:11000:900175007",
+      "station_name": "U Hellersdorf (Berlin)",
+      "arrival": "15:52",
+      "departure": "15:52",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.536328,
+      "lon": 13.605323
+    },
+    {
+      "station_id": "de:11000:900175015",
+      "station_name": "U Louis-Lewin-Str. (Berlin)",
+      "arrival": "15:54",
+      "departure": "15:54",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.539135,
+      "lon": 13.619707
+    },
+    {
+      "station_id": "de:11000:900175010",
+      "station_name": "U H\u00f6now (Berlin)",
+      "arrival": "15:56",
+      "departure": "15:56",
+      "line": "U5",
+      "type": "transit",
+      "lat": 52.538105,
+      "lon": 13.634541
+    }
+  ],
+  "walk_segments": [
+    {
+      "from_station": "U Uhlandstr. (Berlin)",
+      "to_station": "U Kurf\u00fcrstendamm (Berlin)",
+      "walk_seconds": 265,
+      "distance_m": 368.92337637341876
+    }
+  ],
+  "graph_stats": {
+    "teg_nodes": 75626,
+    "teg_edges": 284837,
+    "static_stations": 170,
+    "static_edges": 441
+  },
+  "solver_params": {
+    "start_station": "de:11000:900096410",
+    "start_time": 28800,
+    "lookahead": 3,
+    "local_search_iterations": 500,
+    "movement_mode": "walk",
+    "running_speed_kmh": null,
+    "max_walk_distance_m": 1000
+  }
+}

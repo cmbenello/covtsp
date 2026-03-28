@@ -29,6 +29,26 @@ class TimeWindow:
 
 
 @dataclass
+class HardStationOverride:
+    """Manual override for a hard station."""
+
+    station_id: str
+    force_hard: bool = False
+    preferred_window: Optional[str] = None  # "morning", "evening", or None
+    approach_via: Optional[str] = None  # junction station ID
+
+
+@dataclass
+class HardStationConfig:
+    """Configuration for hard station detection and scheduling."""
+
+    auto_detect: bool = True
+    hardness_threshold: Optional[float] = None  # None = auto (90th percentile)
+    overrides: list[HardStationOverride] = field(default_factory=list)
+    exclude: list[str] = field(default_factory=list)
+
+
+@dataclass
 class CityConfig:
     """Configuration for a single city's transit optimization."""
 
@@ -46,6 +66,7 @@ class CityConfig:
     use_google_walking: bool = False
     running_speed_kmh: float = 10.0
     movement_mode: str = "walk"  # "walk" or "run"
+    hard_stations: HardStationConfig = field(default_factory=HardStationConfig)
 
     @property
     def data_dir(self) -> Path:
@@ -90,6 +111,25 @@ def load_config(config_path: str | Path) -> CityConfig:
         tw = raw.pop("time_window")
         time_window = TimeWindow(start=tw.get("start", "05:00"), end=tw.get("end", "01:00"))
 
+    # Parse hard_stations config
+    hard_stations = HardStationConfig()
+    if "hard_stations" in raw:
+        hs = raw.pop("hard_stations")
+        overrides = []
+        for ov in hs.get("overrides", []):
+            overrides.append(HardStationOverride(
+                station_id=ov["station_id"],
+                force_hard=ov.get("force_hard", False),
+                preferred_window=ov.get("preferred_window"),
+                approach_via=ov.get("approach_via"),
+            ))
+        hard_stations = HardStationConfig(
+            auto_detect=hs.get("auto_detect", True),
+            hardness_threshold=hs.get("hardness_threshold"),
+            overrides=overrides,
+            exclude=hs.get("exclude", []),
+        )
+
     return CityConfig(
         city_name=raw["city_name"],
         gtfs_url=raw["gtfs_url"],
@@ -105,4 +145,5 @@ def load_config(config_path: str | Path) -> CityConfig:
         use_google_walking=raw.get("use_google_walking", False),
         running_speed_kmh=raw.get("running_speed_kmh", 10.0),
         movement_mode=raw.get("movement_mode", "walk"),
+        hard_stations=hard_stations,
     )

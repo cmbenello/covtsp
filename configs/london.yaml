@@ -16,3 +16,16 @@ merge_stations:
   - ["940GZZLUPAH", "940GZZLUPAC"]   # Paddington H&C → Paddington main
   - ["9400ZZLUSBC2", "940GZZLUSBC"]   # Shepherd's Bush Central orphan → parent
 use_google_walking: true
+hard_stations:
+  auto_detect: true
+  hardness_threshold: null  # null = auto (90th percentile)
+  overrides:
+    - station_id: "940GZZLUKOY"   # Kensington Olympia — 9 trains/day
+      force_hard: true
+      preferred_window: "morning"
+    - station_id: "940GZZLUHR4"   # Heathrow Terminal 4 — separate loop
+      force_hard: true
+      approach_via: "940GZZLUHNX"  # Hatton Cross
+    - station_id: "940GZZLUMHL"   # Mill Hill East — early deadline stub
+      force_hard: true
+  exclude: []

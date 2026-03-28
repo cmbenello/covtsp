@@ -566,6 +566,283 @@ class GreedySolver:
 
         return self.graph.reconstruct_route(full_path, None)
 
+    def solve_skeleton(
+        self, start_station: str, required_stations: set[str],
+        start_time: int = 0,
+        skeleton: list | None = None,
+        urgency_weight: float = 0.5,
+        hard_station_ids: set[str] | None = None,
+    ) -> Route:
+        """Hard-station-aware solver combining prefix, injections, and boosted urgency.
+
+        Uses auto-detected hard station data to:
+        1. Prefix: visit ultra-sparse stations first (< 20 TEG nodes, e.g. K.O.)
+        2. Inject: detour to junction-reachable stations when passing nearby
+        3. Urgency boost: hard stations get 2x urgency weight
+
+        The skeleton provides the schedule. Each waypoint becomes either a
+        prefix (if window_start is near start_time) or an injection (if it
+        has an approach_station). Everything else gets urgency-boosted.
+
+        Args:
+            start_station: Station ID to start from.
+            required_stations: Set of station IDs to visit.
+            start_time: Earliest departure time.
+            skeleton: List of SkeletonWaypoint (from SkeletonScheduler).
+            urgency_weight: Base weight for deadline urgency scoring.
+            hard_station_ids: All detected hard station IDs (get boosted urgency).
+        """
+        from src.solver.hard_stations import SkeletonWaypoint
+
+        start_nodes = self.graph.get_start_nodes(start_station, start_time)
+        if not start_nodes:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        current_node = start_nodes[0]
+        unvisited = set(required_stations)
+        unvisited.discard(start_station)
+        full_path: list[TENode] = [current_node]
+
+        hard_ids = hard_station_ids or set()
+
+        # Classify skeleton waypoints into prefix vs injection
+        prefix_stations: list[str] = []
+        # injection: (target, [approach], max_time, earliest, latest)
+        inject_map: dict[str, list[tuple[str, int, int, int]]] = {}
+
+        if skeleton:
+            for wp in sorted(skeleton, key=lambda w: w.target_time):
+                window_duration = wp.window_end - wp.window_start
+                # Ultra-narrow windows (< 4h) near start → prefix
+                if window_duration < 4 * 3600 and wp.window_start < start_time + 3600:
+                    prefix_stations.append(wp.station_id)
+                elif wp.approach_station:
+                    # Has a junction approach → injection.
+                    # Use full service window (0, 999999) — fire anytime the
+                    # solver passes the approach station, not just during the
+                    # skeleton's scheduled window. The skeleton window is for
+                    # scheduling; injections should be opportunistic.
+                    if wp.approach_station not in inject_map:
+                        inject_map[wp.approach_station] = []
+                    inject_map[wp.approach_station].append(
+                        (wp.station_id, 900, 0, 999999)
+                    )
+
+        # Visit prefix stations first (forced order)
+        for prefix_sid in prefix_stations:
+            if prefix_sid not in unvisited:
+                continue
+            arr_node, travel_time, path = self.graph.earliest_arrival(
+                current_node, prefix_sid
+            )
+            if arr_node is None:
+                continue
+            full_path.extend(path[1:])
+            current_node = arr_node
+            unvisited.discard(prefix_sid)
+            for p_node in path[1:]:
+                if p_node[0] in unvisited:
+                    unvisited.discard(p_node[0])
+
+        # Pre-compute deadlines for urgency scoring
+        deadlines: dict[str, int] = {}
+        for sid in required_stations:
+            nodes = self.graph._station_nodes.get(sid, [])
+            if nodes:
+                deadlines[sid] = nodes[-1][1]
+
+        injected: set[str] = set()
+
+        while unvisited:
+            current_sid = current_node[0]
+            current_time = current_node[1]
+
+            # Check injections: when at approach station, detour to target
+            if current_sid in inject_map:
+                for target, max_time, earliest, latest in inject_map[current_sid]:
+                    if target in unvisited and target not in injected:
+                        if not (earliest <= current_time <= latest):
+                            continue
+                        arr_node, travel_time, path = self.graph.earliest_arrival(
+                            current_node, target
+                        )
+                        if arr_node is not None and travel_time <= max_time:
+                            full_path.extend(path[1:])
+                            current_node = arr_node
+                            unvisited.discard(target)
+                            injected.add(target)
+                            for p_node in path[1:]:
+                                if p_node[0] in unvisited:
+                                    unvisited.discard(p_node[0])
+                            break
+                else:
+                    pass
+
+                if current_node[0] != current_sid:
+                    continue  # injection happened, restart loop
+
+            # k=5 NN with urgency scoring (boosted for hard stations)
+            candidates = self.graph.earliest_arrival_k_nearest(
+                current_node, unvisited, k=5
+            )
+            if not candidates:
+                break
+
+            best_score = float("inf")
+            sid, node, travel_time, path = candidates[0]
+            for c_sid, c_node, c_time, c_path in candidates:
+                score = float(c_node[1])
+                if urgency_weight > 0 and c_sid in deadlines:
+                    time_left = deadlines[c_sid] - current_time
+                    if time_left < 7200:  # < 2h left
+                        score -= urgency_weight * (7200 - time_left)
+
+                if score < best_score:
+                    best_score = score
+                    sid, node, travel_time, path = c_sid, c_node, c_time, c_path
+
+            full_path.extend(path[1:])
+            current_node = node
+            unvisited.discard(sid)
+            for p_node in path[1:]:
+                if p_node[0] in unvisited:
+                    unvisited.discard(p_node[0])
+
+        return self.graph.reconstruct_route(full_path, None)
+
+    def solve_with_pairings(
+        self, start_station: str, required_stations: set[str],
+        start_time: int = 0,
+        pairings: list | None = None,
+        urgency_weight: float = 0.5,
+    ) -> Route:
+        """Simple hard-station solver: pair each hard station with its junction.
+
+        When the solver arrives at a junction, it grabs the paired hard station
+        as a side-trip. Ultra-sparse stations (is_prefix=True) are visited first.
+        Everything else is k=5 NN with urgency.
+
+        This is the simplest effective hard-station strategy:
+        - K.O. → prefix (visit first, it only has 9 trains/day)
+        - T4 → paired with Hatton Cross (grab when passing)
+        - Mill Hill East → paired with Finchley Central (grab when passing)
+
+        Args:
+            start_station: Station ID to start from.
+            required_stations: Set of station IDs to visit.
+            start_time: Earliest departure time.
+            pairings: List of HardStationPairing from build_pairings().
+            urgency_weight: Weight for deadline urgency scoring.
+        """
+        from src.solver.hard_stations import HardStationPairing
+
+        start_nodes = self.graph.get_start_nodes(start_station, start_time)
+        if not start_nodes:
+            return Route(visits=[], total_time_seconds=0, stations_visited=0)
+
+        current_node = start_nodes[0]
+        unvisited = set(required_stations)
+        unvisited.discard(start_station)
+        full_path: list[TENode] = [current_node]
+
+        # Classify pairings: prefix vs junction grab
+        prefix_stations: list[str] = []
+        # junction_id → [(hard_station_id, max_grab_time)]
+        grab_map: dict[str, list[tuple[str, int]]] = {}
+
+        if pairings:
+            for p in pairings:
+                if p.is_prefix:
+                    prefix_stations.append(p.hard_station_id)
+                else:
+                    if p.junction_id not in grab_map:
+                        grab_map[p.junction_id] = []
+                    # Allow grab if round-trip < 15 min (900s), else use bigger budget
+                    max_time = max(900, int(p.round_trip_cost_s * 1.5))
+                    grab_map[p.junction_id].append((p.hard_station_id, max_time))
+
+        # Phase 1: Visit prefix stations first (e.g., K.O. morning shuttle)
+        for prefix_sid in prefix_stations:
+            if prefix_sid not in unvisited:
+                continue
+            arr_node, travel_time, path = self.graph.earliest_arrival(
+                current_node, prefix_sid
+            )
+            if arr_node is None:
+                continue
+            full_path.extend(path[1:])
+            current_node = arr_node
+            unvisited.discard(prefix_sid)
+            for p_node in path[1:]:
+                if p_node[0] in unvisited:
+                    unvisited.discard(p_node[0])
+
+        # Pre-compute deadlines for urgency scoring
+        deadlines: dict[str, int] = {}
+        for sid in required_stations:
+            nodes = self.graph._station_nodes.get(sid, [])
+            if nodes:
+                deadlines[sid] = nodes[-1][1]
+
+        grabbed: set[str] = set()
+
+        # Phase 2: k=5 NN with junction grabs
+        while unvisited:
+            current_sid = current_node[0]
+            current_time = current_node[1]
+
+            # At a junction? Grab its paired hard stations
+            if current_sid in grab_map:
+                for target_sid, max_time in grab_map[current_sid]:
+                    if target_sid not in unvisited or target_sid in grabbed:
+                        continue
+                    arr_node, travel_time, path = self.graph.earliest_arrival(
+                        current_node, target_sid
+                    )
+                    if arr_node is not None and travel_time <= max_time:
+                        full_path.extend(path[1:])
+                        current_node = arr_node
+                        unvisited.discard(target_sid)
+                        grabbed.add(target_sid)
+                        for p_node in path[1:]:
+                            if p_node[0] in unvisited:
+                                unvisited.discard(p_node[0])
+                        break
+                else:
+                    pass
+
+                if current_node[0] != current_sid:
+                    continue  # grab happened, restart loop
+
+            # k=5 NN with urgency
+            candidates = self.graph.earliest_arrival_k_nearest(
+                current_node, unvisited, k=5
+            )
+            if not candidates:
+                break
+
+            best_score = float("inf")
+            sid, node, travel_time, path = candidates[0]
+            for c_sid, c_node, c_time, c_path in candidates:
+                score = float(c_node[1])
+                if urgency_weight > 0 and c_sid in deadlines:
+                    time_left = deadlines[c_sid] - current_time
+                    if time_left < 7200:
+                        score -= urgency_weight * (7200 - time_left)
+
+                if score < best_score:
+                    best_score = score
+                    sid, node, travel_time, path = c_sid, c_node, c_time, c_path
+
+            full_path.extend(path[1:])
+            current_node = node
+            unvisited.discard(sid)
+            for p_node in path[1:]:
+                if p_node[0] in unvisited:
+                    unvisited.discard(p_node[0])
+
+        return self.graph.reconstruct_route(full_path, None)
+
     def solve_hybrid(
         self, start_station: str, required_stations: set[str],
         start_time: int = 0, k_phase1: int = 3,

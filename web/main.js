@@ -1,6 +1,7 @@
 // ── Line color mapping ───────────────────────────────────────────
 
 const LINE_COLORS = {
+    // London Underground
     'central': '#dc2626',
     'district': '#16a34a',
     'circle': '#eab308',
@@ -16,6 +17,27 @@ const LINE_COLORS = {
     'overground': '#ea580c',
     'dlr': '#0891b2',
     'waterloo & city': '#76c8b0',
+    // NYC Subway
+    '1': '#ee352e', '2': '#ee352e', '3': '#ee352e',
+    '4': '#00933c', '5': '#00933c', '6': '#00933c',
+    '7': '#b933ad',
+    'a': '#0039a6', 'c': '#0039a6', 'e': '#0039a6',
+    'b': '#ff6319', 'd': '#ff6319', 'f': '#ff6319', 'm': '#ff6319',
+    'g': '#6cbe45',
+    'j': '#996633', 'z': '#996633',
+    'l': '#a7a9ac',
+    'n': '#fccc0a', 'q': '#fccc0a', 'r': '#fccc0a', 'w': '#fccc0a',
+    's': '#808183',
+    'sir': '#0039a6',
+    // Berlin U-Bahn & S-Bahn
+    'u1': '#55a822', 'u2': '#ff3300', 'u3': '#009999',
+    'u4': '#ffcc00', 'u5': '#7e4e1e', 'u6': '#8c6dab',
+    'u7': '#009fd7', 'u8': '#0067ac', 'u9': '#f6a500',
+    's1': '#de4da4', 's2': '#005f27', 's3': '#0a4c8a',
+    's5': '#ff5900', 's7': '#6f4e9c', 's8': '#55a822',
+    's9': '#8b1c62', 's25': '#005f27', 's26': '#005f27',
+    's41': '#a6422b', 's42': '#c18e41', 's45': '#c8985e',
+    's46': '#c8985e', 's47': '#c8985e',
 };
 
 const FALLBACK_COLORS = [
@@ -67,8 +89,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Auto-load if ?sample in URL
-    if (window.location.search.includes('sample')) {
+    // Auto-load by URL params: ?sample, ?city=london, ?city=nyc, ?city=berlin
+    const cityFiles = {
+        'london': 'sample.json',
+        'nyc': 'nyc.json',
+        'berlin': 'berlin.json',
+    };
+    const params = new URLSearchParams(window.location.search);
+    const cityParam = params.get('city');
+    if (cityParam && cityFiles[cityParam]) {
+        fetch(cityFiles[cityParam])
+            .then(r => r.json())
+            .then(data => renderResults(data))
+            .catch(() => {});
+    } else if (window.location.search.includes('sample')) {
         fetch('sample.json')
             .then(r => r.json())
             .then(data => renderResults(data))

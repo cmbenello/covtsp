@@ -11,6 +11,7 @@ from src.graph.network import TransitNetwork
 from src.graph.time_expanded import TimeExpandedGraph
 from src.gtfs.parser import GTFSParser
 from src.solver.greedy import GreedySolver
+from src.solver.hard_stations import HardStationDetector, SkeletonScheduler, VisitWindowOptimizer, build_pairings
 from src.solver.local_search import LocalSearchOptimizer, random_order_baseline
 from src.solver.lp_bound import compute_lp_bound, compute_lp_bound_time_expanded, compute_optimality_gap
 from src.solver.segment_solver import SegmentSolver
@@ -373,39 +374,207 @@ def backtest(
             f"best: {best_route.stations_visited}/{n_required} {_fmt(best_route)}"
         )
 
-        # Identify hard stations (missed by >50% of runs)
+        # Identify hard stations — auto-detect from TEG properties
         n_runs = max(completed, 1)
-        hard_stations = sorted(
-            [(sid, miss_count[sid]) for sid in miss_count if miss_count[sid] > n_runs * 0.5],
-            key=lambda x: -x[1],
+
+        # Get config overrides if available
+        force_hard_ids: set[str] = set()
+        exclude_ids: set[str] = set()
+        approach_overrides: dict[str, str] = {}
+        window_overrides: dict[str, str] = {}
+        if hasattr(config, "hard_stations"):
+            hs_config = config.hard_stations
+            exclude_ids = set(hs_config.exclude)
+            for ov in hs_config.overrides:
+                if ov.force_hard:
+                    force_hard_ids.add(ov.station_id)
+                if ov.approach_via:
+                    approach_overrides[ov.station_id] = ov.approach_via
+                if ov.preferred_window:
+                    window_overrides[ov.station_id] = ov.preferred_window
+
+        detector = HardStationDetector(teg)
+        hard_profiles = detector.detect(
+            parsed.required_station_ids,
+            hardness_threshold=getattr(config.hard_stations, "hardness_threshold", None)
+                if hasattr(config, "hard_stations") else None,
+            force_hard=force_hard_ids,
+            exclude=exclude_ids,
         )
 
-        # Build forced-visit windows for hard stations
-        # Window = last 2 hours of service — triggers when solver is within range
-        forced_visits = []
-        if hard_stations:
-            console.print(f"\n[dim]Hard stations (missed >50% of Phase 1 runs):[/dim]")
-            for sid, cnt in hard_stations:
-                name = parsed.stations[sid].name if sid in parsed.stations else sid
-                nodes = teg._station_nodes.get(sid, [])
-                last_t = nodes[-1][1] if nodes else 0
+        # Apply approach overrides from config
+        for hp in hard_profiles:
+            if hp.station_id in approach_overrides:
+                hp.junction_id = approach_overrides[hp.station_id]
+
+        # Compute optimal visit windows
+        window_opt = VisitWindowOptimizer(teg)
+        for hp in hard_profiles:
+            hp.optimal_windows = window_opt.compute_optimal_windows(hp)
+            # Apply preferred_window override
+            if hp.station_id in window_overrides:
+                pref = window_overrides[hp.station_id]
+                if pref == "morning" and len(hp.optimal_windows) > 1:
+                    # Sort so morning windows come first
+                    hp.optimal_windows.sort(key=lambda w: w[0])
+                elif pref == "evening" and len(hp.optimal_windows) > 1:
+                    hp.optimal_windows.sort(key=lambda w: -w[0])
+
+        # Build skeleton schedule
+        skel_scheduler = SkeletonScheduler(teg)
+
+        if hard_profiles:
+            console.print(f"\n[dim]Auto-detected {len(hard_profiles)} hard stations:[/dim]")
+            for hp in hard_profiles:
+                miss_pct = 100 * miss_count.get(hp.station_id, 0) // max(n_runs, 1)
+                nodes = teg._station_nodes.get(hp.station_id, [])
                 first_t = nodes[0][1] if nodes else 0
-                # Force window: [last_service - 2h, last_service]
-                window_start = max(first_t, last_t - 7200)
-                forced_visits.append((sid, window_start, last_t))
+                last_t = nodes[-1][1] if nodes else 0
+                n_windows = len(hp.service_windows)
                 console.print(
-                    f"  {name}: missed {cnt}/{n_runs} "
-                    f"({100*cnt//n_runs}%), service "
-                    f"{first_t//3600:02d}:{(first_t%3600)//60:02d}–"
-                    f"{last_t//3600:02d}:{(last_t%3600)//60:02d}, "
-                    f"force window "
-                    f"{window_start//3600:02d}:{(window_start%3600)//60:02d}–"
+                    f"  {hp.station_name}: {hp.teg_node_count} nodes, "
+                    f"stub={hp.is_stub}, depth={hp.branch_depth}, "
+                    f"score={hp.hardness_score:.2f}, "
+                    f"missed={miss_pct}%, "
+                    f"{n_windows} window(s), "
+                    f"service {first_t//3600:02d}:{(first_t%3600)//60:02d}–"
                     f"{last_t//3600:02d}:{(last_t%3600)//60:02d}"
                 )
+                if hp.optimal_windows:
+                    best_w = hp.optimal_windows[0]
+                    console.print(
+                        f"    → best window: "
+                        f"{best_w[0]//3600:02d}:{(best_w[0]%3600)//60:02d}–"
+                        f"{best_w[1]//3600:02d}:{(best_w[1]%3600)//60:02d} "
+                        f"(~{best_w[2]:.0f}s round-trip)"
+                    )
 
-        # Phase 2 removed — k=3 lookahead consistently misses branch-end stations
-        # regardless of weight, and doesn't improve on Phase 1's coverage results.
-        # Compute budget is better spent on randomized search in Phase 4.
+        # Build forced-visit windows (legacy, for Phase 3 fallback)
+        forced_visits = []
+        for hp in hard_profiles:
+            nodes = teg._station_nodes.get(hp.station_id, [])
+            if nodes:
+                last_t = nodes[-1][1]
+                first_t = nodes[0][1]
+                window_start = max(first_t, last_t - 7200)
+                forced_visits.append((hp.station_id, window_start, last_t))
+
+        # === Phase 1.5: Skeleton-guided solver from top starts ===
+        if hard_profiles and top_starts:
+            console.print(
+                f"\n[dim]Phase 1.5: Skeleton-guided solver from top "
+                f"{min(len(top_starts), 10)} starts[/dim]"
+            )
+            p15_t0 = time_mod.time()
+            for rank, (_, s_station, s_time) in enumerate(top_starts[:10]):
+                skeleton = skel_scheduler.build_skeleton(hard_profiles, start_time=s_time)
+                try:
+                    route = solver.solve_skeleton(
+                        s_station, parsed.required_station_ids, s_time,
+                        skeleton=skeleton,
+                        urgency_weight=0.3,
+                    )
+                except Exception:
+                    continue
+
+                if route.total_time_seconds <= 0:
+                    continue
+
+                _record_top(route, s_station, s_time)
+                if _route_better(route, best_route):
+                    best_route = route
+                    best_start_station = s_station
+                    best_start_time_val = s_time
+                    s_name = parsed.stations.get(s_station)
+                    s_name = s_name.name if s_name else s_station
+                    console.print(
+                        f"  [green]Skeleton improved: {route.stations_visited}/{n_required} "
+                        f"{_fmt(route)} from {s_name} @ "
+                        f"{s_time//3600:02d}:{(s_time%3600)//60:02d}[/green]"
+                    )
+
+            p15_elapsed = time_mod.time() - p15_t0
+            console.print(
+                f"  Phase 1.5 done in {p15_elapsed:.0f}s — "
+                f"best: {best_route.stations_visited}/{n_required} {_fmt(best_route)}"
+            )
+
+            # Also try skeleton from ALL stations at best start times
+            best_stime = top_starts[0][2] if top_starts else start_time
+            console.print(f"\n[dim]Phase 1.5b: Skeleton sweep from all stations[/dim]")
+            for gs in all_stations:
+                for t in [best_stime, best_stime - 1800, best_stime + 1800]:
+                    if t < 0:
+                        continue
+                    start_nodes = teg.get_start_nodes(gs, t)
+                    if not start_nodes:
+                        continue
+                    skeleton = skel_scheduler.build_skeleton(hard_profiles, start_time=t)
+                    try:
+                        route = solver.solve_skeleton(
+                            gs, parsed.required_station_ids, t,
+                            skeleton=skeleton,
+                            urgency_weight=0.3,
+                        )
+                    except Exception:
+                        continue
+                    if route.total_time_seconds <= 0:
+                        continue
+                    _record_top(route, gs, t)
+                    if _route_better(route, best_route):
+                        best_route = route
+                        best_start_station = gs
+                        best_start_time_val = t
+                        s_name = parsed.stations.get(gs)
+                        s_name = s_name.name if s_name else gs
+                        console.print(
+                            f"  [green]Skeleton sweep: {route.stations_visited}/{n_required} "
+                            f"{_fmt(route)} from {s_name} @ "
+                            f"{t//3600:02d}:{(t%3600)//60:02d}[/green]"
+                        )
+
+        # === Phase 2: Pairings sweep ===
+        # Simple approach: pair each hard station with its junction, grab when passing.
+        hard_pairings = build_pairings(teg, hard_profiles)
+        if hard_pairings:
+            console.print(f"\n[dim]Phase 2: Pairings solver — {len(hard_pairings)} pairings:[/dim]")
+            for hp in hard_pairings:
+                tag = " [PREFIX]" if hp.is_prefix else ""
+                console.print(
+                    f"  {hp.hard_station_name} → {hp.junction_name} "
+                    f"({hp.round_trip_cost_s:.0f}s){tag}"
+                )
+
+            for gs in all_stations:
+                for t in sweep_start_times:
+                    start_nodes = teg.get_start_nodes(gs, t)
+                    if not start_nodes:
+                        continue
+                    try:
+                        route = solver.solve_with_pairings(
+                            gs, parsed.required_station_ids, t,
+                            pairings=hard_pairings, urgency_weight=0.5,
+                        )
+                    except Exception:
+                        continue
+                    if route.total_time_seconds <= 0:
+                        continue
+                    _record_top(route, gs, t)
+                    if _route_better(route, best_route):
+                        best_route = route
+                        best_start_station = gs
+                        best_start_time_val = t
+                        s_name = parsed.stations.get(gs)
+                        s_name = s_name.name if s_name else gs
+                        console.print(
+                            f"  [green]Pairings: {route.stations_visited}/{n_required} "
+                            f"{_fmt(route)} from {s_name} @ "
+                            f"{t//3600:02d}:{(t%3600)//60:02d}[/green]"
+                        )
+
+            console.print(
+                f"  Phase 2 best: {best_route.stations_visited}/{n_required} {_fmt(best_route)}"
+            )
 
         # === Phase 3: k=1 + forced visits fallback ===
         # If k=3+forced still can't cover all stations, try k=1 which is
