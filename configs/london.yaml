@@ -12,4 +12,7 @@ time_window:
   start: "05:30"
   end: "00:30"
 excluded_stations: []
+merge_stations:
+  - ["940GZZLUPAH", "940GZZLUPAC"]   # Paddington H&C → Paddington main
+  - ["9400ZZLUSBC2", "940GZZLUSBC"]   # Shepherd's Bush Central orphan → parent
 use_google_walking: true

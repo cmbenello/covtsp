@@ -99,6 +99,13 @@ class GTFSParser:
             if sid not in self.config.excluded_stations
         }
 
+        if self.config.station_count > 0 and len(required) != self.config.station_count:
+            import logging
+            logging.getLogger(__name__).warning(
+                f"Expected {self.config.station_count} stations, got {len(required)}. "
+                f"Check merge_stations and excluded_stations config."
+            )
+
         return ParsedGTFS(
             stations=stations,
             segments=segments,
@@ -182,6 +189,7 @@ class GTFSParser:
         # Auto-merge orphan stops by normalized name
         # Some GTFS feeds have stops without parent_station that duplicate existing stations
         stations, stop_to_station = self._merge_orphan_stations(stations, stop_to_station)
+        stations, stop_to_station = self._merge_station_pairs(stations, stop_to_station)
 
         # Store mapping for segment parsing
         self._stop_to_station = stop_to_station
@@ -283,6 +291,49 @@ class GTFSParser:
         if merged_count > 0:
             import logging
             logging.getLogger(__name__).info(f"Merged {merged_count} orphan stops by name match")
+
+        return stations, stop_to_station
+
+    def _merge_station_pairs(
+        self,
+        stations: dict[str, Station],
+        stop_to_station: dict[str, str],
+    ) -> tuple[dict[str, Station], dict[str, str]]:
+        """Merge explicitly configured station pairs.
+
+        Each pair in config.merge_stations is [source_id, target_id].
+        All child stops of source are moved to target, and source is deleted.
+        Handles both parent stations and orphan stops as source.
+        """
+        import logging
+        logger = logging.getLogger(__name__)
+
+        for pair in self.config.merge_stations:
+            source_id, target_id = pair[0], pair[1]
+
+            if target_id not in stations:
+                logger.warning(f"Merge target {target_id} not found in stations")
+                continue
+
+            if source_id not in stations:
+                # Source might be an orphan stop already mapped via stop_to_station
+                if source_id in stop_to_station:
+                    stop_to_station[source_id] = target_id
+                    continue
+                logger.warning(f"Merge source {source_id} not found in stations")
+                continue
+
+            source = stations[source_id]
+            target = stations[target_id]
+
+            for child in source.child_stop_ids:
+                if child not in target.child_stop_ids:
+                    target.child_stop_ids.append(child)
+                stop_to_station[child] = target_id
+
+            stop_to_station[source_id] = target_id
+            del stations[source_id]
+            logger.info(f"Merged station {source.name} ({source_id}) -> {target.name} ({target_id})")
 
         return stations, stop_to_station
 

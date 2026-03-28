@@ -265,10 +265,12 @@ def backtest(
 
     elif solver_type == "sweep":
         # ---------------------------------------------------------------
-        # Sweep: 3-phase fast nearest-neighbor from every station
-        # Phase 1: NN sweep (no forcing) — find best starts
-        # Phase 2: Identify hard stations, forced-NN sweep for 274/274
-        # Phase 3: Randomized search from best starts to improve time
+        # Sweep: 5-phase fast nearest-neighbor from every station
+        # Phase 1: NN sweep (k=1) — find best starts, detect hard stations
+        # Phase 2: k=3 lookahead sweep — better route quality
+        # Phase 3: k=3 + forced visits for hard stations — coverage + quality
+        # Phase 2: k=1 + forced visits fallback for any remaining gaps
+        # Phase 2: Randomized search from top-N starts to improve time
         # ---------------------------------------------------------------
         import time as time_mod
 
@@ -277,9 +279,49 @@ def backtest(
         all_stations = sorted(parsed.required_station_ids)
         solver = GreedySolver(teg, lookahead=1)
 
-        # === Phase 1: Fast NN sweep ===
+        def _route_better(new, old):
+            """True if new route is better than old (more stations, then less time)."""
+            if old is None:
+                return True
+            if new.stations_visited > old.stations_visited:
+                return True
+            if (new.stations_visited == old.stations_visited
+                    and new.total_time_seconds < old.total_time_seconds):
+                return True
+            return False
+
+        def _fmt(route):
+            return (f"{route.total_time_seconds // 3600}h"
+                    f"{(route.total_time_seconds % 3600) // 60:02d}m")
+
+        # Track top N starts for multi-start Phase 5
+        top_n = 10
+        top_starts: list[tuple[int, str, int]] = []  # (time_seconds, station, start_time)
+
+        def _record_top(route, station, stime):
+            """Record promising start points with full coverage only.
+
+            Only tracks routes that visit ALL required stations — these are
+            the only viable seeds for the randomized improvement phase.
+            """
+            nonlocal top_starts
+            if route.stations_visited == n_required:
+                entry = (route.total_time_seconds, station, stime)
+                top_starts.append(entry)
+                top_starts.sort()
+                # Keep unique starts (different station or time)
+                seen = set()
+                deduped = []
+                for e in top_starts:
+                    key = (e[1], e[2])
+                    if key not in seen:
+                        seen.add(key)
+                        deduped.append(e)
+                top_starts = deduped[:top_n]
+
+        # === Phase 1: Fast NN sweep (k=1) ===
         console.print(
-            f"\n[dim]Phase 1: NN sweep — {len(all_stations)} stations × "
+            f"\n[dim]Phase 1: NN sweep (k=1) — {len(all_stations)} stations × "
             f"{len(sweep_start_times)} times[/dim]"
         )
         sweep_t0 = time_mod.time()
@@ -290,9 +332,6 @@ def backtest(
         completed = 0
 
         for gs_idx, gs in enumerate(all_stations):
-            gs_name = parsed.stations[gs].name if gs in parsed.stations else gs
-            station_best = None
-
             for t in sweep_start_times:
                 start_nodes = teg.get_start_nodes(gs, t)
                 if not start_nodes:
@@ -308,28 +347,18 @@ def backtest(
                 if route.total_time_seconds <= 0:
                     continue
 
-                # Track misses for hard-station detection
                 visited = {v["station_id"] for v in route.visits}
                 for m_sid in parsed.required_station_ids - visited:
                     miss_count[m_sid] = miss_count.get(m_sid, 0) + 1
 
-                if station_best is None or (
-                    route.stations_visited > station_best.stations_visited
-                    or (route.stations_visited == station_best.stations_visited
-                        and route.total_time_seconds < station_best.total_time_seconds)
-                ):
-                    station_best = route
+                _record_top(route, gs, t)
 
-                if best_route is None or (
-                    route.stations_visited > best_route.stations_visited
-                    or (route.stations_visited == best_route.stations_visited
-                        and route.total_time_seconds < best_route.total_time_seconds)
-                ):
+                if _route_better(route, best_route):
                     best_route = route
                     best_start_station = gs
                     best_start_time_val = t
 
-            if station_best and (gs_idx + 1) % 50 == 0:
+            if (gs_idx + 1) % 50 == 0:
                 elapsed = time_mod.time() - sweep_t0
                 rate = completed / elapsed if elapsed > 0 else 0
                 console.print(
@@ -341,103 +370,134 @@ def backtest(
         p1_elapsed = time_mod.time() - sweep_t0
         console.print(
             f"  Phase 1 done in {p1_elapsed:.0f}s — "
-            f"best: {best_route.stations_visited}/{n_required} "
-            f"{best_route.total_time_seconds // 3600}h"
-            f"{(best_route.total_time_seconds % 3600) // 60:02d}m"
+            f"best: {best_route.stations_visited}/{n_required} {_fmt(best_route)}"
         )
 
-        # === Phase 2: Identify hard stations & forced sweep ===
-        if best_route.stations_visited < n_required:
-            # Find stations missed by >80% of runs (truly hard to visit)
-            n_runs = completed
-            hard_stations = [
-                (sid, miss_count[sid])
-                for sid in miss_count
-                if miss_count[sid] > n_runs * 0.8
-            ]
-            hard_stations.sort(key=lambda x: -x[1])
+        # Identify hard stations (missed by >50% of runs)
+        n_runs = max(completed, 1)
+        hard_stations = sorted(
+            [(sid, miss_count[sid]) for sid in miss_count if miss_count[sid] > n_runs * 0.5],
+            key=lambda x: -x[1],
+        )
 
-            if hard_stations:
-                console.print(f"\n[dim]Phase 2: Forcing {len(hard_stations)} hard stations[/dim]")
-                for sid, cnt in hard_stations:
-                    name = parsed.stations[sid].name if sid in parsed.stations else sid
-                    nodes = teg._station_nodes.get(sid, [])
-                    last_t = nodes[-1][1] if nodes else 0
-                    console.print(
-                        f"  {name}: missed {cnt}/{len(all_stations)} starts, "
-                        f"last service {last_t // 3600:02d}:{(last_t % 3600) // 60:02d}"
-                    )
-
-                # Build forced-visit windows: each hard station gets
-                # a window from its last service time - 1h to last service time
-                forced_visits = []
-                for sid, _ in hard_stations:
-                    nodes = teg._station_nodes.get(sid, [])
-                    if nodes:
-                        last_t = nodes[-1][1]
-                        # Window: [last - 1h, last]
-                        forced_visits.append((sid, max(0, last_t - 3600), last_t))
-
-                # Sweep with forced visits
-                for gs in all_stations:
-                    for t in sweep_start_times:
-                        start_nodes = teg.get_start_nodes(gs, t)
-                        if not start_nodes:
-                            continue
-                        try:
-                            route = solver.solve_fast_with_forced(
-                                gs, parsed.required_station_ids, t,
-                                forced_visits=forced_visits,
-                            )
-                        except Exception:
-                            continue
-
-                        if route.total_time_seconds <= 0:
-                            continue
-
-                        if best_route is None or (
-                            route.stations_visited > best_route.stations_visited
-                            or (route.stations_visited == best_route.stations_visited
-                                and route.total_time_seconds < best_route.total_time_seconds)
-                        ):
-                            best_route = route
-                            best_start_station = gs
-                            best_start_time_val = t
-
+        # Build forced-visit windows for hard stations
+        # Window = last 2 hours of service — triggers when solver is within range
+        forced_visits = []
+        if hard_stations:
+            console.print(f"\n[dim]Hard stations (missed >50% of Phase 1 runs):[/dim]")
+            for sid, cnt in hard_stations:
+                name = parsed.stations[sid].name if sid in parsed.stations else sid
+                nodes = teg._station_nodes.get(sid, [])
+                last_t = nodes[-1][1] if nodes else 0
+                first_t = nodes[0][1] if nodes else 0
+                # Force window: [last_service - 2h, last_service]
+                window_start = max(first_t, last_t - 7200)
+                forced_visits.append((sid, window_start, last_t))
                 console.print(
-                    f"  Phase 2 best: {best_route.stations_visited}/{n_required} "
-                    f"{best_route.total_time_seconds // 3600}h"
-                    f"{(best_route.total_time_seconds % 3600) // 60:02d}m"
+                    f"  {name}: missed {cnt}/{n_runs} "
+                    f"({100*cnt//n_runs}%), service "
+                    f"{first_t//3600:02d}:{(first_t%3600)//60:02d}–"
+                    f"{last_t//3600:02d}:{(last_t%3600)//60:02d}, "
+                    f"force window "
+                    f"{window_start//3600:02d}:{(window_start%3600)//60:02d}–"
+                    f"{last_t//3600:02d}:{(last_t%3600)//60:02d}"
                 )
 
-        # === Phase 3: Randomized search from best starts ===
-        if best_route.stations_visited == n_required:
-            console.print(f"\n[dim]Phase 3: Randomized search (500 trials) to improve time[/dim]")
-            # Collect forced visits from phase 2 (or empty)
-            forced_visits = []
-            visited_ids = {v["station_id"] for v in best_route.visits}
-            for sid, cnt in sorted(miss_count.items(), key=lambda x: -x[1]):
-                if cnt > len(all_stations) * 0.5:
-                    nodes = teg._station_nodes.get(sid, [])
-                    if nodes:
-                        last_t = nodes[-1][1]
-                        forced_visits.append((sid, max(0, last_t - 3600), last_t))
+        # Phase 2 removed — k=3 lookahead consistently misses branch-end stations
+        # regardless of weight, and doesn't improve on Phase 1's coverage results.
+        # Compute budget is better spent on randomized search in Phase 4.
 
-            for trial in range(500):
-                route = solver.solve_randomized(
-                    best_start_station, parsed.required_station_ids,
-                    best_start_time_val, epsilon=0.2,
-                    forced_visits=forced_visits if forced_visits else None,
-                    seed=trial,
-                )
-                if (route.stations_visited == n_required
-                    and route.total_time_seconds < best_route.total_time_seconds):
-                    best_route = route
-                    console.print(
-                        f"  Trial {trial}: improved to "
-                        f"{route.total_time_seconds // 3600}h"
-                        f"{(route.total_time_seconds % 3600) // 60:02d}m"
+        # === Phase 3: k=1 + forced visits fallback ===
+        # If k=3+forced still can't cover all stations, try k=1 which is
+        # more conservative (always picks nearest) but more reliable for coverage.
+        if forced_visits and best_route.stations_visited < n_required:
+            console.print(f"\n[dim]Phase 3: k=1 + forced visits fallback[/dim]")
+            for gs in all_stations:
+                for t in sweep_start_times:
+                    start_nodes = teg.get_start_nodes(gs, t)
+                    if not start_nodes:
+                        continue
+                    try:
+                        route = solver.solve_fast_with_forced(
+                            gs, parsed.required_station_ids, t,
+                            forced_visits=forced_visits,
+                        )
+                    except Exception:
+                        continue
+
+                    if route.total_time_seconds <= 0:
+                        continue
+
+                    _record_top(route, gs, t)
+
+                    if _route_better(route, best_route):
+                        best_route = route
+                        best_start_station = gs
+                        best_start_time_val = t
+
+            console.print(
+                f"  Phase 3 best: {best_route.stations_visited}/{n_required} {_fmt(best_route)}"
+            )
+
+        # === Phase 2: Randomized search from top-N starts ===
+        # Each trial: epsilon-greedy NN from a known 272/272 start.
+        # With epsilon prob, pick from top-3 nearest instead of always nearest,
+        # creating route diversity that may find faster orderings.
+        n_trials_per_start = 2000
+        epsilons = [0.1, 0.2, 0.3, 0.4]
+        # Collect forced visits for randomized trials
+        rand_forced = []
+        for sid, cnt in sorted(miss_count.items(), key=lambda x: -x[1]):
+            if cnt > n_runs * 0.3:
+                nodes = teg._station_nodes.get(sid, [])
+                if nodes:
+                    last_t = nodes[-1][1]
+                    rand_forced.append((sid, max(0, last_t - 3600), last_t))
+
+        if not top_starts:
+            # Fallback: use best from any phase
+            top_starts = [(best_route.total_time_seconds, best_start_station, best_start_time_val)]
+
+        console.print(
+            f"\n[dim]Phase 2: Randomized search — "
+            f"{len(top_starts)} starts × {n_trials_per_start} trials × "
+            f"{len(epsilons)} epsilons[/dim]"
+        )
+        for rank, (_, s_station, s_time) in enumerate(top_starts):
+            s_name = parsed.stations[s_station].name if s_station in parsed.stations else s_station
+            console.print(
+                f"  Start {rank+1}: {s_name} @ "
+                f"{s_time // 3600:02d}:{(s_time % 3600) // 60:02d}"
+            )
+
+        p5_t0 = time_mod.time()
+        trial_count = 0
+        for _, s_station, s_time in top_starts:
+            for eps in epsilons:
+                for trial in range(n_trials_per_start):
+                    seed = hash((s_station, s_time, eps, trial)) & 0x7FFFFFFF
+                    route = solver.solve_randomized(
+                        s_station, parsed.required_station_ids, s_time,
+                        epsilon=eps,
+                        forced_visits=rand_forced if rand_forced else None,
+                        seed=seed,
                     )
+                    trial_count += 1
+
+                    if route.stations_visited == n_required and _route_better(route, best_route):
+                        best_route = route
+                        best_start_station = s_station
+                        best_start_time_val = s_time
+                        console.print(
+                            f"  [green]Trial {trial_count}: {_fmt(route)} "
+                            f"(eps={eps}, start={s_station[:12]})[/green]"
+                        )
+
+        p5_elapsed = time_mod.time() - p5_t0
+        console.print(
+            f"  Phase 5 done in {p5_elapsed:.0f}s — "
+            f"{trial_count} trials, best: {best_route.stations_visited}/{n_required} {_fmt(best_route)}"
+        )
 
         if best_route is None:
             return {"error": "Sweep found no valid routes"}

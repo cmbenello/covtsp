@@ -42,6 +42,7 @@ class CityConfig:
     start_station: Optional[str] = None
     time_window: TimeWindow = field(default_factory=TimeWindow)
     excluded_stations: list[str] = field(default_factory=list)
+    merge_stations: list[list[str]] = field(default_factory=list)  # [source, target] pairs to merge
     use_google_walking: bool = False
     running_speed_kmh: float = 10.0
     movement_mode: str = "walk"  # "walk" or "run"
@@ -100,6 +101,7 @@ def load_config(config_path: str | Path) -> CityConfig:
         start_station=raw.get("start_station"),
         time_window=time_window,
         excluded_stations=raw.get("excluded_stations", []),
+        merge_stations=raw.get("merge_stations", []),
         use_google_walking=raw.get("use_google_walking", False),
         running_speed_kmh=raw.get("running_speed_kmh", 10.0),
         movement_mode=raw.get("movement_mode", "walk"),
