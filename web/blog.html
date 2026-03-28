@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimizing the Tube Challenge Solver — covtsp</title>
+    <meta name="description" content="How we went from 18h45m to 18h05m solving the London Tube Challenge: the K.O. prefix breakthrough, urgency scoring, and a 98% API cost reduction for running transfers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .blog-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 24px 60px;
+        }
+        .blog-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 32px;
+        }
+        .blog-back:hover { color: var(--accent); }
+        .blog-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 8px;
+        }
+        .blog-container h1 {
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        .blog-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        .blog-container h2 {
+            font-size: 1.4rem;
+            margin-top: 48px;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        .blog-container h3 {
+            font-size: 1.1rem;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+        .blog-container p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+        .blog-container strong { color: var(--text); }
+        .blog-container code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--card-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.88em;
+        }
+        .blog-container pre {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .blog-container pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .blog-container ul, .blog-container ol {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+        .blog-container li { margin-bottom: 6px; }
+        .blog-container blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+            margin: 20px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Diagram containers */
+        .diagram {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin: 28px 0;
+        }
+        .diagram-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+        }
+
+        /* Funnel diagram */
+        .funnel { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+        .funnel-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: transform 0.2s;
+        }
+        .funnel-step:hover { transform: translateX(4px); }
+        .funnel-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            min-width: 60px;
+        }
+        .funnel-label { color: var(--text-secondary); }
+        .funnel-cost {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin-left: auto;
+            opacity: 0.7;
+        }
+        .funnel-step.s1 { background: rgba(224, 49, 49, 0.1); border: 1px solid rgba(224, 49, 49, 0.2); width: 100%; }
+        .funnel-step.s1 .funnel-count { color: #e03131; }
+        .funnel-step.s2 { background: rgba(232, 89, 12, 0.1); border: 1px solid rgba(232, 89, 12, 0.2); width: 85%; }
+        .funnel-step.s2 .funnel-count { color: #e8590c; }
+        .funnel-step.s3 { background: rgba(240, 140, 0, 0.1); border: 1px solid rgba(240, 140, 0, 0.2); width: 65%; }
+        .funnel-step.s3 .funnel-count { color: #f08c00; }
+        .funnel-step.s4 { background: rgba(47, 158, 68, 0.1); border: 1px solid rgba(47, 158, 68, 0.2); width: 30%; }
+        .funnel-step.s4 .funnel-count { color: #2f9e44; }
+        .funnel-arrow {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Timeline diagram */
+        .timeline-diagram { position: relative; }
+        .timeline-bar {
+            display: flex;
+            height: 36px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .timeline-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: white;
+            font-weight: 500;
+        }
+        .timeline-segment.morning { background: #2f9e44; flex: 2.5; }
+        .timeline-segment.gap { background: var(--border); flex: 13; color: var(--text-secondary); }
+        .timeline-segment.evening { background: #e03131; flex: 1; }
+        .timeline-times {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+        }
+
+        /* Comparison boxes */
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .compare-box {
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .compare-box.bad {
+            border-color: rgba(224, 49, 49, 0.3);
+            background: rgba(224, 49, 49, 0.05);
+        }
+        .compare-box.good {
+            border-color: rgba(47, 158, 68, 0.3);
+            background: rgba(47, 158, 68, 0.05);
+        }
+        .compare-box h4 {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        .compare-box.bad h4 { color: #e03131; }
+        .compare-box.good h4 { color: #2f9e44; }
+        .compare-box p {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+        .compare-box .time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .compare-box.bad .time { color: #e03131; }
+        .compare-box.good .time { color: #2f9e44; }
+
+        /* TEG diagram */
+        .teg-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0;
+            align-items: start;
+        }
+        .teg-station-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 16px 16px 16px 0;
+            color: var(--text-secondary);
+            border-right: 2px solid var(--border);
+        }
+        .teg-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 12px 0 12px 20px;
+            position: relative;
+        }
+        .teg-node {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 500;
+            position: relative;
+        }
+        .teg-node.blue { background: #d0ebff; border: 2px solid #1971c2; color: #1971c2; }
+        .teg-node.orange { background: #ffe8cc; border: 2px solid #e8590c; color: #e8590c; }
+        .teg-node.green { background: #b2f2bb; border: 2px solid #2f9e44; color: #2f9e44; }
+        .teg-connector {
+            width: 40px;
+            height: 2px;
+            background: var(--border);
+            position: relative;
+        }
+        .teg-connector::after {
+            content: '';
+            position: absolute;
+            right: -4px;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid var(--border);
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+
+        /* Results table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        .results-table th, .results-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .results-table th {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .results-table td { color: var(--text-secondary); }
+        .results-table .accent { color: var(--accent); font-weight: 600; }
+        .results-table .best { color: #2f9e44; font-weight: 600; }
+        .results-table .miss { color: #e03131; }
+
+        /* Dominance prune diagram */
+        .prune-diagram {
+            text-align: center;
+            padding: 16px 0;
+        }
+        .prune-eq {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 2;
+            color: var(--text);
+        }
+        .prune-eq .comment { color: var(--text-secondary); font-size: 0.8rem; }
+        .prune-eq .highlight { color: var(--accent); font-weight: 600; }
+
+        @media (max-width: 600px) {
+            .blog-container { padding: 70px 16px 40px; }
+            .blog-container h1 { font-size: 1.5rem; }
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">covtsp</a>
+        <div class="nav-right">
+            <a href="https://github.com/cmbenello/covtsp" class="nav-link">GitHub</a>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <article class="blog-container">
+        <a href="index.html" class="blog-back">&larr; Back</a>
+
+        <div class="blog-date">2026-03-27</div>
+        <h1>18h45m &rarr; 18h05m: Optimizing the Tube Challenge Solver</h1>
+        <p class="blog-subtitle">
+            The London Tube Challenge asks you to visit all 272 Underground stations as fast as possible.
+            The current Guinness World Record is 17h46m. Our automated solver does it in 18h05m.
+            Here's how we shaved 40 minutes off the initial solution.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>The problem</h2>
+        <p>
+            The solver builds a <strong>time-expanded graph</strong> (TEG) from TfL's GTFS timetable data.
+            Every node is a (station, departure_time) pair. Edges are train legs, waiting arcs, and
+            walking transfers. For London on a weekday, this gives us 160K nodes and 1.26M edges.
+        </p>
+
+        <div class="diagram">
+            <div class="diagram-title">Time-Expanded Graph</div>
+            <div class="teg-grid">
+                <div class="teg-station-label">Station A</div>
+                <div class="teg-row">
+                    <div class="teg-node blue">8:00</div>
+                    <div class="teg-connector"></div>
+                    <div class="teg-node blue">8:05</div>
+                    <div class="teg-connector"></div>
+                    <div class="teg-node blue">8:12</div>
+                </div>
+                <div class="teg-station-label">Station B</div>
+                <div class="teg-row">
+                    <div class="teg-node orange">8:03</div>
+                    <div class="teg-connector"></div>
+                    <div class="teg-node orange">8:08</div>
+                    <div class="teg-connector"></div>
+                    <div class="teg-node orange">8:15</div>
+                </div>
+                <div class="teg-station-label">Station C</div>
+                <div class="teg-row">
+                    <div class="teg-node green">8:11</div>
+                    <div class="teg-connector"></div>
+                    <div class="teg-node green">8:20</div>
+                    <div class="teg-connector"></div>
+                    <div class="teg-node green">8:28</div>
+                </div>
+            </div>
+            <p style="margin-top:16px; font-size: 0.82rem; text-align: center;">
+                Horizontal arrows = wait arcs (stay at station). Diagonal edges (not shown) = train legs and walking transfers between stations.
+                <br>The solver finds the shortest path that touches at least one node per required station.
+            </p>
+        </div>
+
+        <p>
+            The task is a <strong>Covering TSP</strong>: visit at least one node per required station, minimizing
+            total elapsed time. No return to start. NP-hard in general. We use a greedy heuristic
+            (nearest-unvisited in time-space) and compute an LP relaxation lower bound to prove solution quality.
+        </p>
+        <p>
+            The baseline solver&mdash;k=1 nearest-neighbor from Ealing Broadway at 06:33&mdash;produced a valid 272/272 route
+            in <strong>18h45m</strong>. Not bad. But the Guinness record is 17h46m, and we knew there was room to improve.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>The Kensington Olympia breakthrough</h2>
+        <p>
+            The single biggest optimization came from one station: <strong>Kensington Olympia</strong>.
+        </p>
+        <p>
+            K.O. is served by a shuttle from Earl's Court, and it only runs <strong>9 times per day</strong>:
+            5 morning shuttles (05:49&ndash;07:20) and 4 evening shuttles (20:01&ndash;20:40). That's it.
+            A 13-hour dead zone in the middle of the day with zero service.
+        </p>
+
+        <div class="diagram">
+            <div class="diagram-title">Kensington Olympia service window</div>
+            <div class="timeline-diagram">
+                <div class="timeline-bar">
+                    <div class="timeline-segment morning">5 trains</div>
+                    <div class="timeline-segment gap">No service (13h gap)</div>
+                    <div class="timeline-segment evening">4 trains</div>
+                </div>
+                <div class="timeline-times">
+                    <span>05:49</span>
+                    <span>07:20</span>
+                    <span>20:01</span>
+                    <span>20:40</span>
+                </div>
+            </div>
+            <p style="margin-top:12px; font-size: 0.82rem; text-align: center;">
+                Only 9 TEG nodes for the entire day. Miss both windows and you can't complete the challenge.
+            </p>
+        </div>
+
+        <p>
+            The old solver started at 06:33 and worked greedily through the network. By the time it reached
+            Earl's Court, it was 20:41&mdash;<strong>one minute after the last K.O. shuttle</strong>.
+            The solver had to backtrack through a long detour to catch it, adding 60+ minutes.
+        </p>
+
+        <div class="compare-grid">
+            <div class="compare-box bad">
+                <h4>Old: evening K.O.</h4>
+                <p>Start 06:33 &rarr; reach Earl's Court at 20:41 &rarr; last shuttle was 20:40 &rarr; 60+ min detour</p>
+                <div class="time">18h45m</div>
+            </div>
+            <div class="compare-box good">
+                <h4>New: morning K.O. prefix</h4>
+                <p>Start 05:41 &rarr; Earl's Court &rarr; catch 05:49 shuttle &rarr; continue NN from there</p>
+                <div class="time">18h05m</div>
+            </div>
+        </div>
+
+        <p>
+            The fix: <strong>force the solver to visit K.O. first thing in the morning</strong>, before running the
+            greedy nearest-neighbor. Start at Finchley Road at 05:41, take the Metropolitan line to Earl's Court,
+            catch the 05:49 shuttle to K.O., and then continue the greedy solve from there. 40 minutes saved.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>Urgency scoring</h2>
+        <p>
+            K.O. isn't the only time-constrained station. <strong>Mill Hill East</strong> is at the end of a single-track
+            branch with limited service. The standard greedy solver often defers it until too late, missing it entirely
+            (271/272).
+        </p>
+        <p>
+            We added an <strong>urgency score</strong> that biases the nearest-neighbor toward stations whose service
+            windows are closing. At each step, the solver weighs:
+        </p>
+        <pre><code>score = travel_time + urgency_weight * time_until_last_service(station)</code></pre>
+        <p>
+            Stations with early last-service times get a bonus. The urgency weight has a sharp phase transition:
+            from Euston Square, <code>urgency &lt; 0.16</code> misses Mill Hill East (271/272), while
+            <code>urgency &ge; 0.16</code> catches it (272/272) at a cost of ~21 extra minutes.
+            From Finchley Road, the urgency weight doesn't matter&mdash;the route naturally covers Mill Hill East
+            regardless.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>Results breakdown</h2>
+
+        <table class="results-table">
+            <thead>
+                <tr><th>Solver variant</th><th>Coverage</th><th>Time</th><th>Start</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>K.O. prefix + urgency NN</td>
+                    <td class="best">272/272</td>
+                    <td class="best">18h05m</td>
+                    <td>Finchley Road 05:41</td>
+                </tr>
+                <tr>
+                    <td>K.O. prefix + urgency NN</td>
+                    <td class="best">272/272</td>
+                    <td>18h06m</td>
+                    <td>Euston Square 05:44</td>
+                </tr>
+                <tr>
+                    <td>K.O. prefix + NN (no urgency)</td>
+                    <td class="miss">271/272</td>
+                    <td>17h45m</td>
+                    <td>Euston Square 05:44</td>
+                </tr>
+                <tr>
+                    <td>k=1 NN (old baseline)</td>
+                    <td class="best">272/272</td>
+                    <td>18h45m</td>
+                    <td>Ealing Broadway 06:33</td>
+                </tr>
+                <tr>
+                    <td>Urgency NN + T4 inject</td>
+                    <td class="miss">271/272</td>
+                    <td>17h47m</td>
+                    <td>Ealing Broadway 06:33</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            There's a sharp tradeoff between coverage and speed. Dropping just one station (271/272) saves
+            20&ndash;40 minutes, because the last few stations are always the hardest to reach&mdash;they're
+            on branch ends with infrequent service.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>What didn't work</h2>
+        <p>
+            We tried a lot of things that didn't improve the solution:
+        </p>
+        <ul>
+            <li><strong>k=3 lookahead:</strong> Consistently misses 5 branch-end stations. The 2-step penalty causes the solver to defer branches it should visit early.</li>
+            <li><strong>Line-aware scoring:</strong> Biasing toward same-line stations never achieves 272/272.</li>
+            <li><strong>TEG local search (2-opt/or-opt):</strong> Random moves on a 272-station route find no improvement. The search space is too large and the objective too noisy (time-dependent edges mean small reorderings can cascade).</li>
+            <li><strong>Forced visit windows:</strong> Broad windows break other coverage; narrow windows don't trigger when needed.</li>
+            <li><strong>500-trial randomized search:</strong> Random perturbations from the top starting stations couldn't find any 272/272 solutions with K.O. forced visit.</li>
+        </ul>
+        <p>
+            The fundamental issue is that local search doesn't work well on time-expanded graphs.
+            Swapping two stations in the visit order changes the arrival time at every subsequent station,
+            which changes which trains are available, which changes everything downstream. The landscape
+            is rugged.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>Running transfer filtering</h2>
+        <p>
+            Beyond riding trains, Tube Challenge competitors can <strong>run between stations</strong>.
+            When you're stuck at the end of a branch, it's sometimes faster to run to a nearby station on
+            a different line than to backtrack through the network.
+        </p>
+        <p>
+            But computing accurate running times requires the Google Routes API. With 272 stations,
+            all-pairs queries would cost ~$375. We need a way to figure out which pairs are actually worth computing.
+        </p>
+
+        <div class="diagram">
+            <div class="diagram-title">Filtering pipeline: 37K pairs &rarr; 723</div>
+            <div class="funnel">
+                <div class="funnel-step s1">
+                    <span class="funnel-count">37,128</span>
+                    <span class="funnel-label">All station pairs</span>
+                    <span class="funnel-cost">~$375</span>
+                </div>
+                <div class="funnel-arrow">&darr; Haversine &le; 20km</div>
+                <div class="funnel-step s2">
+                    <span class="funnel-count">21,774</span>
+                    <span class="funnel-label">Within distance cutoff</span>
+                    <span class="funnel-cost">~$218</span>
+                </div>
+                <div class="funnel-arrow">&darr; At least one branch terminus</div>
+                <div class="funnel-step s3">
+                    <span class="funnel-count">10,921</span>
+                    <span class="funnel-label">Terminus-connected pairs</span>
+                    <span class="funnel-cost">~$109</span>
+                </div>
+                <div class="funnel-arrow">&darr; Train dominance prune</div>
+                <div class="funnel-step s4">
+                    <span class="funnel-count">723</span>
+                    <span class="funnel-label">Worth computing</span>
+                    <span class="funnel-cost">~$7</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>Filter 1: Distance cutoff</h3>
+        <p>
+            Only consider pairs within 20km Haversine distance. Beyond that, running would take 2+ hours
+            at race pace and will almost never beat the train. This cuts from 37K to 21K pairs. Not enough.
+        </p>
+
+        <h3>Filter 2: Branch terminus stations</h3>
+        <p>
+            Running between stations is only useful at <strong>the ends of lines</strong>. If you're mid-line,
+            you can just take the train. Running only becomes competitive when you're at a terminus and the
+            nearest unvisited station is faster to reach on foot than by backtracking through the network.
+        </p>
+        <p>
+            We identify terminus candidates by reconstructing trip sequences from GTFS data: the last 3 stops
+            of each branch end. We keep pairs where at least one station is a terminus candidate and they're
+            on different lines. This drops to 10,921 pairs.
+        </p>
+
+        <h3>Filter 3: Train dominance prune</h3>
+        <p>
+            The aggressive filter. For each remaining pair (A, B):
+        </p>
+        <blockquote>
+            Even if you could run in a perfectly straight line at maximum sprint speed&mdash;ignoring
+            streets, crossings, and navigation&mdash;would running still be slower than the train's
+            raw travel time (ignoring headway waits)?
+        </blockquote>
+
+        <div class="diagram">
+            <div class="diagram-title">Dominance condition</div>
+            <div class="prune-diagram">
+                <div class="prune-eq">
+                    crow_flies_time = haversine(A, B) / sprint_speed<br>
+                    train_time = shortest_path(A, B) <span class="comment">// no waits, just travel</span><br>
+                    <br>
+                    if <span class="highlight">crow_flies_time &ge; train_time</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;eliminate <span class="comment">// running can never win</span>
+                </div>
+            </div>
+            <p style="margin-top:12px; font-size: 0.82rem; text-align: center;">
+                Both sides are optimistic lower bounds. If the train's lower bound beats running's lower bound,
+                the dominance holds for all real values.
+            </p>
+        </div>
+
+        <p>
+            This eliminates 93% of remaining pairs. Result: <strong>723 pairs at ~$7 API cost</strong>.
+            A 98% reduction from the naive approach, without losing any pair that could actually improve the route.
+        </p>
+
+        <!-- ============================================ -->
+        <h2>What's next</h2>
+        <p>
+            The solver currently runs 19 minutes behind the human world record. The main gaps:
+        </p>
+        <ul>
+            <li><strong>LP relaxation lower bound</strong> (Phase 3): needed to compute the actual optimality gap and prove solution quality.</li>
+            <li><strong>Running transfers</strong>: integrating the 723 filtered pairs into the TEG as running edges could shave significant time off branch-end detours.</li>
+            <li><strong>Better search</strong>: simulated annealing over the solver parameters (start station, urgency weight, injection thresholds) rather than greedy search.</li>
+            <li><strong>Multi-city</strong>: NYC (475 stations, 21h35m), Berlin U-Bahn (170 stations, 7h53m), and more.</li>
+        </ul>
+        <p>
+            The code is open-source. Add your city by dropping a GTFS feed and a YAML config.
+        </p>
+        <p style="margin-top: 32px;">
+            <a href="https://github.com/cmbenello/covtsp" style="color: var(--accent);">View on GitHub &rarr;</a>
+        </p>
+    </article>
+
+    <footer>
+        <div class="footer-left">
+            <span class="footer-brand">covtsp</span>
+            <span class="footer-sep">/</span>
+            <span>Built by Charles Benello</span>
+        </div>
+        <div class="footer-right">
+            <a href="https://github.com/cmbenello/covtsp">GitHub</a>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 A research-grade Covering TSP solver for transit coverage optimization. Finds near-optimal routes through any city's transit network using real GTFS timetable data, with LP relaxation bounds proving solution quality.
 
-Built from a London Tube Challenge world record (13h40m, beating the 14h17m official record).
+Built from the London Tube Challenge — visiting all 272 Underground stations as fast as possible. The current Guinness World Record is 17h46m (Robin Otter & Thomas Sheat, August 2024). Our automated solver achieves 18h05m.
 
 ## Architecture
 

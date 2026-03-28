@@ -95,13 +95,13 @@ The urgency weight has a phase transition:
 - Running mode: 18.0 km/h base speed, max 20km transfers
 
 ## Comparison to Record
-- Charles's actual record: **13h40m** (set in real life)
+- Guinness World Record: **17h46m** (Robin Otter & Thomas Sheat, August 2024)
 - Solver best (272/272): **18h05m**
-- Gap: ~4h25m — likely due to:
+- Gap: ~19 minutes — likely due to:
   1. Solver uses greedy heuristic, not globally optimal ordering
-  2. Real challenge used expert knowledge of line frequencies and connections
-  3. Timetable data may differ from actual day
-  4. Running speed model may underestimate actual speeds on familiar routes
+  2. Human competitors use running transfers between stations (not yet in solver)
+  3. Expert knowledge of line frequencies and real-time connections
+  4. Timetable data may differ from actual day
 
 ## Next Steps
 - [ ] LP relaxation lower bound (Phase 3) — needed to compute optimality gap
