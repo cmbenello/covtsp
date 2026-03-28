@@ -36,6 +36,42 @@
         .fig-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 18px; }
         .fig-caption { font-size: 0.8rem; color: var(--muted); margin-top: 14px; line-height: 1.5; text-align: center; }
 
+        /* Evolution timeline */
+        .evo { display: flex; flex-direction: column; gap: 0; }
+        .evo-step { display: grid; grid-template-columns: 48px 1fr; gap: 0; position: relative; }
+        .evo-marker { display: flex; flex-direction: column; align-items: center; }
+        .evo-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: var(--card-bg); z-index: 1; flex-shrink: 0; }
+        .evo-line { width: 2px; flex: 1; background: var(--border); }
+        .evo-step.active .evo-dot { border-color: var(--accent); background: var(--accent); }
+        .evo-step.dead .evo-dot { border-color: #e03131; background: rgba(224, 49, 49, 0.15); }
+        .evo-content { padding: 0 0 24px 14px; }
+        .evo-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+        .evo-step.dead .evo-tag { color: #e03131; }
+        .evo-step.active .evo-tag { color: var(--accent); }
+        .evo-step:not(.active):not(.dead) .evo-tag { color: var(--muted); }
+        .evo-content h4 { font-size: 0.92rem; margin-bottom: 4px; color: var(--text); }
+        .evo-content p { font-size: 0.84rem; margin-bottom: 0; }
+
+        /* Static vs TEG side-by-side */
+        .graph-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .graph-cmp-box { text-align: center; }
+        .graph-cmp-box h4 { font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; color: var(--muted); }
+        .graph-cmp svg { width: 100%; max-width: 240px; height: 170px; }
+        .graph-cmp svg circle { stroke-width: 2; }
+        .graph-cmp svg text { font-family: 'JetBrains Mono', monospace; font-size: 9px; fill: var(--muted); }
+        .graph-cmp-note { font-size: 0.72rem; color: var(--muted); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+        /* Approach comparison boxes */
+        .approach-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+        .approach-box { padding: 16px; border-radius: 8px; border: 1px solid var(--border); }
+        .approach-box.nope { border-color: rgba(224, 49, 49, 0.2); background: rgba(224, 49, 49, 0.03); }
+        .approach-box.yep { border-color: rgba(47, 158, 68, 0.2); background: rgba(47, 158, 68, 0.03); }
+        .approach-box h4 { font-size: 0.84rem; margin-bottom: 6px; }
+        .approach-box.nope h4 { color: #e03131; }
+        .approach-box.yep h4 { color: #2f9e44; }
+        .approach-box p { font-size: 0.82rem; margin-bottom: 0; }
+        .approach-box .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; margin-top: 8px; color: var(--text); opacity: 0.65; line-height: 1.5; }
+
         /* TEG diagram — proper graph visualization */
         .teg { position: relative; height: 340px; }
         .teg-axis { position: absolute; left: 0; top: 0; bottom: 40px; width: 90px; }
@@ -156,9 +192,10 @@
     </style>
 </head>
 <body data-theme="dark">
-    <nav class="nav">
+    <nav class="nav nav-scrolled">
         <a href="index.html" class="nav-brand">covtsp</a>
         <div class="nav-right">
+            <a href="index.html" class="nav-link">Home</a>
             <a href="https://github.com/cmbenello/covtsp" class="nav-link">GitHub</a>
             <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
                 <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -179,22 +216,197 @@
 
         <hr>
 
-        <!-- ==================== TEG ==================== -->
-        <h2>Covering TSP on a time-expanded graph</h2>
+        <!-- ==================== Evolution ==================== -->
+        <h2>Three attempts at the right abstraction</h2>
         <p>
-            The Tube Challenge isn't standard TSP. It's harder in three ways:
-            <strong>no return to start</strong>, <strong>time-dependent edges</strong> (you can only board when a train departs),
-            and <strong>covering variant</strong> (visit at least one node per station, not every node). This is a
-            Covering TSP on a time-expanded graph. NP-hard in general.
-        </p>
-        <p>
-            In a static graph, the edge A&rarr;B costs 3 minutes regardless of when you arrive.
-            In reality, arriving at 8:07 with the next train at 8:12 means waiting 5 minutes&mdash;real cost is 8 minutes.
-            A TEG makes this explicit: every node is a <strong>(station, departure_time)</strong> pair.
+            This project went through three distinct modeling approaches before landing on the current one.
+            The progression matters because each attempt revealed a specific limitation that shaped the next.
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 1 &mdash; Time-expanded graph structure</div>
+            <div class="fig-label">Fig 0 &mdash; Modeling evolution</div>
+            <div class="evo">
+                <div class="evo-step dead">
+                    <div class="evo-marker"><div class="evo-dot"></div><div class="evo-line"></div></div>
+                    <div class="evo-content">
+                        <div class="evo-tag">v1 &mdash; tspmetro</div>
+                        <h4>Static graph + Google Maps API</h4>
+                        <p>Scraped Wikipedia for station names, queried Google Maps for travel times between same-line stations, built a fixed-weight adjacency matrix. No time dependency at all.</p>
+                    </div>
+                </div>
+                <div class="evo-step dead">
+                    <div class="evo-marker"><div class="evo-dot"></div><div class="evo-line"></div></div>
+                    <div class="evo-content">
+                        <div class="evo-tag">v2 &mdash; abandoned</div>
+                        <h4>Probabilistic headway models</h4>
+                        <p>Model train arrivals as distributions, compute expected wait times per station, score routes by expected total time. Abandoned&mdash;too many parameters, no ground truth to validate against.</p>
+                    </div>
+                </div>
+                <div class="evo-step active">
+                    <div class="evo-marker"><div class="evo-dot"></div><div class="evo-line" style="opacity: 0;"></div></div>
+                    <div class="evo-content">
+                        <div class="evo-tag">v3 &mdash; covtsp (current)</div>
+                        <h4>GTFS backtesting on real timetables</h4>
+                        <p>Parse published timetable data, pick a date, simulate the exact schedule deterministically. No probability needed&mdash;replay exact train times like a financial backtest.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>v1: The static graph (tspmetro)</h3>
+        <p>
+            The <a href="https://github.com/cmbenello/tspmetro">first attempt</a> treated the Underground as a classical weighted graph.
+            Station names scraped from Wikipedia, travel times from the Google Maps Directions API (transit mode),
+            stored in an adjacency matrix. The plan was Floyd-Warshall for all-pairs shortest paths, then solve TSP
+            on the complete distance matrix.
+        </p>
+        <p>
+            The fundamental problem: <strong>edge weights are fixed</strong>. The graph says Baker Street &rarr; Bond Street
+            costs 3 minutes, always. But in reality, if you arrive at Baker Street at 8:07 and the next Jubilee line train
+            departs at 8:12, you wait 5 minutes&mdash;the real cost is 8 minutes. And that wait time changes every minute of the day.
+            A static graph can't distinguish between Kensington Olympia (9 trains/day) and Oxford Circus (one every 90 seconds).
+        </p>
+
+        <div class="fig">
+            <div class="fig-label">Fig 0a &mdash; Static graph vs time-expanded graph</div>
+            <div class="graph-cmp">
+                <div class="graph-cmp-box">
+                    <h4>Static (tspmetro)</h4>
+                    <svg viewBox="0 0 200 140">
+                        <circle cx="40" cy="30" r="12" fill="#d0ebff" stroke="#1971c2"/>
+                        <circle cx="160" cy="30" r="12" fill="#ffe8cc" stroke="#e8590c"/>
+                        <circle cx="100" cy="120" r="12" fill="#b2f2bb" stroke="#2f9e44"/>
+                        <line x1="52" y1="30" x2="148" y2="30" stroke="var(--muted)" stroke-width="1.5"/>
+                        <line x1="46" y1="40" x2="94" y2="112" stroke="var(--muted)" stroke-width="1.5"/>
+                        <line x1="154" y1="40" x2="106" y2="112" stroke="var(--muted)" stroke-width="1.5"/>
+                        <text x="95" y="22">3m</text>
+                        <text x="55" y="82">4m</text>
+                        <text x="135" y="82">2m</text>
+                        <text x="25" y="15">A</text>
+                        <text x="152" y="15">B</text>
+                        <text x="93" y="140">C</text>
+                    </svg>
+                    <div class="graph-cmp-note">Fixed weights. 3 nodes, 3 edges.<br>Same cost at 8am and 11pm.</div>
+                </div>
+                <div class="graph-cmp-box">
+                    <h4>Time-expanded (covtsp)</h4>
+                    <svg viewBox="0 0 200 140">
+                        <!-- A row -->
+                        <circle cx="20" cy="25" r="7" fill="#d0ebff" stroke="#1971c2" stroke-width="1.5"/>
+                        <circle cx="60" cy="25" r="7" fill="#d0ebff" stroke="#1971c2" stroke-width="1.5"/>
+                        <circle cx="100" cy="25" r="7" fill="#d0ebff" stroke="#1971c2" stroke-width="1.5"/>
+                        <circle cx="140" cy="25" r="7" fill="#d0ebff" stroke="#1971c2" stroke-width="1.5"/>
+                        <circle cx="180" cy="25" r="7" fill="#d0ebff" stroke="#1971c2" stroke-width="1.5"/>
+                        <!-- B row -->
+                        <circle cx="60" cy="70" r="7" fill="#ffe8cc" stroke="#e8590c" stroke-width="1.5"/>
+                        <circle cx="100" cy="70" r="7" fill="#ffe8cc" stroke="#e8590c" stroke-width="1.5"/>
+                        <circle cx="140" cy="70" r="7" fill="#ffe8cc" stroke="#e8590c" stroke-width="1.5"/>
+                        <circle cx="180" cy="70" r="7" fill="#ffe8cc" stroke="#e8590c" stroke-width="1.5"/>
+                        <!-- C row -->
+                        <circle cx="100" cy="115" r="7" fill="#b2f2bb" stroke="#2f9e44" stroke-width="1.5"/>
+                        <circle cx="140" cy="115" r="7" fill="#b2f2bb" stroke="#2f9e44" stroke-width="1.5"/>
+                        <circle cx="180" cy="115" r="7" fill="#b2f2bb" stroke="#2f9e44" stroke-width="1.5"/>
+                        <!-- Wait arcs -->
+                        <line x1="27" y1="25" x2="53" y2="25" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="67" y1="25" x2="93" y2="25" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="107" y1="25" x2="133" y2="25" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="147" y1="25" x2="173" y2="25" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="67" y1="70" x2="93" y2="70" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="107" y1="70" x2="133" y2="70" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="147" y1="70" x2="173" y2="70" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="107" y1="115" x2="133" y2="115" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <line x1="147" y1="115" x2="173" y2="115" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 2"/>
+                        <!-- Train legs -->
+                        <line x1="25" y1="32" x2="55" y2="63" stroke="var(--accent)" stroke-width="1.5"/>
+                        <line x1="105" y1="32" x2="135" y2="63" stroke="var(--accent)" stroke-width="1.5"/>
+                        <line x1="65" y1="77" x2="95" y2="108" stroke="var(--accent)" stroke-width="1.5"/>
+                        <line x1="145" y1="77" x2="175" y2="108" stroke="var(--accent)" stroke-width="1.5"/>
+                        <!-- Labels -->
+                        <text x="5" y="12">A</text>
+                        <text x="50" y="58">B</text>
+                        <text x="88" y="132">C</text>
+                    </svg>
+                    <div class="graph-cmp-note">Time-dependent. 12 nodes, ~20 edges.<br>Costs depend on when you arrive.</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>v2: Probabilistic headway models (abandoned)</h3>
+        <p>
+            Realising the static graph couldn't capture time dependency, the next idea was to model it statistically.
+            Treat train arrivals at each station as a probability distribution: Poisson for high-frequency lines,
+            something heavier-tailed for infrequent branches. Then compute <strong>expected wait times</strong>
+            per station and weight the graph edges accordingly. Stations with faster service get lower expected waits,
+            making the TSP solver naturally prefer efficient connections.
+        </p>
+        <p>
+            The problems stacked up quickly:
+        </p>
+        <ul>
+            <li>Train headways aren't stationary&mdash;they vary by time of day, line, and direction. A single distribution per station loses the signal.</li>
+            <li>The model introduces parameters (distribution family, time-of-day bins, smoothing) with no clean way to validate them. Expected wait time of 4.2 minutes at Baker Street&mdash;is that right? How would you check?</li>
+            <li>Even with perfect distributions, expected value isn't enough. A route that works "on average" can fail catastrophically if one connection is missed. You need to reason about specific trains, not averages.</li>
+        </ul>
+
+        <h3>v3: The backtesting insight</h3>
+        <p>
+            The breakthrough came from an analogy to quantitative finance. In finance, you don't model stock prices
+            with probability distributions and compute expected returns&mdash;you <strong>backtest</strong>. You take
+            historical price data for a specific day, run your strategy against it, and see what actually happens. No
+            distribution assumptions, no parameter tuning, full determinism.
+        </p>
+        <p>
+            Transit works the same way. Every transit authority publishes their timetable in
+            <a href="https://gtfs.org">GTFS format</a>&mdash;a set of CSV files listing every trip, every stop time,
+            every calendar exception. Pick a date, filter the active services, and you get the
+            <strong>exact schedule for that day</strong>. Every train departure, every arrival, no ambiguity.
+        </p>
+
+        <div class="approach-cmp">
+            <div class="approach-box nope">
+                <h4>Probabilistic</h4>
+                <p>Model headways as distributions. Compute expected wait times. Score routes by expected total.</p>
+                <div class="mono">
+                    E[wait] = &lambda;<sup>-1</sup> per station<br>
+                    &Sigma; parameters to tune<br>
+                    No ground truth to validate
+                </div>
+            </div>
+            <div class="approach-box yep">
+                <h4>GTFS backtesting</h4>
+                <p>Parse real timetable. Pick a date. Simulate exactly. Every train is deterministic.</p>
+                <div class="mono">
+                    160,069 (station, time) nodes<br>
+                    1,262,131 edges<br>
+                    Zero free parameters
+                </div>
+            </div>
+        </div>
+
+        <p>
+            This gives us the time-expanded graph. Every node is a <code>(station, departure_time)</code> pair
+            from the actual schedule. The solver doesn't estimate wait times&mdash;it knows exactly when the next train leaves,
+            because it's in the timetable. And you can test against any historical date, comparing routes across
+            weekdays, weekends, and disrupted services.
+        </p>
+
+        <hr>
+
+        <!-- ==================== TEG ==================== -->
+        <h2>The time-expanded graph in detail</h2>
+        <p>
+            The problem on this graph is a <strong>Covering TSP</strong>: visit at least one node per required station
+            (not every node), no return to start, minimizing elapsed time. NP-hard in general.
+            Three edge types encode the full timetable:
+        </p>
+        <ul>
+            <li><strong>Transit legs</strong>: (Baker St, 8:12) &rarr; (Bond St, 8:15)&mdash;a specific train departure</li>
+            <li><strong>Wait arcs</strong>: (Baker St, 8:07) &rarr; (Baker St, 8:12)&mdash;waiting for the next train</li>
+            <li><strong>Walking transfers</strong>: (Baker St, 8:07) &rarr; (Oxford Circus, 8:19)&mdash;running between stations</li>
+        </ul>
+
+        <div class="fig">
+            <div class="fig-label">Fig 1 &mdash; TEG structure (3 stations, 5 time slots)</div>
             <div class="teg">
                 <div class="teg-axis">
                     <div class="teg-station-name" style="top: 30px; color: #1971c2;">Baker St</div>
@@ -309,7 +521,7 @@
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 2 &mdash; K.O. service window (9 trains/day)</div>
+            <div class="fig-label">Fig 2 &mdash; Kensington Olympia: 9 trains/day</div>
             <div class="ko-timeline">
                 <div class="ko-bar">
                     <div class="ko-seg am">5 trains</div>
@@ -376,7 +588,7 @@
         </p>
 
         <div class="fig" style="padding: 18px 24px 12px;">
-            <div class="fig-label">Fig 3 &mdash; Urgency weight phase transition (Euston Square start)</div>
+            <div class="fig-label">Fig 3 &mdash; Urgency phase transition (Euston Square start)</div>
             <div class="phase-bar">
                 <div class="off">271/272</div>
                 <div class="boundary"></div>
