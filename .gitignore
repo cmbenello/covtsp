@@ -12,4 +12,4 @@ results/
 .claude/
 **/walking_cache.json
 .DS_Store
-*.mp4
+web/vecteezy_*.mp4
