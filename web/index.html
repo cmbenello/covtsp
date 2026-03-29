@@ -15,9 +15,10 @@
 </head>
 <body data-theme="dark">
     <!-- Nav -->
-    <nav class="nav">
+    <nav class="nav" id="main-nav">
         <a href="#" class="nav-brand">covtsp</a>
         <div class="nav-right">
+            <a href="blog.html" class="nav-link">Blog</a>
             <a href="https://github.com/cmbenello/covtsp" class="nav-link">GitHub</a>
             <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
                 <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -26,46 +27,58 @@
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="hero-compact">
-        <div class="hero-tag">Open-Source Transit Solver</div>
-        <h1 class="hero-title">Visit every station, as fast as possible.</h1>
-        <p class="hero-desc">
-            Covering TSP solver on time-expanded graphs. Parses any city's GTFS feed, builds a schedule-aware graph, and computes near-optimal routes with LP relaxation bounds.
-        </p>
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <span class="hero-stat-value">3 cities</span>
-                <span class="hero-stat-label">Solved</span>
-            </div>
-            <div class="hero-stat">
-                <span class="hero-stat-value">160K+</span>
-                <span class="hero-stat-label">TEG nodes</span>
-            </div>
-            <div class="hero-stat">
-                <span class="hero-stat-value">LP bound</span>
-                <span class="hero-stat-label">Optimality proof</span>
-            </div>
-        </div>
-    </section>
+    <!-- ASCII Background (full page) -->
+    <canvas id="ascii-bg" aria-hidden="true"></canvas>
 
-    <!-- Cities — immediately visible -->
+    <!-- Hero -->
+    <div class="hero-wrapper">
+        <section class="hero-compact">
+            <div class="hero-tag">Open-Source Transit Solver</div>
+            <h1 class="hero-title">Visit every station,<br>as fast as possible.</h1>
+            <p class="hero-desc">
+                Near-optimal route computation on time-expanded GTFS graphs with LP relaxation bounds.
+            </p>
+            <div class="hero-cta">
+                <a href="results.html?sample" class="btn-primary">View London Route</a>
+                <a href="https://github.com/cmbenello/covtsp" class="btn-secondary">GitHub</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-value">3 cities</span>
+                    <span class="hero-stat-label">Solved</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">160K+</span>
+                    <span class="hero-stat-label">TEG nodes</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">LP bound</span>
+                    <span class="hero-stat-label">Optimality proof</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cities -->
     <section class="section cities-section">
         <div class="city-grid">
             <a href="results.html?sample" class="city-card active">
                 <h3>London Underground</h3>
                 <span class="city-stat">272 stations</span>
                 <span class="city-status solved">18h05m</span>
+                <span class="card-arrow">&rarr;</span>
             </a>
             <a href="results.html?city=nyc" class="city-card active">
                 <h3>NYC Subway</h3>
                 <span class="city-stat">475 stations</span>
                 <span class="city-status solved">21h35m</span>
+                <span class="card-arrow">&rarr;</span>
             </a>
             <a href="results.html?city=berlin" class="city-card active" id="city-berlin">
                 <h3>Berlin U-Bahn</h3>
                 <span class="city-stat">170 stations</span>
                 <span class="city-status solved">7h53m</span>
+                <span class="card-arrow">&rarr;</span>
             </a>
         </div>
     </section>
@@ -96,12 +109,16 @@
                     <div class="record-bar-fill solver" data-width="100"></div>
                 </div>
             </div>
+            <span class="record-gap-badge">19 minutes apart</span>
         </div>
     </section>
 
     <!-- Blog link -->
-    <section class="section reveal" style="text-align: center; border-top: none; padding-top: 0;">
-        <a href="blog.html" style="color: var(--accent); font-size: 0.95rem;">Read the writeup: 19 minutes from the world record &rarr;</a>
+    <section class="blog-callout reveal">
+        <a href="blog.html">
+            <span>Read the writeup: 19 minutes from the world record</span>
+            <span class="callout-arrow">&rarr;</span>
+        </a>
     </section>
 
     <!-- Algorithm Pipeline -->
@@ -111,27 +128,27 @@
         <div class="pipeline">
             <div class="pipeline-step">
                 <div class="step-num">01</div>
-                <h3>Time-Expanded Graph</h3>
-                <p>Build a directed graph from GTFS timetable data. Each node is a (station, time) pair. Edges are train legs, waiting arcs, and walking transfers.</p>
-                <span class="step-stat">160K nodes / 1.26M edges</span>
-            </div>
-            <div class="pipeline-arrow">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <div class="step-content">
+                    <h3>Time-Expanded Graph</h3>
+                    <p>Build a directed graph from GTFS timetable data. Each node is a (station, time) pair. Edges are train legs, waiting arcs, and walking transfers.</p>
+                    <span class="step-stat">160K nodes / 1.26M edges</span>
+                </div>
             </div>
             <div class="pipeline-step">
                 <div class="step-num">02</div>
-                <h3>Greedy + Local Search</h3>
-                <p>Nearest-unvisited heuristic with beam search lookahead and urgency scoring, refined by 2-opt and Or-opt moves on visit order.</p>
-                <span class="step-stat">272/272 stations covered</span>
-            </div>
-            <div class="pipeline-arrow">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <div class="step-content">
+                    <h3>Greedy + Local Search</h3>
+                    <p>Nearest-unvisited heuristic with beam search lookahead and urgency scoring, refined by 2-opt and Or-opt moves on visit order.</p>
+                    <span class="step-stat">272/272 stations covered</span>
+                </div>
             </div>
             <div class="pipeline-step">
                 <div class="step-num">03</div>
-                <h3>LP Relaxation Bound</h3>
-                <p>Flow-based LP gives a provable lower bound. The optimality gap quantifies how close the heuristic solution is to optimal.</p>
-                <span class="step-stat">7h43m lower bound</span>
+                <div class="step-content">
+                    <h3>LP Relaxation Bound</h3>
+                    <p>Flow-based LP gives a provable lower bound. The optimality gap quantifies how close the heuristic solution is to optimal.</p>
+                    <span class="step-stat">7h43m lower bound</span>
+                </div>
             </div>
         </div>
     </section>
@@ -167,11 +184,15 @@
             <span class="footer-sep">/</span>
             <span>Built by Charles Benello</span>
         </div>
-        <div class="footer-right">
+        <div class="footer-links">
+            <a href="blog.html">Blog</a>
+            <a href="results.html?sample">Results</a>
             <a href="https://github.com/cmbenello/covtsp">GitHub</a>
         </div>
     </footer>
 
+    <script src="aalib.js"></script>
+    <script src="ascii-bg.js"></script>
     <script src="index.js"></script>
 </body>
 </html>

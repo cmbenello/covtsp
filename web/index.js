@@ -19,23 +19,61 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Scroll reveal
+    // Nav scroll effect
+    initNavScroll();
+
+    // Scroll reveal with stagger
     initScrollReveal();
 
     // Record bar animation
     initRecordBars();
 });
 
-// ── Scroll Reveal ────────────────────────────────────────────
+// ── Nav Scroll ──────────────────────────────────────────────
+
+function initNavScroll() {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+
+    const onScroll = () => {
+        if (window.scrollY > 20) {
+            nav.classList.add('nav-scrolled');
+        } else {
+            nav.classList.remove('nav-scrolled');
+        }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+}
+
+// ── Scroll Reveal with Stagger ──────────────────────────────
 
 function initScrollReveal() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const elements = document.querySelectorAll('.reveal');
     if (!elements.length) return;
+
+    if (prefersReduced) {
+        elements.forEach(el => el.classList.add('visible'));
+        return;
+    }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+
+                // Stagger children if any
+                const children = entry.target.querySelectorAll('.stagger-child');
+                children.forEach((child, i) => {
+                    setTimeout(() => {
+                        child.style.transitionDelay = '0ms';
+                        child.classList.add('visible');
+                    }, i * 60);
+                });
+
                 observer.unobserve(entry.target);
             }
         });
@@ -56,14 +94,13 @@ function initRecordBars() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Animate all bars in the section with stagger
                 const section = entry.target.closest('.record-bars');
                 if (section) {
                     const fills = section.querySelectorAll('.record-bar-fill');
                     fills.forEach((fill, i) => {
                         setTimeout(() => {
                             fill.style.width = fill.dataset.width + '%';
-                        }, i * 200);
+                        }, i * 250);
                     });
                 }
                 observer.unobserve(entry.target);
@@ -73,6 +110,5 @@ function initRecordBars() {
         threshold: 0.3,
     });
 
-    // Observe the first bar only (triggers all)
     observer.observe(bars[0]);
 }

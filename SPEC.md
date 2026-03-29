@@ -8,7 +8,7 @@
 
 ## Concept
 
-Take the algorithm that beat the London Tube Challenge record (13h40m vs 14h17m world record)
+Take the algorithm that beat the London Tube Challenge record (17h45m vs 17h46m Guinness world record)
 and turn it into a rigorous, open-source framework for solving transit coverage optimization
 on any city's real GTFS timetable data — with a provable lower bound and a live interactive map.
 

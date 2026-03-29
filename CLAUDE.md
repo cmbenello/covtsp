@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A research-grade solver for transit coverage optimization — starting with the London Tube Challenge (visit every Underground station as fast as possible). Charles holds the record at 13h40m vs the 14h17m official world record. This project formalizes that solve into a rigorous open-source framework that works on any city's GTFS data, with a provable lower bound on solution quality.
+A research-grade solver for transit coverage optimization — starting with the London Tube Challenge (visit every Underground station as fast as possible). Charles holds the record at 17h45m vs the 17h46m Guinness world record. This project formalizes that solve into a rigorous open-source framework that works on any city's GTFS data, with a provable lower bound on solution quality.
 
 **Current phase: Phase 1** — get the algorithm formalized and working on a toy network, then real London topology (simplified, no timetables yet).
 

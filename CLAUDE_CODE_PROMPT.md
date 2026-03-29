@@ -9,7 +9,7 @@ Copy this entire prompt when starting a new Claude Code session for this project
 I am building the **Open Transit Optimizer** — a research-grade solver for the
 London Tube Challenge and similar transit coverage problems. The Tube Challenge
 is a real speedrun: visit every station on the London Underground as fast as possible.
-I hold a record of 13h40m (vs the official 14h17m world record).
+I hold a record of 17h45m (vs the 17h46m Guinness world record).
 
 This project has four phases. We are starting with **Phase 1: algorithm formalization
 and a working solver on simplified data**, then Phase 2 adds real GTFS timetable data.

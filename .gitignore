@@ -11,3 +11,5 @@ data/berlin/
 results/
 .claude/
 **/walking_cache.json
+.DS_Store
+*.mp4

@@ -67,6 +67,11 @@ class CityConfig:
     running_speed_kmh: float = 10.0
     movement_mode: str = "walk"  # "walk" or "run"
     hard_stations: HardStationConfig = field(default_factory=HardStationConfig)
+    # Transit modes available for travel (default: same as route_type_filter).
+    # Set wider than route_type_filter to allow using buses/DLR/trams for
+    # connections without requiring visiting their stops.
+    # e.g. route_type_filter=[1] (Underground required), transit_route_types=[0,1,2,3] (use everything)
+    transit_route_types: list[int] | None = None  # None = same as route_type_filter
 
     @property
     def data_dir(self) -> Path:
@@ -146,4 +151,5 @@ def load_config(config_path: str | Path) -> CityConfig:
         running_speed_kmh=raw.get("running_speed_kmh", 10.0),
         movement_mode=raw.get("movement_mode", "walk"),
         hard_stations=hard_stations,
+        transit_route_types=raw.get("transit_route_types"),
     )

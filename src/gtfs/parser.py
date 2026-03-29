@@ -106,6 +106,20 @@ class GTFSParser:
                 f"Check merge_stations and excluded_stations config."
             )
 
+        # Add extra transit segments from additional route types (buses, DLR, etc.)
+        # These provide faster connections between required stations without
+        # adding new required stops.
+        if self.config.transit_route_types is not None:
+            extra_types = [
+                t for t in self.config.transit_route_types
+                if t not in self.config.route_type_filter
+            ]
+            if extra_types:
+                extra_segs = self._parse_extra_transit(
+                    stations, extra_types, target_date
+                )
+                segments.extend(extra_segs)
+
         return ParsedGTFS(
             stations=stations,
             segments=segments,
@@ -402,6 +416,153 @@ class GTFSParser:
                         ))
                 prev = curr
 
+        return segments
+
+    def _parse_extra_transit(
+        self,
+        stations: dict[str, Station],
+        extra_route_types: list[int],
+        target_date=None,
+    ) -> list[TripSegment]:
+        """Parse transit segments from additional route types (buses, DLR, trams).
+
+        Only includes segments where BOTH endpoints are within snap_distance
+        of an existing required station. This adds bus/DLR connections between
+        Underground stations without adding new stops to visit.
+
+        Bus stop → nearest Underground station mapping uses KD-tree for speed.
+        """
+        import logging
+        logger = logging.getLogger(__name__)
+
+        snap_distance_m = 500.0  # snap bus/DLR stops within 500m of Underground stations
+
+        stops = pd.read_csv(
+            self.gtfs_dir / "stops.txt",
+            dtype={"stop_id": str, "parent_station": str},
+        )
+        routes = pd.read_csv(
+            self.gtfs_dir / "routes.txt",
+            dtype={"route_id": str},
+        )
+        trips = pd.read_csv(
+            self.gtfs_dir / "trips.txt",
+            dtype={"trip_id": str, "route_id": str, "service_id": str},
+        )
+        stop_times = pd.read_csv(
+            self.gtfs_dir / "stop_times.txt",
+            dtype={"trip_id": str, "stop_id": str},
+        )
+
+        # Get valid routes for extra types
+        extra_routes = set(
+            routes[routes["route_type"].isin(extra_route_types)]["route_id"]
+        )
+        if not extra_routes:
+            return []
+
+        # Filter trips by route and date
+        extra_trips_df = trips[trips["route_id"].isin(extra_routes)]
+        if target_date is not None:
+            active_services = get_active_services(self.gtfs_dir, target_date)
+            extra_trip_ids = set(
+                extra_trips_df[extra_trips_df["service_id"].isin(active_services)]["trip_id"]
+            )
+        else:
+            extra_trip_ids = set(extra_trips_df["trip_id"])
+
+        if not extra_trip_ids:
+            return []
+
+        # Build KD-tree of Underground stations for snapping bus stops
+        station_list = list(stations.values())
+        station_coords = np.array([[s.lat, s.lon] for s in station_list])
+        station_ids = [s.station_id for s in station_list]
+        tree = KDTree(station_coords)
+
+        # Build bus stop → nearest Underground station mapping + walk penalty
+        snap_deg = snap_distance_m / 111_000  # approximate degree threshold
+        stop_to_underground: dict[str, str] = {}
+        stop_walk_penalty: dict[str, int] = {}  # stop_id -> walk seconds to station
+
+        walk_speed = self.config.effective_speed_kmh  # km/h
+        walk_speed_ms = walk_speed * 1000 / 3600  # m/s
+
+        for _, stop in stops.iterrows():
+            stop_id = str(stop["stop_id"])
+            try:
+                lat, lon = float(stop["stop_lat"]), float(stop["stop_lon"])
+            except (ValueError, TypeError):
+                continue
+
+            # Find nearest Underground station
+            dist, idx = tree.query([lat, lon])
+            if dist <= snap_deg:
+                actual_dist_m = _haversine_meters(
+                    lat, lon, station_coords[idx][0], station_coords[idx][1]
+                )
+                if actual_dist_m <= snap_distance_m:
+                    stop_to_underground[stop_id] = station_ids[idx]
+                    # Walking penalty: time to get from bus stop to station
+                    stop_walk_penalty[stop_id] = int(actual_dist_m / walk_speed_ms)
+
+        # Build route name lookup
+        route_names = dict(zip(routes["route_id"], routes.get("route_short_name", routes["route_id"])))
+        trip_route = dict(zip(trips["trip_id"], trips["route_id"]))
+
+        # Parse segments
+        st = stop_times[stop_times["trip_id"].isin(extra_trip_ids)].copy()
+        st = st.sort_values(["trip_id", "stop_sequence"])
+
+        segments: list[TripSegment] = []
+        connected_routes: set[str] = set()
+
+        for trip_id, group in st.groupby("trip_id"):
+            rows = group.itertuples()
+            prev = next(rows, None)
+            if prev is None:
+                continue
+
+            route_id = trip_route.get(str(trip_id), "")
+            route_name = str(route_names.get(route_id, route_id))
+
+            for curr in rows:
+                from_stop = str(prev.stop_id)
+                to_stop = str(curr.stop_id)
+
+                from_station = stop_to_underground.get(from_stop)
+                to_station = stop_to_underground.get(to_stop)
+
+                # Only include if both endpoints map to Underground stations
+                # and they map to DIFFERENT stations (skip intra-station segments)
+                if from_station and to_station and from_station != to_station:
+                    dep = _parse_time(str(prev.departure_time))
+                    arr = _parse_time(str(curr.arrival_time))
+
+                    # Add walking penalty: walk from station to bus stop (depart earlier)
+                    # and from bus stop to station (arrive later)
+                    from_penalty = stop_walk_penalty.get(from_stop, 0)
+                    to_penalty = stop_walk_penalty.get(to_stop, 0)
+                    effective_dep = dep - from_penalty  # need to leave station earlier
+                    effective_arr = arr + to_penalty  # arrive at station later
+
+                    if effective_arr > effective_dep and effective_dep > 0:
+                        segments.append(TripSegment(
+                            trip_id=str(trip_id),
+                            route_id=route_id,
+                            route_name=f"[bus] {route_name}",
+                            from_station_id=from_station,
+                            to_station_id=to_station,
+                            departure_time=effective_dep,
+                            arrival_time=effective_arr,
+                        ))
+                        connected_routes.add(route_name)
+                prev = curr
+
+        logger.info(
+            f"Extra transit: {len(segments)} segments from "
+            f"{len(connected_routes)} routes connecting Underground stations"
+        )
         return segments
 
     def _compute_walking_transfers(self, stations: dict[str, Station]) -> list[WalkingTransfer]:

@@ -2,7 +2,8 @@ city_name: London Underground
 gtfs_url: https://data.bus-data.dft.gov.uk/timetable/download/gtfs-file/london/
 gtfs_path: london
 station_count: 272
-route_type_filter: [1]  # 1 = Metro/Subway
+route_type_filter: [1]  # 1 = Metro/Subway — stations to VISIT
+transit_route_types: [1, 2]  # 1=metro, 2=DLR — modes to USE for travel (buses hurt solver)
 walking_speed_kmh: 5.0
 max_walk_distance_m: 20000  # 20km covers even long running legs between stations
 running_speed_kmh: 18.0    # base running speed (piecewise: 22/18/14 km/h by distance) — super athletic young male, ~10k in 33min
