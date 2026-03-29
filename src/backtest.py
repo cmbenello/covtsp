@@ -650,6 +650,7 @@ def backtest(
                         epsilon=eps,
                         forced_visits=rand_forced if rand_forced else None,
                         seed=seed,
+                        pairings=hard_pairings if hard_pairings else None,
                     )
                     trial_count += 1
 

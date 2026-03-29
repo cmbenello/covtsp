@@ -171,13 +171,17 @@ class GreedySolver:
         start_time: int = 0, epsilon: float = 0.3,
         forced_visits: list[tuple[str, int, int]] | None = None,
         seed: int | None = None,
+        pairings: list | None = None,
     ) -> Route:
         """Randomized nearest-neighbor: with probability epsilon, pick from
         top-3 nearest instead of always the nearest. Run many times to find
         a better solution than deterministic NN.
 
-        Also supports forced visits for limited-service stations.
+        Also supports forced visits for limited-service stations and hard
+        station pairings (prefix + junction grabs).
         """
+        from src.solver.hard_stations import HardStationPairing
+
         rng = random.Random(seed)
 
         start_nodes = self.graph.get_start_nodes(start_station, start_time)
@@ -191,8 +195,62 @@ class GreedySolver:
         full_path: list[TENode] = [current_node]
         forced = list(forced_visits or [])
 
+        # Parse pairings into prefix + grab_map (same logic as solve_with_pairings)
+        prefix_stations: list[str] = []
+        grab_map: dict[str, list[tuple[str, int]]] = {}
+        grabbed: set[str] = set()
+
+        if pairings:
+            for p in pairings:
+                if p.is_prefix:
+                    prefix_stations.append(p.hard_station_id)
+                else:
+                    if p.junction_id not in grab_map:
+                        grab_map[p.junction_id] = []
+                    max_time = max(900, int(p.round_trip_cost_s * 1.5))
+                    grab_map[p.junction_id].append((p.hard_station_id, max_time))
+
+        # Phase 1: Visit prefix stations first
+        for prefix_sid in prefix_stations:
+            if prefix_sid not in unvisited:
+                continue
+            arr_node, travel_time, path = self.graph.earliest_arrival(
+                current_node, prefix_sid
+            )
+            if arr_node is None:
+                continue
+            full_path.extend(path[1:])
+            current_node = arr_node
+            unvisited.discard(prefix_sid)
+            for p_node in path[1:]:
+                if p_node[0] in unvisited:
+                    unvisited.discard(p_node[0])
+
         while unvisited:
             current_time = current_node[1]
+            current_sid = current_node[0]
+
+            # At a junction? Grab paired hard stations (deterministic — always grab)
+            if current_sid in grab_map:
+                grabbed_one = False
+                for target_sid, max_time in grab_map[current_sid]:
+                    if target_sid not in unvisited or target_sid in grabbed:
+                        continue
+                    arr_node, travel_time, path = self.graph.earliest_arrival(
+                        current_node, target_sid
+                    )
+                    if arr_node is not None and travel_time <= max_time:
+                        full_path.extend(path[1:])
+                        current_node = arr_node
+                        unvisited.discard(target_sid)
+                        grabbed.add(target_sid)
+                        for p_node in path[1:]:
+                            if p_node[0] in unvisited:
+                                unvisited.discard(p_node[0])
+                        grabbed_one = True
+                        break
+                if grabbed_one:
+                    continue
 
             # Check forced visits — only trigger when within 10 min of window
             force_target = None
