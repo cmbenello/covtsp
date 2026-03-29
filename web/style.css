@@ -5,20 +5,20 @@
 /* ── Theme variables ──────────────────────────────────────────── */
 
 :root {
-    --bg: #FAFAFA;
-    --bg-alt: #F4F4F5;
-    --white: #FFFFFF;
-    --text: #18181B;
-    --muted: #71717A;
-    --border: #E4E4E7;
+    --bg: #E8E4DF;
+    --bg-alt: #DED9D4;
+    --white: #F0ECE7;
+    --text: #1C1917;
+    --muted: #78716C;
+    --border: #D6D0CA;
     --accent: #F43F5E;
     --accent-hover: #E11D48;
     --accent-glow: rgba(244, 63, 94, 0.12);
     --accent-secondary: #FB7185;
     --accent-secondary-glow: rgba(251, 113, 133, 0.10);
     --row-hover: #F4F4F5;
-    --card-bg: #FFFFFF;
-    --nav-bg: rgba(250, 250, 250, 0.85);
+    --card-bg: #F0ECE7;
+    --nav-bg: rgba(232, 228, 223, 0.85);
     --code-bg: rgba(244, 63, 94, 0.06);
 }
 

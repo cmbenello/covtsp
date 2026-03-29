@@ -110,7 +110,7 @@
 
           var alpha = dark
             ? 0.06 + lum * 0.22
-            : 0.08 + lum * 0.30;
+            : 0.12 + lum * 0.40;
 
           var color = dark
             ? 'rgba(250,250,250,' + alpha.toFixed(3) + ')'
