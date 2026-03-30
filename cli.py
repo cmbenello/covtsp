@@ -14,6 +14,7 @@ from src.config import load_config
 from src.gtfs.download import download_gtfs
 from src.gtfs.parser import GTFSParser
 from src.backtest import backtest
+from src.best_day import compute_best_days
 
 console = Console()
 
@@ -137,6 +138,62 @@ def info(config):
     table.add_row("Data exists", str(cfg.data_dir.exists()))
 
     console.print(table)
+
+
+@cli.command("best-day")
+@click.option("--config", "-c", required=True, help="Path to city config YAML")
+@click.option("--days", default=14, help="Number of days ahead to analyze")
+@click.option("--output", "-o", default=None, help="Output JSON path (default: web/best-day-{city}.json)")
+def best_day(config, days, output):
+    """Analyze upcoming dates and recommend the best day for a transit challenge."""
+    import json
+
+    cfg = load_config(config)
+    city_slug = cfg.gtfs_path  # london, nyc, berlin
+
+    if not cfg.data_dir.exists():
+        console.print(f"[red]GTFS data not found at {cfg.data_dir}[/red]")
+        console.print("Run 'download' first.")
+        return
+
+    console.print(f"[bold]Analyzing best days for {cfg.city_name}...[/bold]")
+
+    result = compute_best_days(cfg, city_slug, days_ahead=days)
+
+    if output is None:
+        output = f"web/best-day-{city_slug}.json"
+
+    Path(output).parent.mkdir(parents=True, exist_ok=True)
+    with open(output, "w") as f:
+        json.dump(result, f, indent=2)
+
+    console.print(f"\n[green]Written to {output}[/green]")
+
+    # Display top recommendations
+    table = Table(title=f"Best Days — {cfg.city_name}")
+    table.add_column("Rank", style="bold", width=4)
+    table.add_column("Date")
+    table.add_column("Day")
+    table.add_column("Score", justify="right")
+    table.add_column("Service", justify="right")
+    table.add_column("Weather", justify="right")
+    table.add_column("Disruptions", justify="right")
+
+    for i, day in enumerate(result["days"][:7]):
+        style = "bold green" if i == 0 else ""
+        table.add_row(
+            str(i + 1),
+            day["date"],
+            day["day_of_week"],
+            f"{day['overall_score']:.1f}",
+            f"{day['service']['score']:.0f}",
+            f"{day['weather']['score']:.0f}",
+            f"{day['disruptions']['score']:.0f}",
+            style=style,
+        )
+
+    console.print(table)
+    console.print(f"\n[dim]{result['days'][0]['recommendation']}[/dim]")
 
 
 if __name__ == "__main__":

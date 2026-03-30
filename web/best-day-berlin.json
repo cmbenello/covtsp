@@ -1,0 +1,454 @@
+{
+  "city": "Berlin U-Bahn",
+  "city_slug": "berlin",
+  "generated_at": "2026-03-30T15:24:15.401042Z",
+  "analysis_window": {
+    "start_date": "2026-03-30",
+    "end_date": "2026-04-12"
+  },
+  "best_date": "2026-04-10",
+  "best_score": 92.6,
+  "days": [
+    {
+      "date": "2026-04-10",
+      "day_of_week": "Friday",
+      "overall_score": 92.6,
+      "service": {
+        "score": 100.0,
+        "active_services": 1184,
+        "total_departures": 85332,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 13.2,
+        "temp_min_c": 6.7,
+        "wind_max_kmh": 13.6,
+        "summary": "Dry, 13C"
+      },
+      "disruptions": {
+        "score": 63.5,
+        "count": 315,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "315 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. ideal weather. 315 disruptions reported."
+    },
+    {
+      "date": "2026-04-02",
+      "day_of_week": "Thursday",
+      "overall_score": 91.1,
+      "service": {
+        "score": 98.8,
+        "active_services": 1191,
+        "total_departures": 84344,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 12.4,
+        "temp_min_c": 3.6,
+        "wind_max_kmh": 4.8,
+        "summary": "Dry, 12C"
+      },
+      "disruptions": {
+        "score": 59.0,
+        "count": 354,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "354 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. ideal weather. 354 disruptions reported."
+    },
+    {
+      "date": "2026-04-07",
+      "day_of_week": "Tuesday",
+      "overall_score": 89.7,
+      "service": {
+        "score": 94.4,
+        "active_services": 1153,
+        "total_departures": 80560,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 21.3,
+        "temp_min_c": 11.0,
+        "wind_max_kmh": 24.2,
+        "summary": "Dry, 21C"
+      },
+      "disruptions": {
+        "score": 62.0,
+        "count": 328,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "328 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. ideal weather. 328 disruptions reported."
+    },
+    {
+      "date": "2026-04-01",
+      "day_of_week": "Wednesday",
+      "overall_score": 89.5,
+      "service": {
+        "score": 94.4,
+        "active_services": 1120,
+        "total_departures": 80561,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 12.1,
+        "temp_min_c": 0.5,
+        "wind_max_kmh": 5.1,
+        "summary": "Dry, 12C"
+      },
+      "disruptions": {
+        "score": 61.0,
+        "count": 337,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "337 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. ideal weather. 337 disruptions reported."
+    },
+    {
+      "date": "2026-04-08",
+      "day_of_week": "Wednesday",
+      "overall_score": 88.3,
+      "service": {
+        "score": 94.4,
+        "active_services": 1120,
+        "total_departures": 80560,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 97.0,
+        "precipitation_mm": 0.3,
+        "temp_max_c": 10.7,
+        "temp_min_c": 6.2,
+        "wind_max_kmh": 17.7,
+        "summary": "Drizzle, 11C"
+      },
+      "disruptions": {
+        "score": 58.6,
+        "count": 357,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "357 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. ideal weather. 357 disruptions reported."
+    },
+    {
+      "date": "2026-04-09",
+      "day_of_week": "Thursday",
+      "overall_score": 85.1,
+      "service": {
+        "score": 94.4,
+        "active_services": 1150,
+        "total_departures": 80560,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 82.0,
+        "precipitation_mm": 0.3,
+        "temp_max_c": 12.5,
+        "temp_min_c": 5.2,
+        "wind_max_kmh": 31.0,
+        "summary": "Drizzle, 12C, windy"
+      },
+      "disruptions": {
+        "score": 61.5,
+        "count": 332,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "332 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. windy conditions. 332 disruptions reported."
+    },
+    {
+      "date": "2026-04-04",
+      "day_of_week": "Saturday",
+      "overall_score": 84.5,
+      "service": {
+        "score": 84.2,
+        "active_services": 1082,
+        "total_departures": 71889,
+        "day_type": "saturday"
+      },
+      "weather": {
+        "score": 91.0,
+        "precipitation_mm": 0.9,
+        "temp_max_c": 10.4,
+        "temp_min_c": 5.6,
+        "wind_max_kmh": 24.1,
+        "summary": "Drizzle, 10C"
+      },
+      "disruptions": {
+        "score": 69.2,
+        "count": 266,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "266 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Good saturday service. ideal weather. 266 disruptions reported."
+    },
+    {
+      "date": "2026-03-31",
+      "day_of_week": "Tuesday",
+      "overall_score": 80.6,
+      "service": {
+        "score": 94.4,
+        "active_services": 1109,
+        "total_departures": 80561,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 64.0,
+        "precipitation_mm": 3.6,
+        "temp_max_c": 8.5,
+        "temp_min_c": 3.0,
+        "wind_max_kmh": 19.1,
+        "summary": "Light rain, 8C"
+      },
+      "disruptions": {
+        "score": 61.4,
+        "count": 333,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "333 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. rain may slow outdoor transfers. 333 disruptions reported."
+    },
+    {
+      "date": "2026-04-05",
+      "day_of_week": "Sunday",
+      "overall_score": 80.5,
+      "service": {
+        "score": 71.8,
+        "active_services": 1051,
+        "total_departures": 61259,
+        "day_type": "sunday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 13.6,
+        "temp_min_c": 1.4,
+        "wind_max_kmh": 8.0,
+        "summary": "Dry, 14C"
+      },
+      "disruptions": {
+        "score": 67.2,
+        "count": 283,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "283 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Good sunday service. ideal weather. 283 disruptions reported."
+    },
+    {
+      "date": "2026-04-11",
+      "day_of_week": "Saturday",
+      "overall_score": 80.3,
+      "service": {
+        "score": 84.2,
+        "active_services": 1080,
+        "total_departures": 71889,
+        "day_type": "saturday"
+      },
+      "weather": {
+        "score": 73.0,
+        "precipitation_mm": 2.7,
+        "temp_max_c": 9.6,
+        "temp_min_c": 7.1,
+        "wind_max_kmh": 12.2,
+        "summary": "Light rain, 10C"
+      },
+      "disruptions": {
+        "score": 70.9,
+        "count": 251,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "251 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Good saturday service. rain may slow outdoor transfers. 251 disruptions reported."
+    },
+    {
+      "date": "2026-04-12",
+      "day_of_week": "Sunday",
+      "overall_score": 79.9,
+      "service": {
+        "score": 67.7,
+        "active_services": 1022,
+        "total_departures": 57806,
+        "day_type": "sunday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 17.0,
+        "temp_min_c": 5.5,
+        "wind_max_kmh": 9.6,
+        "summary": "Dry, 17C"
+      },
+      "disruptions": {
+        "score": 73.7,
+        "count": 227,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "227 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Reduced sunday service. ideal weather. 227 disruptions reported."
+    },
+    {
+      "date": "2026-03-30",
+      "day_of_week": "Monday",
+      "overall_score": 75.3,
+      "service": {
+        "score": 94.4,
+        "active_services": 1066,
+        "total_departures": 80561,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 44.0,
+        "precipitation_mm": 5.6,
+        "temp_max_c": 8.7,
+        "temp_min_c": 4.4,
+        "wind_max_kmh": 19.2,
+        "summary": "Heavy rain, 9C"
+      },
+      "disruptions": {
+        "score": 59.8,
+        "count": 347,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "347 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Excellent weekday service levels. heavy rain expected. 347 disruptions reported."
+    },
+    {
+      "date": "2026-04-03",
+      "day_of_week": "Friday",
+      "overall_score": 74.4,
+      "service": {
+        "score": 71.8,
+        "active_services": 997,
+        "total_departures": 61259,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 97.0,
+        "precipitation_mm": 0.3,
+        "temp_max_c": 11.4,
+        "temp_min_c": 5.7,
+        "wind_max_kmh": 11.9,
+        "summary": "Drizzle, 11C"
+      },
+      "disruptions": {
+        "score": 40.0,
+        "count": 518,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "518 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Good weekday service. ideal weather. 518 disruptions reported."
+    },
+    {
+      "date": "2026-04-06",
+      "day_of_week": "Monday",
+      "overall_score": 74.4,
+      "service": {
+        "score": 67.7,
+        "active_services": 1035,
+        "total_departures": 57792,
+        "day_type": "weekday"
+      },
+      "weather": {
+        "score": 100,
+        "precipitation_mm": 0.0,
+        "temp_max_c": 21.5,
+        "temp_min_c": 7.8,
+        "wind_max_kmh": 14.0,
+        "summary": "Dry, 22C"
+      },
+      "disruptions": {
+        "score": 45.2,
+        "count": 473,
+        "items": [
+          {
+            "line": "GTFS",
+            "description": "473 service removals",
+            "severity": "minor"
+          }
+        ]
+      },
+      "recommendation": "Reduced weekday service. ideal weather. 473 disruptions reported."
+    }
+  ],
+  "methodology": {
+    "service_weight": 0.45,
+    "weather_weight": 0.25,
+    "disruption_weight": 0.2,
+    "delay_weight": 0.1,
+    "notes": "Service score based on active GTFS trip count. Weather from Open-Meteo. Disruptions from TfL API (London) or GTFS exceptions."
+  }
+}

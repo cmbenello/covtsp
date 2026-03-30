@@ -83,6 +83,56 @@
         </div>
     </section>
 
+    <!-- Best Day to Attempt -->
+    <section class="section best-day-section reveal" id="best-day">
+        <div class="section-label">Planning</div>
+        <h2 class="section-title">Best Day to Attempt</h2>
+        <p class="section-desc">
+            Scored across service schedules, weather forecasts, planned disruptions, and historical delay patterns.
+        </p>
+
+        <div class="bd-tabs">
+            <button class="bd-tab active" data-city="london">London</button>
+            <button class="bd-tab" data-city="nyc">NYC</button>
+            <button class="bd-tab" data-city="berlin">Berlin</button>
+        </div>
+
+        <div class="bd-hero-card" id="bd-hero">
+            <div class="bd-recommended">
+                <span class="bd-label">Recommended</span>
+                <span class="bd-date" id="bd-best-date">--</span>
+                <span class="bd-score-wrap">
+                    <span class="bd-score" id="bd-best-score">--</span>
+                    <span class="bd-score-label">/ 100</span>
+                </span>
+            </div>
+            <div class="bd-factors" id="bd-factors">
+                <div class="bd-factor">
+                    <span class="bd-factor-label">Service</span>
+                    <div class="bd-factor-bar"><div class="bd-factor-fill" id="bd-fill-service"></div></div>
+                    <span class="bd-factor-value" id="bd-val-service">--</span>
+                </div>
+                <div class="bd-factor">
+                    <span class="bd-factor-label">Weather</span>
+                    <div class="bd-factor-bar"><div class="bd-factor-fill" id="bd-fill-weather"></div></div>
+                    <span class="bd-factor-value" id="bd-val-weather">--</span>
+                </div>
+                <div class="bd-factor">
+                    <span class="bd-factor-label">Disruptions</span>
+                    <div class="bd-factor-bar"><div class="bd-factor-fill" id="bd-fill-disruption"></div></div>
+                    <span class="bd-factor-value" id="bd-val-disruption">--</span>
+                </div>
+            </div>
+            <p class="bd-recommendation" id="bd-recommendation">--</p>
+        </div>
+
+        <div class="bd-calendar" id="bd-calendar"></div>
+
+        <p class="bd-footnote muted">
+            Updated <span id="bd-updated">--</span>. Service data from GTFS timetables. Weather from Open-Meteo. Disruptions from TfL API / GTFS exceptions.
+        </p>
+    </section>
+
     <!-- Record Comparison -->
     <section class="section record-section reveal">
         <div class="section-label">Background</div>
@@ -194,5 +244,6 @@
     <script src="aalib.js"></script>
     <script src="ascii-bg.js"></script>
     <script src="index.js"></script>
+    <script src="best-day.js"></script>
 </body>
 </html>

@@ -359,6 +359,268 @@ body {
     font-weight: 500;
 }
 
+/* ── Best Day to Attempt ─────────────────────────────────────── */
+
+.bd-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    margin-top: 24px;
+}
+
+.bd-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.bd-tab:hover {
+    color: var(--text);
+    border-color: var(--text);
+}
+
+.bd-tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.bd-hero-card {
+    padding: 28px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 16px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .bd-hero-card {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bd-recommended {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.bd-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.bd-date {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.bd-score-wrap {
+    margin-left: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.bd-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.bd-score-label {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.bd-factors {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.bd-factor {
+    display: grid;
+    grid-template-columns: 100px 1fr 48px;
+    align-items: center;
+    gap: 12px;
+}
+
+.bd-factor-label {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.bd-factor-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.bd-factor-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+    background: var(--accent);
+}
+
+.bd-factor-fill.good { background: #22C55E; }
+.bd-factor-fill.ok { background: #F59E0B; }
+.bd-factor-fill.bad { background: #EF4444; }
+
+.bd-factor-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+}
+
+.bd-recommendation {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.bd-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.bd-day {
+    padding: 12px 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.bd-day:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .bd-day:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bd-day.best {
+    border-color: var(--accent);
+    border-width: 2px;
+}
+
+.bd-day-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.bd-day-num {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.bd-day-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.bd-day-score.score-high { color: #22C55E; }
+.bd-day-score.score-mid { color: #F59E0B; }
+.bd-day-score.score-low { color: #EF4444; }
+
+.bd-day-detail {
+    display: none;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+    text-align: left;
+}
+
+.bd-day.expanded .bd-day-detail {
+    display: block;
+}
+
+.bd-day.expanded {
+    grid-column: span 2;
+}
+
+.bd-footnote {
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.bd-empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.bd-empty code {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 10px;
+    background: var(--code-bg);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .bd-calendar {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .bd-day.expanded {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .bd-calendar {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .bd-recommended {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .bd-score-wrap {
+        margin-left: 0;
+    }
+    .bd-factor {
+        grid-template-columns: 80px 1fr 40px;
+    }
+    .bd-day.expanded {
+        grid-column: span 3;
+    }
+}
+
 /* ── Record Comparison ────────────────────────────────────────── */
 
 .record-bars {
