@@ -1,0 +1,3686 @@
+{
+  "improvement_number": 8,
+  "timestamp": "2026-03-30T10:52:01.704132",
+  "total_time_seconds": 61920,
+  "total_time_formatted": "17h12m",
+  "stations_visited": 272,
+  "start_station_id": "940GZZLUUPM",
+  "start_station_name": "Upminster Underground Station",
+  "start_time_seconds": 22500,
+  "start_time_formatted": "06:15",
+  "gap_to_record_seconds": -1980,
+  "gap_to_record_formatted": "-33 min",
+  "solver_params": "randomized eps=0.05 trial=3475 seed=1289001101",
+  "route": [
+    {
+      "station_id": "940GZZLUUPM",
+      "station_name": "Upminster Underground Station",
+      "arrival": "06:17",
+      "departure": "06:17",
+      "line": "",
+      "type": "start",
+      "lat": 51.55906320964,
+      "lon": 0.25088179465
+    },
+    {
+      "station_id": "940GZZLUUPB",
+      "station_name": "Upminster Bridge Underground Station",
+      "arrival": "06:19",
+      "departure": "06:19",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.55856006186,
+      "lon": 0.23580943092
+    },
+    {
+      "station_id": "940GZZLUHCH",
+      "station_name": "Hornchurch Underground Station",
+      "arrival": "06:20",
+      "departure": "06:20",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.5540928024,
+      "lon": 0.21911618412
+    },
+    {
+      "station_id": "940GZZLUEPK",
+      "station_name": "Elm Park Underground Station",
+      "arrival": "06:22",
+      "departure": "06:22",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.54977508785,
+      "lon": 0.19863990721
+    },
+    {
+      "station_id": "940GZZLUDGE",
+      "station_name": "Dagenham East Underground Station",
+      "arrival": "06:25",
+      "departure": "06:25",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.54409600711,
+      "lon": 0.16601658416
+    },
+    {
+      "station_id": "940GZZLUDGY",
+      "station_name": "Dagenham Heathway Underground Station",
+      "arrival": "06:27",
+      "departure": "06:27",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.54163920224,
+      "lon": 0.14752678668
+    },
+    {
+      "station_id": "940GZZLUBEC",
+      "station_name": "Becontree Underground Station",
+      "arrival": "06:29",
+      "departure": "06:29",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.54033126473,
+      "lon": 0.12701601897
+    },
+    {
+      "station_id": "940GZZLUUPY",
+      "station_name": "Upney Underground Station",
+      "arrival": "06:32",
+      "departure": "06:32",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.53837157713,
+      "lon": 0.10153017727
+    },
+    {
+      "station_id": "940GZZLUBKG",
+      "station_name": "Barking Underground Station",
+      "arrival": "06:35",
+      "departure": "06:35",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.53932117981,
+      "lon": 0.08105322527
+    },
+    {
+      "station_id": "940GZZLUEHM",
+      "station_name": "East Ham Underground Station",
+      "arrival": "06:38",
+      "departure": "06:38",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.53894798529,
+      "lon": 0.05118563786
+    },
+    {
+      "station_id": "940GZZLUUPK",
+      "station_name": "Upton Park Underground Station",
+      "arrival": "06:40",
+      "departure": "06:40",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.53534048958,
+      "lon": 0.03526306699
+    },
+    {
+      "station_id": "940GZZLUPLW",
+      "station_name": "Plaistow Underground Station",
+      "arrival": "06:42",
+      "departure": "06:42",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.53134069708,
+      "lon": 0.01745135068
+    },
+    {
+      "station_id": "940GZZLUWHM",
+      "station_name": "West Ham Underground Station",
+      "arrival": "06:44",
+      "departure": "06:44",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.52813603879,
+      "lon": 0.00505519937
+    },
+    {
+      "station_id": "940GZZLUBBB",
+      "station_name": "Bromley-by-Bow Underground Station",
+      "arrival": "06:46",
+      "departure": "06:46",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.52483944302,
+      "lon": -0.01153823726
+    },
+    {
+      "station_id": "940GZZLUBWR",
+      "station_name": "Bow Road Underground Station",
+      "arrival": "06:48",
+      "departure": "06:48",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.52693950945,
+      "lon": -0.02512808632
+    },
+    {
+      "station_id": "940GZZLUMED",
+      "station_name": "Mile End Underground Station",
+      "arrival": "06:49",
+      "departure": "06:49",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.52512212446,
+      "lon": -0.03364008363
+    },
+    {
+      "station_id": "940GZZLUBLG",
+      "station_name": "Bethnal Green Underground Station",
+      "arrival": "06:51",
+      "departure": "06:52",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.52722222342,
+      "lon": -0.05550613188
+    },
+    {
+      "station_id": "940GZZLULVT",
+      "station_name": "Liverpool Street Underground Station",
+      "arrival": "06:54",
+      "departure": "06:55",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51737226943,
+      "lon": -0.08318156003
+    },
+    {
+      "station_id": "940GZZLUBNK",
+      "station_name": "Bank Underground Station",
+      "arrival": "06:56",
+      "departure": "06:56",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51341980792,
+      "lon": -0.08895382658
+    },
+    {
+      "station_id": "940GZZLUWLO",
+      "station_name": "Waterloo Underground Station",
+      "arrival": "06:59",
+      "departure": "06:59",
+      "line": "Waterloo & City",
+      "type": "transit",
+      "lat": 51.50329851598,
+      "lon": -0.11478030879
+    },
+    {
+      "station_id": "940GZZLUWSM",
+      "station_name": "Westminster Underground Station",
+      "arrival": "07:01",
+      "departure": "07:01",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.50131990879,
+      "lon": -0.12486132979
+    },
+    {
+      "station_id": "940GZZLUSJP",
+      "station_name": "St. James's Park Underground Station",
+      "arrival": "07:03",
+      "departure": "07:03",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49954401901,
+      "lon": -0.13360767563
+    },
+    {
+      "station_id": "940GZZLUVIC",
+      "station_name": "Victoria Underground Station",
+      "arrival": "07:04",
+      "departure": "07:04",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49635850932,
+      "lon": -0.14310216238
+    },
+    {
+      "station_id": "940GZZLUSSQ",
+      "station_name": "Sloane Square Underground Station",
+      "arrival": "07:06",
+      "departure": "07:06",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49226953348,
+      "lon": -0.1563772329
+    },
+    {
+      "station_id": "940GZZLUSKS",
+      "station_name": "South Kensington Underground Station",
+      "arrival": "07:08",
+      "departure": "07:09",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49409412114,
+      "lon": -0.17413817981
+    },
+    {
+      "station_id": "940GZZLUGTR",
+      "station_name": "Gloucester Road Underground Station",
+      "arrival": "07:11",
+      "departure": "07:11",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49431637978,
+      "lon": -0.1826576465
+    },
+    {
+      "station_id": "940GZZLUECT",
+      "station_name": "Earl's Court Underground Station",
+      "arrival": "07:12",
+      "departure": "07:12",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49206304944,
+      "lon": -0.19337834314
+    },
+    {
+      "station_id": "940GZZLUBSC",
+      "station_name": "Barons Court Underground Station",
+      "arrival": "07:15",
+      "departure": "07:15",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49031092041,
+      "lon": -0.21342690421
+    },
+    {
+      "station_id": "940GZZLUKOY",
+      "station_name": "Kensington (Olympia) Underground Station",
+      "arrival": "07:20",
+      "departure": "07:20",
+      "line": "",
+      "type": "walk",
+      "lat": 51.49762370705,
+      "lon": -0.21001466193
+    },
+    {
+      "station_id": "940GZZLUSBC",
+      "station_name": "Shepherd's Bush (Central) Underground Station",
+      "arrival": "07:25",
+      "departure": "07:25",
+      "line": "",
+      "type": "walk",
+      "lat": 51.50437610302,
+      "lon": -0.21881340072
+    },
+    {
+      "station_id": "940GZZLUHPK",
+      "station_name": "Holland Park Underground Station",
+      "arrival": "07:27",
+      "departure": "07:28",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.50714339979,
+      "lon": -0.20567886405
+    },
+    {
+      "station_id": "940GZZLUNHG",
+      "station_name": "Notting Hill Gate Underground Station",
+      "arrival": "07:29",
+      "departure": "07:29",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.50912774136,
+      "lon": -0.19610430184
+    },
+    {
+      "station_id": "940GZZLUQWY",
+      "station_name": "Queensway Underground Station",
+      "arrival": "07:30",
+      "departure": "07:31",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51031159606,
+      "lon": -0.18715153241
+    },
+    {
+      "station_id": "940GZZLULGT",
+      "station_name": "Lancaster Gate Underground Station",
+      "arrival": "07:32",
+      "departure": "07:32",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5117225046,
+      "lon": -0.17549428139
+    },
+    {
+      "station_id": "940GZZLUQWY",
+      "station_name": "Queensway Underground Station",
+      "arrival": "07:33",
+      "departure": "07:33",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51031159606,
+      "lon": -0.18715153241
+    },
+    {
+      "station_id": "940GZZLUBWT",
+      "station_name": "Bayswater Underground Station",
+      "arrival": "07:34",
+      "departure": "07:34",
+      "line": "",
+      "type": "walk",
+      "lat": 51.51228410348,
+      "lon": -0.18793792726
+    },
+    {
+      "station_id": "940GZZLUPAC",
+      "station_name": "Paddington Underground Station",
+      "arrival": "07:36",
+      "departure": "07:37",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51658146883,
+      "lon": -0.17568927604
+    },
+    {
+      "station_id": "940GZZLUERB",
+      "station_name": "Edgware Road (Bakerloo) Underground Station",
+      "arrival": "07:38",
+      "departure": "07:38",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.5202989934,
+      "lon": -0.17014981143
+    },
+    {
+      "station_id": "940GZZLUMYB",
+      "station_name": "Marylebone Underground Station",
+      "arrival": "07:40",
+      "departure": "07:40",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.52232169802,
+      "lon": -0.16320726073
+    },
+    {
+      "station_id": "940GZZLUBST",
+      "station_name": "Baker Street Underground Station",
+      "arrival": "07:41",
+      "departure": "07:41",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.52288283208,
+      "lon": -0.15713036309
+    },
+    {
+      "station_id": "940GZZLUFYR",
+      "station_name": "Finchley Road Underground Station",
+      "arrival": "07:47",
+      "departure": "07:47",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.54682464629,
+      "lon": -0.17984503432
+    },
+    {
+      "station_id": "940GZZLUWYP",
+      "station_name": "Wembley Park Underground Station",
+      "arrival": "07:54",
+      "departure": "07:54",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.56319809103,
+      "lon": -0.27926164347
+    },
+    {
+      "station_id": "940GZZLUPRD",
+      "station_name": "Preston Road Underground Station",
+      "arrival": "07:56",
+      "departure": "07:56",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.57197202109,
+      "lon": -0.29510678065
+    },
+    {
+      "station_id": "940GZZLUNKP",
+      "station_name": "Northwick Park Underground Station",
+      "arrival": "07:58",
+      "departure": "07:58",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.57848083775,
+      "lon": -0.31805606151
+    },
+    {
+      "station_id": "940GZZLUHAW",
+      "station_name": "Harrow & Wealdstone Underground Station",
+      "arrival": "08:12",
+      "departure": "08:12",
+      "line": "",
+      "type": "walk",
+      "lat": 51.59226777061,
+      "lon": -0.335217428
+    },
+    {
+      "station_id": "940GZZLUKEN",
+      "station_name": "Kenton Underground Station",
+      "arrival": "08:14",
+      "departure": "08:14",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.58175556533,
+      "lon": -0.31691038448
+    },
+    {
+      "station_id": "940GZZLUSKT",
+      "station_name": "South Kenton Underground Station",
+      "arrival": "08:16",
+      "departure": "08:16",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.57023153148,
+      "lon": -0.30843285804
+    },
+    {
+      "station_id": "940GZZLUNWY",
+      "station_name": "North Wembley Underground Station",
+      "arrival": "08:18",
+      "departure": "08:18",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.56255111467,
+      "lon": -0.30400013473
+    },
+    {
+      "station_id": "940GZZLUWYC",
+      "station_name": "Wembley Central Underground Station",
+      "arrival": "08:20",
+      "departure": "08:20",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.55230429828,
+      "lon": -0.29685187022
+    },
+    {
+      "station_id": "940GZZLUSGP",
+      "station_name": "Stonebridge Park Underground Station",
+      "arrival": "08:24",
+      "departure": "08:24",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.54395905807,
+      "lon": -0.27589178102
+    },
+    {
+      "station_id": "940GZZLUHSN",
+      "station_name": "Harlesden Underground Station",
+      "arrival": "08:26",
+      "departure": "08:26",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.53631032299,
+      "lon": -0.257882975
+    },
+    {
+      "station_id": "940GZZLUWJN",
+      "station_name": "Willesden Junction Underground Station",
+      "arrival": "08:28",
+      "departure": "08:28",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.53225884842,
+      "lon": -0.24428302144
+    },
+    {
+      "station_id": "940GZZLUKSL",
+      "station_name": "Kensal Green Underground Station",
+      "arrival": "08:31",
+      "departure": "08:31",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.53053911448,
+      "lon": -0.22501554178
+    },
+    {
+      "station_id": "940GZZLUQPS",
+      "station_name": "Queen's Park Underground Station",
+      "arrival": "08:36",
+      "departure": "08:36",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.53415771031,
+      "lon": -0.20457352331
+    },
+    {
+      "station_id": "940GZZLUKPK",
+      "station_name": "Kilburn Park Underground Station",
+      "arrival": "08:37",
+      "departure": "08:37",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.53497914967,
+      "lon": -0.19423176115
+    },
+    {
+      "station_id": "940GZZLUMVL",
+      "station_name": "Maida Vale Underground Station",
+      "arrival": "08:39",
+      "departure": "08:39",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.52977668591,
+      "lon": -0.18575848365
+    },
+    {
+      "station_id": "940GZZLUWKA",
+      "station_name": "Warwick Avenue Underground Station",
+      "arrival": "08:41",
+      "departure": "08:41",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.52326256928,
+      "lon": -0.18378305187
+    },
+    {
+      "station_id": "940GZZLUPAC",
+      "station_name": "Paddington Underground Station",
+      "arrival": "08:43",
+      "departure": "08:43",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.51658146883,
+      "lon": -0.17568927604
+    },
+    {
+      "station_id": "940GZZLURYO",
+      "station_name": "Royal Oak Underground Station",
+      "arrival": "08:44",
+      "departure": "08:44",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51911289061,
+      "lon": -0.18874793584
+    },
+    {
+      "station_id": "940GZZLUWSP",
+      "station_name": "Westbourne Park Underground Station",
+      "arrival": "08:46",
+      "departure": "08:46",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.52110991847,
+      "lon": -0.20106510583
+    },
+    {
+      "station_id": "940GZZLULAD",
+      "station_name": "Ladbroke Grove Underground Station",
+      "arrival": "08:48",
+      "departure": "08:48",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51744877247,
+      "lon": -0.21039059843
+    },
+    {
+      "station_id": "940GZZLULRD",
+      "station_name": "Latimer Road Underground Station",
+      "arrival": "08:49",
+      "departure": "08:49",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51338908703,
+      "lon": -0.21779891419
+    },
+    {
+      "station_id": "940GZZLUWLA",
+      "station_name": "Wood Lane Underground Station",
+      "arrival": "08:51",
+      "departure": "08:51",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.50966938964,
+      "lon": -0.2245297895
+    },
+    {
+      "station_id": "940GZZLUSBM",
+      "station_name": "Shepherd's Bush Market Underground Station",
+      "arrival": "08:52",
+      "departure": "08:52",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.50557877504,
+      "lon": -0.22637470215
+    },
+    {
+      "station_id": "940GZZLUGHK",
+      "station_name": "Goldhawk Road Underground Station",
+      "arrival": "08:53",
+      "departure": "08:53",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.50200493891,
+      "lon": -0.22671517392
+    },
+    {
+      "station_id": "940GZZLUHSC",
+      "station_name": "Hammersmith (H&C Line) Underground Station",
+      "arrival": "08:55",
+      "departure": "08:55",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.49353637954,
+      "lon": -0.22508464593
+    },
+    {
+      "station_id": "940GZZLUHSD",
+      "station_name": "Hammersmith (Dist&Picc Line) Underground Station",
+      "arrival": "08:56",
+      "departure": "08:56",
+      "line": "",
+      "type": "walk",
+      "lat": 51.49230022528,
+      "lon": -0.22362010344
+    },
+    {
+      "station_id": "940GZZLUTNG",
+      "station_name": "Turnham Green Underground Station",
+      "arrival": "08:59",
+      "departure": "09:00",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49514770746,
+      "lon": -0.25455465855
+    },
+    {
+      "station_id": "940GZZLUCWP",
+      "station_name": "Chiswick Park Underground Station",
+      "arrival": "09:02",
+      "departure": "09:02",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.4946272403,
+      "lon": -0.26797206812
+    },
+    {
+      "station_id": "940GZZLUTNG",
+      "station_name": "Turnham Green Underground Station",
+      "arrival": "09:04",
+      "departure": "09:04",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49514770746,
+      "lon": -0.25455465855
+    },
+    {
+      "station_id": "940GZZLUSFB",
+      "station_name": "Stamford Brook Underground Station",
+      "arrival": "09:06",
+      "departure": "09:06",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.4949167279,
+      "lon": -0.24570375696
+    },
+    {
+      "station_id": "940GZZLURVP",
+      "station_name": "Ravenscourt Park Underground Station",
+      "arrival": "09:07",
+      "departure": "09:07",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.4941219217,
+      "lon": -0.23588068794
+    },
+    {
+      "station_id": "940GZZLUHSD",
+      "station_name": "Hammersmith (Dist&Picc Line) Underground Station",
+      "arrival": "09:10",
+      "departure": "09:10",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49230022528,
+      "lon": -0.22362010344
+    },
+    {
+      "station_id": "940GZZLUBSC",
+      "station_name": "Barons Court Underground Station",
+      "arrival": "09:11",
+      "departure": "09:11",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49031092041,
+      "lon": -0.21342690421
+    },
+    {
+      "station_id": "940GZZLUWKN",
+      "station_name": "West Kensington Underground Station",
+      "arrival": "09:13",
+      "departure": "09:13",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49045906302,
+      "lon": -0.20663649007
+    },
+    {
+      "station_id": "940GZZLUECT",
+      "station_name": "Earl's Court Underground Station",
+      "arrival": "09:18",
+      "departure": "09:18",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49206304944,
+      "lon": -0.19337834314
+    },
+    {
+      "station_id": "940GZZLUWBN",
+      "station_name": "West Brompton Underground Station",
+      "arrival": "09:19",
+      "departure": "09:19",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.48726827558,
+      "lon": -0.19559879622
+    },
+    {
+      "station_id": "940GZZLUFBY",
+      "station_name": "Fulham Broadway Underground Station",
+      "arrival": "09:21",
+      "departure": "09:21",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.48008055374,
+      "lon": -0.19542164405
+    },
+    {
+      "station_id": "940GZZLUPSG",
+      "station_name": "Parsons Green Underground Station",
+      "arrival": "09:23",
+      "departure": "09:23",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.47527695836,
+      "lon": -0.20116960412
+    },
+    {
+      "station_id": "940GZZLUPYB",
+      "station_name": "Putney Bridge Underground Station",
+      "arrival": "09:25",
+      "departure": "09:25",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.46826166883,
+      "lon": -0.20873077286
+    },
+    {
+      "station_id": "940GZZLUEPY",
+      "station_name": "East Putney Underground Station",
+      "arrival": "09:27",
+      "departure": "09:27",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.45920489976,
+      "lon": -0.2109998909
+    },
+    {
+      "station_id": "940GZZLUSFS",
+      "station_name": "Southfields Underground Station",
+      "arrival": "09:30",
+      "departure": "09:30",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.44507341076,
+      "lon": -0.20660191266
+    },
+    {
+      "station_id": "940GZZLUWIP",
+      "station_name": "Wimbledon Park Underground Station",
+      "arrival": "09:32",
+      "departure": "09:32",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.43457253037,
+      "lon": -0.19971890585
+    },
+    {
+      "station_id": "940GZZLUWIM",
+      "station_name": "Wimbledon Underground Station",
+      "arrival": "09:36",
+      "departure": "09:36",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.42120675241,
+      "lon": -0.20657264142
+    },
+    {
+      "station_id": "940GZZLUSWN",
+      "station_name": "South Wimbledon Underground Station",
+      "arrival": "09:42",
+      "departure": "09:42",
+      "line": "",
+      "type": "walk",
+      "lat": 51.41530862319,
+      "lon": -0.19200533923
+    },
+    {
+      "station_id": "940GZZLUMDN",
+      "station_name": "Morden Underground Station",
+      "arrival": "09:44",
+      "departure": "09:46",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.40214219282,
+      "lon": -0.19483930358
+    },
+    {
+      "station_id": "940GZZLUSWN",
+      "station_name": "South Wimbledon Underground Station",
+      "arrival": "09:49",
+      "departure": "09:49",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.41530862319,
+      "lon": -0.19200533923
+    },
+    {
+      "station_id": "940GZZLUCSD",
+      "station_name": "Colliers Wood Underground Station",
+      "arrival": "09:51",
+      "departure": "09:51",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.41815954197,
+      "lon": -0.1780861199
+    },
+    {
+      "station_id": "940GZZLUTBY",
+      "station_name": "Tooting Broadway Underground Station",
+      "arrival": "09:53",
+      "departure": "09:53",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.4276302361,
+      "lon": -0.1683735721
+    },
+    {
+      "station_id": "940GZZLUTBC",
+      "station_name": "Tooting Bec Underground Station",
+      "arrival": "09:55",
+      "departure": "09:55",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.43567819583,
+      "lon": -0.15973567066
+    },
+    {
+      "station_id": "940GZZLUBLM",
+      "station_name": "Balham Underground Station",
+      "arrival": "09:56",
+      "departure": "09:56",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.44328785913,
+      "lon": -0.15299747229
+    },
+    {
+      "station_id": "940GZZLUCPS",
+      "station_name": "Clapham South Underground Station",
+      "arrival": "09:58",
+      "departure": "09:58",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.45265361565,
+      "lon": -0.14758197268
+    },
+    {
+      "station_id": "940GZZLUCPC",
+      "station_name": "Clapham Common Underground Station",
+      "arrival": "10:00",
+      "departure": "10:00",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.46174224145,
+      "lon": -0.13831738222
+    },
+    {
+      "station_id": "940GZZLUCPN",
+      "station_name": "Clapham North Underground Station",
+      "arrival": "10:02",
+      "departure": "10:02",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.46513522497,
+      "lon": -0.13001626465
+    },
+    {
+      "station_id": "940GZZLUSKW",
+      "station_name": "Stockwell Underground Station",
+      "arrival": "10:03",
+      "departure": "10:03",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.47218449438,
+      "lon": -0.12264366171
+    },
+    {
+      "station_id": "940GZZLUBXN",
+      "station_name": "Brixton Underground Station",
+      "arrival": "10:05",
+      "departure": "10:05",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.46261782799,
+      "lon": -0.11488809366
+    },
+    {
+      "station_id": "940GZZLUSKW",
+      "station_name": "Stockwell Underground Station",
+      "arrival": "10:07",
+      "departure": "10:07",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.47218449438,
+      "lon": -0.12264366171
+    },
+    {
+      "station_id": "940GZZLUVXL",
+      "station_name": "Vauxhall Underground Station",
+      "arrival": "10:10",
+      "departure": "10:10",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.48574329087,
+      "lon": -0.12420411456
+    },
+    {
+      "station_id": "940GZZLUPCO",
+      "station_name": "Pimlico Underground Station",
+      "arrival": "10:11",
+      "departure": "10:11",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.48909712186,
+      "lon": -0.13376064999
+    },
+    {
+      "station_id": "940GZZLUVXL",
+      "station_name": "Vauxhall Underground Station",
+      "arrival": "10:12",
+      "departure": "10:12",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.48574329087,
+      "lon": -0.12420411456
+    },
+    {
+      "station_id": "9400ZZNEUGST",
+      "station_name": "Nine Elms Underground Station",
+      "arrival": "10:15",
+      "departure": "10:15",
+      "line": "",
+      "type": "walk",
+      "lat": 51.47991242524,
+      "lon": -0.12847579781
+    },
+    {
+      "station_id": "9400ZZBPSUST",
+      "station_name": "Battersea Power Station Underground Station",
+      "arrival": "10:18",
+      "departure": "10:20",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.47993191924,
+      "lon": -0.14214205631
+    },
+    {
+      "station_id": "9400ZZNEUGST",
+      "station_name": "Nine Elms Underground Station",
+      "arrival": "10:22",
+      "departure": "10:22",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.47991242524,
+      "lon": -0.12847579781
+    },
+    {
+      "station_id": "940GZZLUKNG",
+      "station_name": "Kennington Underground Station",
+      "arrival": "10:25",
+      "departure": "10:25",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.48833668764,
+      "lon": -0.10596276147
+    },
+    {
+      "station_id": "940GZZLUOVL",
+      "station_name": "Oval Underground Station",
+      "arrival": "10:26",
+      "departure": "10:26",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.4818495524,
+      "lon": -0.11243889339
+    },
+    {
+      "station_id": "940GZZLUKNG",
+      "station_name": "Kennington Underground Station",
+      "arrival": "10:29",
+      "departure": "10:29",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.48833668764,
+      "lon": -0.10596276147
+    },
+    {
+      "station_id": "940GZZLUEAC",
+      "station_name": "Elephant & Castle Underground Station",
+      "arrival": "10:31",
+      "departure": "10:32",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.49453585773,
+      "lon": -0.10060601497
+    },
+    {
+      "station_id": "940GZZLULBN",
+      "station_name": "Lambeth North Underground Station",
+      "arrival": "10:34",
+      "departure": "10:34",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.49880753988,
+      "lon": -0.11231464696
+    },
+    {
+      "station_id": "940GZZLUWLO",
+      "station_name": "Waterloo Underground Station",
+      "arrival": "10:36",
+      "departure": "10:37",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.50329851598,
+      "lon": -0.11478030879
+    },
+    {
+      "station_id": "940GZZLUSWK",
+      "station_name": "Southwark Underground Station",
+      "arrival": "10:38",
+      "departure": "10:38",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.50427030794,
+      "lon": -0.10533095498
+    },
+    {
+      "station_id": "940GZZLULNB",
+      "station_name": "London Bridge Underground Station",
+      "arrival": "10:40",
+      "departure": "10:40",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.50572084179,
+      "lon": -0.08887250012
+    },
+    {
+      "station_id": "940GZZLUBOR",
+      "station_name": "Borough Underground Station",
+      "arrival": "10:41",
+      "departure": "10:42",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.50119883594,
+      "lon": -0.0933697758
+    },
+    {
+      "station_id": "940GZZLULNB",
+      "station_name": "London Bridge Underground Station",
+      "arrival": "10:43",
+      "departure": "10:43",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.50572084179,
+      "lon": -0.08887250012
+    },
+    {
+      "station_id": "940GZZLUBMY",
+      "station_name": "Bermondsey Underground Station",
+      "arrival": "10:45",
+      "departure": "10:45",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.49774999001,
+      "lon": -0.06399323147
+    },
+    {
+      "station_id": "940GZZLUCWR",
+      "station_name": "Canada Water Underground Station",
+      "arrival": "10:47",
+      "departure": "10:47",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.49793090307,
+      "lon": -0.04940531838
+    },
+    {
+      "station_id": "940GZZLUCYF",
+      "station_name": "Canary Wharf Underground Station",
+      "arrival": "10:49",
+      "departure": "10:49",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.50348751295,
+      "lon": -0.01824598925
+    },
+    {
+      "station_id": "940GZZLUNGW",
+      "station_name": "North Greenwich Underground Station",
+      "arrival": "10:51",
+      "departure": "10:54",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.50046970308,
+      "lon": 0.00428727623
+    },
+    {
+      "station_id": "940GZZLUCGT",
+      "station_name": "Canning Town Underground Station",
+      "arrival": "10:56",
+      "departure": "10:56",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.51358396297,
+      "lon": 0.00832187298
+    },
+    {
+      "station_id": "940GZZLUWHM",
+      "station_name": "West Ham Underground Station",
+      "arrival": "10:58",
+      "departure": "10:58",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.52813603879,
+      "lon": 0.00505519937
+    },
+    {
+      "station_id": "940GZZLUSTD",
+      "station_name": "Stratford Underground Station",
+      "arrival": "11:03",
+      "departure": "11:03",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.54180618892,
+      "lon": -0.00345823239
+    },
+    {
+      "station_id": "940GZZLULYN",
+      "station_name": "Leyton Underground Station",
+      "arrival": "11:05",
+      "departure": "11:06",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.55658920476,
+      "lon": -0.00552297755
+    },
+    {
+      "station_id": "940GZZLULYS",
+      "station_name": "Leytonstone Underground Station",
+      "arrival": "11:08",
+      "departure": "11:08",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.56832439129,
+      "lon": 0.00819380243
+    },
+    {
+      "station_id": "940GZZLUSNB",
+      "station_name": "Snaresbrook Underground Station",
+      "arrival": "11:10",
+      "departure": "11:10",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.58067760167,
+      "lon": 0.02144001964
+    },
+    {
+      "station_id": "940GZZLUSWF",
+      "station_name": "South Woodford Underground Station",
+      "arrival": "11:12",
+      "departure": "11:12",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5919065377,
+      "lon": 0.02733804761
+    },
+    {
+      "station_id": "940GZZLUWOF",
+      "station_name": "Woodford Underground Station",
+      "arrival": "11:14",
+      "departure": "11:15",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.60689934027,
+      "lon": 0.03397047802
+    },
+    {
+      "station_id": "940GZZLUBKH",
+      "station_name": "Buckhurst Hill Underground Station",
+      "arrival": "11:17",
+      "departure": "11:18",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.62660463922,
+      "lon": 0.04675715207
+    },
+    {
+      "station_id": "940GZZLULGN",
+      "station_name": "Loughton Underground Station",
+      "arrival": "11:20",
+      "departure": "11:20",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.64144293202,
+      "lon": 0.05547566004
+    },
+    {
+      "station_id": "940GZZLUDBN",
+      "station_name": "Debden Underground Station",
+      "arrival": "11:22",
+      "departure": "11:22",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.64538627175,
+      "lon": 0.08378217606
+    },
+    {
+      "station_id": "940GZZLUTHB",
+      "station_name": "Theydon Bois Underground Station",
+      "arrival": "11:25",
+      "departure": "11:25",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.67175911783,
+      "lon": 0.10308541299
+    },
+    {
+      "station_id": "940GZZLUEPG",
+      "station_name": "Epping Underground Station",
+      "arrival": "11:28",
+      "departure": "11:30",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.69368010643,
+      "lon": 0.11376739303
+    },
+    {
+      "station_id": "940GZZLUTHB",
+      "station_name": "Theydon Bois Underground Station",
+      "arrival": "11:32",
+      "departure": "11:33",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.67175911783,
+      "lon": 0.10308541299
+    },
+    {
+      "station_id": "940GZZLUDBN",
+      "station_name": "Debden Underground Station",
+      "arrival": "11:36",
+      "departure": "11:38",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.64538627175,
+      "lon": 0.08378217606
+    },
+    {
+      "station_id": "940GZZLULGN",
+      "station_name": "Loughton Underground Station",
+      "arrival": "11:40",
+      "departure": "11:41",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.64144293202,
+      "lon": 0.05547566004
+    },
+    {
+      "station_id": "940GZZLUBKH",
+      "station_name": "Buckhurst Hill Underground Station",
+      "arrival": "11:43",
+      "departure": "11:44",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.62660463922,
+      "lon": 0.04675715207
+    },
+    {
+      "station_id": "940GZZLUWOF",
+      "station_name": "Woodford Underground Station",
+      "arrival": "11:46",
+      "departure": "11:47",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.60689934027,
+      "lon": 0.03397047802
+    },
+    {
+      "station_id": "940GZZLURVY",
+      "station_name": "Roding Valley Underground Station",
+      "arrival": "11:52",
+      "departure": "11:52",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.61719862932,
+      "lon": 0.04364707233
+    },
+    {
+      "station_id": "940GZZLUCWL",
+      "station_name": "Chigwell Underground Station",
+      "arrival": "11:55",
+      "departure": "11:55",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.61791580342,
+      "lon": 0.07504065974
+    },
+    {
+      "station_id": "940GZZLUGGH",
+      "station_name": "Grange Hill Underground Station",
+      "arrival": "11:57",
+      "departure": "11:57",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.6133780562,
+      "lon": 0.09206560615
+    },
+    {
+      "station_id": "940GZZLUHLT",
+      "station_name": "Hainault Underground Station",
+      "arrival": "11:59",
+      "departure": "12:03",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.6036587157,
+      "lon": 0.09348168901
+    },
+    {
+      "station_id": "940GZZLUFLP",
+      "station_name": "Fairlop Underground Station",
+      "arrival": "12:06",
+      "departure": "12:06",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.59561847524,
+      "lon": 0.09100388832
+    },
+    {
+      "station_id": "940GZZLUBKE",
+      "station_name": "Barkingside Underground Station",
+      "arrival": "12:08",
+      "departure": "12:09",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.58568867122,
+      "lon": 0.08858469981
+    },
+    {
+      "station_id": "940GZZLUNBP",
+      "station_name": "Newbury Park Underground Station",
+      "arrival": "12:11",
+      "departure": "12:12",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.57572646938,
+      "lon": 0.09000412689
+    },
+    {
+      "station_id": "940GZZLUGTH",
+      "station_name": "Gants Hill Underground Station",
+      "arrival": "12:14",
+      "departure": "12:14",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.57654399991,
+      "lon": 0.06618472427
+    },
+    {
+      "station_id": "940GZZLURBG",
+      "station_name": "Redbridge Underground Station",
+      "arrival": "12:15",
+      "departure": "12:15",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.57624339832,
+      "lon": 0.0453596401
+    },
+    {
+      "station_id": "940GZZLUWSD",
+      "station_name": "Wanstead Underground Station",
+      "arrival": "12:17",
+      "departure": "12:20",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.57550144368,
+      "lon": 0.02852739065
+    },
+    {
+      "station_id": "940GZZLULYS",
+      "station_name": "Leytonstone Underground Station",
+      "arrival": "12:22",
+      "departure": "12:23",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.56832439129,
+      "lon": 0.00819380243
+    },
+    {
+      "station_id": "940GZZLULYN",
+      "station_name": "Leyton Underground Station",
+      "arrival": "12:24",
+      "departure": "12:25",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.55658920476,
+      "lon": -0.00552297755
+    },
+    {
+      "station_id": "940GZZLUSTD",
+      "station_name": "Stratford Underground Station",
+      "arrival": "12:27",
+      "departure": "12:27",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.54180618892,
+      "lon": -0.00345823239
+    },
+    {
+      "station_id": "940GZZLUMED",
+      "station_name": "Mile End Underground Station",
+      "arrival": "12:30",
+      "departure": "12:31",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.52512212446,
+      "lon": -0.03364008363
+    },
+    {
+      "station_id": "940GZZLUSGN",
+      "station_name": "Stepney Green Underground Station",
+      "arrival": "12:33",
+      "departure": "12:33",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.5218584612,
+      "lon": -0.04659556508
+    },
+    {
+      "station_id": "940GZZLUWPL",
+      "station_name": "Whitechapel Underground Station",
+      "arrival": "12:36",
+      "departure": "12:36",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.51951757039,
+      "lon": -0.05997119425
+    },
+    {
+      "station_id": "940GZZLUADE",
+      "station_name": "Aldgate East Underground Station",
+      "arrival": "12:38",
+      "departure": "12:38",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.51503708469,
+      "lon": -0.07238357997
+    },
+    {
+      "station_id": "940GZZLUALD",
+      "station_name": "Aldgate Underground Station",
+      "arrival": "12:40",
+      "departure": "12:40",
+      "line": "",
+      "type": "walk",
+      "lat": 51.51424605401,
+      "lon": -0.07568860688
+    },
+    {
+      "station_id": "940GZZLUTWH",
+      "station_name": "Tower Hill Underground Station",
+      "arrival": "12:43",
+      "departure": "12:43",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.50997065785,
+      "lon": -0.07654609044
+    },
+    {
+      "station_id": "940GZZLUMMT",
+      "station_name": "Monument Underground Station",
+      "arrival": "12:44",
+      "departure": "12:44",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51070034494,
+      "lon": -0.08596919694
+    },
+    {
+      "station_id": "940GZZLUCST",
+      "station_name": "Cannon Street Underground Station",
+      "arrival": "12:46",
+      "departure": "12:46",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51151047664,
+      "lon": -0.09043165532
+    },
+    {
+      "station_id": "940GZZLUMSH",
+      "station_name": "Mansion House Underground Station",
+      "arrival": "12:47",
+      "departure": "12:47",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.5121172167,
+      "lon": -0.09400922523
+    },
+    {
+      "station_id": "940GZZLUBKF",
+      "station_name": "Blackfriars Underground Station",
+      "arrival": "12:49",
+      "departure": "12:49",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51158120334,
+      "lon": -0.1036585383
+    },
+    {
+      "station_id": "940GZZLUTMP",
+      "station_name": "Temple Underground Station",
+      "arrival": "12:50",
+      "departure": "12:50",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.51100576077,
+      "lon": -0.11426039241
+    },
+    {
+      "station_id": "940GZZLUEMB",
+      "station_name": "Embankment Underground Station",
+      "arrival": "12:52",
+      "departure": "12:53",
+      "line": "Circle",
+      "type": "transit",
+      "lat": 51.50705799685,
+      "lon": -0.1226659825
+    },
+    {
+      "station_id": "940GZZLUCHX",
+      "station_name": "Charing Cross Underground Station",
+      "arrival": "12:54",
+      "departure": "12:54",
+      "line": "Bakerloo",
+      "type": "transit",
+      "lat": 51.50741048616,
+      "lon": -0.12727717497
+    },
+    {
+      "station_id": "940GZZLULSQ",
+      "station_name": "Leicester Square Underground Station",
+      "arrival": "12:55",
+      "departure": "12:55",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.51138552954,
+      "lon": -0.12842561026
+    },
+    {
+      "station_id": "940GZZLUCGN",
+      "station_name": "Covent Garden Underground Station",
+      "arrival": "12:56",
+      "departure": "12:56",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.51309331843,
+      "lon": -0.12443554703
+    },
+    {
+      "station_id": "940GZZLUHBN",
+      "station_name": "Holborn Underground Station",
+      "arrival": "12:58",
+      "departure": "12:58",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.51758013466,
+      "lon": -0.12047491088
+    },
+    {
+      "station_id": "940GZZLURSQ",
+      "station_name": "Russell Square Underground Station",
+      "arrival": "13:00",
+      "departure": "13:00",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.52307260633,
+      "lon": -0.12428501279
+    },
+    {
+      "station_id": "940GZZLUKSX",
+      "station_name": "King's Cross St. Pancras Underground Station",
+      "arrival": "13:02",
+      "departure": "13:02",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.53066282392,
+      "lon": -0.12319449821
+    },
+    {
+      "station_id": "940GZZLUAGL",
+      "station_name": "Angel Underground Station",
+      "arrival": "13:04",
+      "departure": "13:04",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.53176139957,
+      "lon": -0.10538641937
+    },
+    {
+      "station_id": "940GZZLUODS",
+      "station_name": "Old Street Underground Station",
+      "arrival": "13:07",
+      "departure": "13:07",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.52586419382,
+      "lon": -0.08776967288
+    },
+    {
+      "station_id": "940GZZLUMGT",
+      "station_name": "Moorgate Underground Station",
+      "arrival": "13:09",
+      "departure": "13:09",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.51817557555,
+      "lon": -0.08832234928
+    },
+    {
+      "station_id": "940GZZLUBNK",
+      "station_name": "Bank Underground Station",
+      "arrival": "13:11",
+      "departure": "13:11",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.51341980792,
+      "lon": -0.08895382658
+    },
+    {
+      "station_id": "940GZZLUSPU",
+      "station_name": "St. Paul's Underground Station",
+      "arrival": "13:12",
+      "departure": "13:12",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51493569119,
+      "lon": -0.09756680067
+    },
+    {
+      "station_id": "940GZZLUCHL",
+      "station_name": "Chancery Lane Underground Station",
+      "arrival": "13:14",
+      "departure": "13:14",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51824663903,
+      "lon": -0.11158307069
+    },
+    {
+      "station_id": "940GZZLUFCN",
+      "station_name": "Farringdon Underground Station",
+      "arrival": "13:17",
+      "departure": "13:17",
+      "line": "",
+      "type": "walk",
+      "lat": 51.52025230285,
+      "lon": -0.1049127657
+    },
+    {
+      "station_id": "940GZZLUBBN",
+      "station_name": "Barbican Underground Station",
+      "arrival": "13:19",
+      "departure": "13:21",
+      "line": "Hammersmith & City",
+      "type": "transit",
+      "lat": 51.52027518429,
+      "lon": -0.09799293796
+    },
+    {
+      "station_id": "940GZZLUFCN",
+      "station_name": "Farringdon Underground Station",
+      "arrival": "13:22",
+      "departure": "13:22",
+      "line": "Hammersmith & City",
+      "type": "transit",
+      "lat": 51.52025230285,
+      "lon": -0.1049127657
+    },
+    {
+      "station_id": "940GZZLUKSX",
+      "station_name": "King's Cross St. Pancras Underground Station",
+      "arrival": "13:25",
+      "departure": "13:25",
+      "line": "Hammersmith & City",
+      "type": "transit",
+      "lat": 51.53066282392,
+      "lon": -0.12319449821
+    },
+    {
+      "station_id": "940GZZLUESQ",
+      "station_name": "Euston Square Underground Station",
+      "arrival": "13:27",
+      "departure": "13:27",
+      "line": "Hammersmith & City",
+      "type": "transit",
+      "lat": 51.52560368221,
+      "lon": -0.13582909345
+    },
+    {
+      "station_id": "940GZZLUGPS",
+      "station_name": "Great Portland Street Underground Station",
+      "arrival": "13:28",
+      "departure": "13:28",
+      "line": "Hammersmith & City",
+      "type": "transit",
+      "lat": 51.52383998336,
+      "lon": -0.14426204628
+    },
+    {
+      "station_id": "940GZZLURGP",
+      "station_name": "Regent's Park Underground Station",
+      "arrival": "13:30",
+      "departure": "13:30",
+      "line": "",
+      "type": "walk",
+      "lat": 51.52334393405,
+      "lon": -0.14644449549
+    },
+    {
+      "station_id": "940GZZLUWRR",
+      "station_name": "Warren Street Underground Station",
+      "arrival": "13:33",
+      "departure": "13:33",
+      "line": "",
+      "type": "walk",
+      "lat": 51.52495083358,
+      "lon": -0.13832084854
+    },
+    {
+      "station_id": "940GZZLUEUS",
+      "station_name": "Euston Underground Station",
+      "arrival": "13:34",
+      "departure": "13:34",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.52877993288,
+      "lon": -0.13255645882
+    },
+    {
+      "station_id": "940GZZLUWRR",
+      "station_name": "Warren Street Underground Station",
+      "arrival": "13:35",
+      "departure": "13:35",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.52495083358,
+      "lon": -0.13832084854
+    },
+    {
+      "station_id": "940GZZLUGDG",
+      "station_name": "Goodge Street Underground Station",
+      "arrival": "13:36",
+      "departure": "13:36",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.52059850349,
+      "lon": -0.13436142166
+    },
+    {
+      "station_id": "940GZZLUTCR",
+      "station_name": "Tottenham Court Road Underground Station",
+      "arrival": "13:38",
+      "departure": "13:38",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.51642600682,
+      "lon": -0.13040978651
+    },
+    {
+      "station_id": "940GZZLUOXC",
+      "station_name": "Oxford Circus Underground Station",
+      "arrival": "13:39",
+      "departure": "13:39",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51522379176,
+      "lon": -0.14190267191
+    },
+    {
+      "station_id": "940GZZLUBND",
+      "station_name": "Bond Street Underground Station",
+      "arrival": "13:40",
+      "departure": "13:41",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51430428619,
+      "lon": -0.14972276417
+    },
+    {
+      "station_id": "940GZZLUMBA",
+      "station_name": "Marble Arch Underground Station",
+      "arrival": "13:42",
+      "departure": "13:43",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51342439348,
+      "lon": -0.15895331661
+    },
+    {
+      "station_id": "940GZZLUBND",
+      "station_name": "Bond Street Underground Station",
+      "arrival": "13:44",
+      "departure": "13:45",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51430428619,
+      "lon": -0.14972276417
+    },
+    {
+      "station_id": "940GZZLUOXC",
+      "station_name": "Oxford Circus Underground Station",
+      "arrival": "13:46",
+      "departure": "13:46",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51522379176,
+      "lon": -0.14190267191
+    },
+    {
+      "station_id": "940GZZLUTCR",
+      "station_name": "Tottenham Court Road Underground Station",
+      "arrival": "13:47",
+      "departure": "13:47",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51642600682,
+      "lon": -0.13040978651
+    },
+    {
+      "station_id": "940GZZLULSQ",
+      "station_name": "Leicester Square Underground Station",
+      "arrival": "13:48",
+      "departure": "13:48",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.51138552954,
+      "lon": -0.12842561026
+    },
+    {
+      "station_id": "940GZZLUPCC",
+      "station_name": "Piccadilly Circus Underground Station",
+      "arrival": "13:50",
+      "departure": "13:50",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.51005031778,
+      "lon": -0.13379800575
+    },
+    {
+      "station_id": "940GZZLUGPK",
+      "station_name": "Green Park Underground Station",
+      "arrival": "13:51",
+      "departure": "13:51",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50694670677,
+      "lon": -0.14278700257
+    },
+    {
+      "station_id": "940GZZLUHPC",
+      "station_name": "Hyde Park Corner Underground Station",
+      "arrival": "13:53",
+      "departure": "13:53",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50303457911,
+      "lon": -0.15244146099
+    },
+    {
+      "station_id": "940GZZLUKNB",
+      "station_name": "Knightsbridge Underground Station",
+      "arrival": "13:55",
+      "departure": "13:55",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50166861883,
+      "lon": -0.16050774939
+    },
+    {
+      "station_id": "940GZZLUSKS",
+      "station_name": "South Kensington Underground Station",
+      "arrival": "13:58",
+      "departure": "13:58",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49409412114,
+      "lon": -0.17413817981
+    },
+    {
+      "station_id": "940GZZLUGTR",
+      "station_name": "Gloucester Road Underground Station",
+      "arrival": "14:00",
+      "departure": "14:00",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49431637978,
+      "lon": -0.1826576465
+    },
+    {
+      "station_id": "940GZZLUECT",
+      "station_name": "Earl's Court Underground Station",
+      "arrival": "14:03",
+      "departure": "14:03",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49206304944,
+      "lon": -0.19337834314
+    },
+    {
+      "station_id": "940GZZLUHSK",
+      "station_name": "High Street Kensington Underground Station",
+      "arrival": "14:05",
+      "departure": "14:05",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.50105548135,
+      "lon": -0.19279222318
+    },
+    {
+      "station_id": "940GZZLUNHG",
+      "station_name": "Notting Hill Gate Underground Station",
+      "arrival": "14:07",
+      "departure": "14:07",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.50912774136,
+      "lon": -0.19610430184
+    },
+    {
+      "station_id": "940GZZLUBWT",
+      "station_name": "Bayswater Underground Station",
+      "arrival": "14:09",
+      "departure": "14:09",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.51228410348,
+      "lon": -0.18793792726
+    },
+    {
+      "station_id": "940GZZLUPAC",
+      "station_name": "Paddington Underground Station",
+      "arrival": "14:11",
+      "departure": "14:11",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.51658146883,
+      "lon": -0.17568927604
+    },
+    {
+      "station_id": "940GZZLUERC",
+      "station_name": "Edgware Road (Circle Line) Underground Station",
+      "arrival": "14:13",
+      "departure": "14:15",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.51985815755,
+      "lon": -0.16783240119
+    },
+    {
+      "station_id": "940GZZLUBST",
+      "station_name": "Baker Street Underground Station",
+      "arrival": "14:19",
+      "departure": "14:19",
+      "line": "Hammersmith & City",
+      "type": "transit",
+      "lat": 51.52288283208,
+      "lon": -0.15713036309
+    },
+    {
+      "station_id": "940GZZLUSJW",
+      "station_name": "St. John's Wood Underground Station",
+      "arrival": "14:21",
+      "departure": "14:21",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.5345212966,
+      "lon": -0.1739483795
+    },
+    {
+      "station_id": "940GZZLUSWC",
+      "station_name": "Swiss Cottage Underground Station",
+      "arrival": "14:23",
+      "departure": "14:23",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.54368131594,
+      "lon": -0.17489406733
+    },
+    {
+      "station_id": "9400ZZLUSJW2",
+      "station_name": "St John's Wood Station",
+      "arrival": "14:24",
+      "departure": "14:24",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.53502358950013,
+      "lon": -0.173957134524698
+    },
+    {
+      "station_id": "940GZZLUFYR",
+      "station_name": "Finchley Road Underground Station",
+      "arrival": "14:30",
+      "departure": "14:30",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.54682464629,
+      "lon": -0.17984503432
+    },
+    {
+      "station_id": "940GZZLUWHP",
+      "station_name": "West Hampstead Underground Station",
+      "arrival": "14:31",
+      "departure": "14:31",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.54663838409,
+      "lon": -0.19105875778
+    },
+    {
+      "station_id": "940GZZLUKBN",
+      "station_name": "Kilburn Underground Station",
+      "arrival": "14:33",
+      "departure": "14:33",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.54718271501,
+      "lon": -0.20424832519
+    },
+    {
+      "station_id": "940GZZLUWIG",
+      "station_name": "Willesden Green Underground Station",
+      "arrival": "14:35",
+      "departure": "14:35",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.5491456094,
+      "lon": -0.22153663403
+    },
+    {
+      "station_id": "940GZZLUDOH",
+      "station_name": "Dollis Hill Underground Station",
+      "arrival": "14:37",
+      "departure": "14:37",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.55195487079,
+      "lon": -0.23906776394
+    },
+    {
+      "station_id": "940GZZLUNDN",
+      "station_name": "Neasden Underground Station",
+      "arrival": "14:39",
+      "departure": "14:41",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.55398640346,
+      "lon": -0.24983670818
+    },
+    {
+      "station_id": "940GZZLUWYP",
+      "station_name": "Wembley Park Underground Station",
+      "arrival": "14:45",
+      "departure": "14:45",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.56319809103,
+      "lon": -0.27926164347
+    },
+    {
+      "station_id": "940GZZLUKBY",
+      "station_name": "Kingsbury Underground Station",
+      "arrival": "14:48",
+      "departure": "14:48",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.5848445625,
+      "lon": -0.27879043221
+    },
+    {
+      "station_id": "940GZZLUQBY",
+      "station_name": "Queensbury Underground Station",
+      "arrival": "14:50",
+      "departure": "14:50",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.5941882997,
+      "lon": -0.28621901251
+    },
+    {
+      "station_id": "940GZZLUCPK",
+      "station_name": "Canons Park Underground Station",
+      "arrival": "14:53",
+      "departure": "14:53",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.6077011271,
+      "lon": -0.29469294411
+    },
+    {
+      "station_id": "940GZZLUSTM",
+      "station_name": "Stanmore Underground Station",
+      "arrival": "14:55",
+      "departure": "14:55",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.61983892259,
+      "lon": -0.30326643297
+    },
+    {
+      "station_id": "940GZZLUEGW",
+      "station_name": "Edgware Underground Station",
+      "arrival": "15:05",
+      "departure": "15:06",
+      "line": "",
+      "type": "walk",
+      "lat": 51.61365293188,
+      "lon": -0.27492773032
+    },
+    {
+      "station_id": "940GZZLUBTK",
+      "station_name": "Burnt Oak Underground Station",
+      "arrival": "15:08",
+      "departure": "15:08",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.60277380307,
+      "lon": -0.26404785808
+    },
+    {
+      "station_id": "940GZZLUCND",
+      "station_name": "Colindale Underground Station",
+      "arrival": "15:11",
+      "departure": "15:11",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.59542414461,
+      "lon": -0.24991912729
+    },
+    {
+      "station_id": "940GZZLUHCL",
+      "station_name": "Hendon Central Underground Station",
+      "arrival": "15:13",
+      "departure": "15:13",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.58330055179,
+      "lon": -0.22642447693
+    },
+    {
+      "station_id": "940GZZLUBTX",
+      "station_name": "Brent Cross Underground Station",
+      "arrival": "15:15",
+      "departure": "15:15",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.57664989279,
+      "lon": -0.21362246638
+    },
+    {
+      "station_id": "940GZZLUGGN",
+      "station_name": "Golders Green Underground Station",
+      "arrival": "15:18",
+      "departure": "15:18",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.57225863206,
+      "lon": -0.19403914387
+    },
+    {
+      "station_id": "940GZZLUHTD",
+      "station_name": "Hampstead Underground Station",
+      "arrival": "15:22",
+      "departure": "15:22",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.55623870807,
+      "lon": -0.17746408363
+    },
+    {
+      "station_id": "940GZZLUBZP",
+      "station_name": "Belsize Park Underground Station",
+      "arrival": "15:24",
+      "departure": "15:24",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.550384675935,
+      "lon": -0.16477439701000002
+    },
+    {
+      "station_id": "940GZZLUCFM",
+      "station_name": "Chalk Farm Underground Station",
+      "arrival": "15:25",
+      "departure": "15:25",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.54411813282,
+      "lon": -0.15338817999
+    },
+    {
+      "station_id": "940GZZLUCTN",
+      "station_name": "Camden Town Underground Station",
+      "arrival": "15:28",
+      "departure": "15:28",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.53929194126,
+      "lon": -0.14273950793
+    },
+    {
+      "station_id": "940GZZLUMTC",
+      "station_name": "Mornington Crescent Underground Station",
+      "arrival": "15:29",
+      "departure": "15:29",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.53467914057,
+      "lon": -0.13878907706
+    },
+    {
+      "station_id": "940GZZLUCTN",
+      "station_name": "Camden Town Underground Station",
+      "arrival": "15:31",
+      "departure": "15:32",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.53929194126,
+      "lon": -0.14273950793
+    },
+    {
+      "station_id": "940GZZLUKSH",
+      "station_name": "Kentish Town Underground Station",
+      "arrival": "15:34",
+      "departure": "15:34",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.55031189362,
+      "lon": -0.1407329651
+    },
+    {
+      "station_id": "940GZZLUTFP",
+      "station_name": "Tufnell Park Underground Station",
+      "arrival": "15:35",
+      "departure": "15:35",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.55682193583,
+      "lon": -0.13843345215
+    },
+    {
+      "station_id": "940GZZLUACY",
+      "station_name": "Archway Underground Station",
+      "arrival": "15:37",
+      "departure": "15:37",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.56547821489,
+      "lon": -0.13481906098
+    },
+    {
+      "station_id": "940GZZLUHGT",
+      "station_name": "Highgate Underground Station",
+      "arrival": "15:39",
+      "departure": "15:39",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.57753213831,
+      "lon": -0.14585707045
+    },
+    {
+      "station_id": "940GZZLUEFY",
+      "station_name": "East Finchley Underground Station",
+      "arrival": "15:42",
+      "departure": "15:42",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.58713134149,
+      "lon": -0.1650118086
+    },
+    {
+      "station_id": "940GZZLUFYC",
+      "station_name": "Finchley Central Underground Station",
+      "arrival": "15:46",
+      "departure": "15:49",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.60092092999,
+      "lon": -0.19252680516
+    },
+    {
+      "station_id": "940GZZLUMHL",
+      "station_name": "Mill Hill East Underground Station",
+      "arrival": "15:51",
+      "departure": "15:58",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.60822945207,
+      "lon": -0.20998576874
+    },
+    {
+      "station_id": "940GZZLUFYC",
+      "station_name": "Finchley Central Underground Station",
+      "arrival": "16:01",
+      "departure": "16:01",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.60092092999,
+      "lon": -0.19252680516
+    },
+    {
+      "station_id": "940GZZLUWFN",
+      "station_name": "West Finchley Underground Station",
+      "arrival": "16:04",
+      "departure": "16:04",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.6094264037,
+      "lon": -0.18836175996
+    },
+    {
+      "station_id": "940GZZLUWOP",
+      "station_name": "Woodside Park Underground Station",
+      "arrival": "16:05",
+      "departure": "16:05",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.61801358385,
+      "lon": -0.18541968987
+    },
+    {
+      "station_id": "940GZZLUTAW",
+      "station_name": "Totteridge & Whetstone Underground Station",
+      "arrival": "16:08",
+      "departure": "16:08",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.63059659143,
+      "lon": -0.17921018886
+    },
+    {
+      "station_id": "940GZZLUHBT",
+      "station_name": "High Barnet Underground Station",
+      "arrival": "16:11",
+      "departure": "16:11",
+      "line": "Northern",
+      "type": "transit",
+      "lat": 51.65054066087,
+      "lon": -0.19429769599
+    },
+    {
+      "station_id": "940GZZLUCKS",
+      "station_name": "Cockfosters Underground Station",
+      "arrival": "16:26",
+      "departure": "16:27",
+      "line": "",
+      "type": "walk",
+      "lat": 51.65151960589,
+      "lon": -0.14917108666
+    },
+    {
+      "station_id": "940GZZLUOAK",
+      "station_name": "Oakwood Underground Station",
+      "arrival": "16:30",
+      "departure": "16:30",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.64772560656,
+      "lon": -0.13218237487
+    },
+    {
+      "station_id": "940GZZLUSGT",
+      "station_name": "Southgate Underground Station",
+      "arrival": "16:33",
+      "departure": "16:33",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.63231512361,
+      "lon": -0.12781587778
+    },
+    {
+      "station_id": "940GZZLUASG",
+      "station_name": "Arnos Grove Underground Station",
+      "arrival": "16:37",
+      "departure": "16:37",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.61644622182,
+      "lon": -0.13306242416
+    },
+    {
+      "station_id": "940GZZLUBDS",
+      "station_name": "Bounds Green Underground Station",
+      "arrival": "16:40",
+      "departure": "16:40",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.60703434046,
+      "lon": -0.12423471394
+    },
+    {
+      "station_id": "940GZZLUWOG",
+      "station_name": "Wood Green Underground Station",
+      "arrival": "16:42",
+      "departure": "16:42",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.59747903201,
+      "lon": -0.1098864898
+    },
+    {
+      "station_id": "940GZZLUTPN",
+      "station_name": "Turnpike Lane Underground Station",
+      "arrival": "16:44",
+      "departure": "16:44",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.59027213449,
+      "lon": -0.10295297171
+    },
+    {
+      "station_id": "940GZZLUMRH",
+      "station_name": "Manor House Underground Station",
+      "arrival": "16:47",
+      "departure": "16:47",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.57073773239,
+      "lon": -0.09611826177
+    },
+    {
+      "station_id": "940GZZLUFPK",
+      "station_name": "Finsbury Park Underground Station",
+      "arrival": "16:49",
+      "departure": "16:49",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.56415761183,
+      "lon": -0.10682473082
+    },
+    {
+      "station_id": "940GZZLUASL",
+      "station_name": "Arsenal Underground Station",
+      "arrival": "16:51",
+      "departure": "16:51",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.5586554253,
+      "lon": -0.1074571749
+    },
+    {
+      "station_id": "940GZZLUHWY",
+      "station_name": "Holloway Road Underground Station",
+      "arrival": "16:53",
+      "departure": "16:53",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.55269667806,
+      "lon": -0.11324353698
+    },
+    {
+      "station_id": "940GZZLUCAR",
+      "station_name": "Caledonian Road Underground Station",
+      "arrival": "16:54",
+      "departure": "16:54",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.54851854994,
+      "lon": -0.11849337709
+    },
+    {
+      "station_id": "940GZZLUKSX",
+      "station_name": "King's Cross St. Pancras Underground Station",
+      "arrival": "16:57",
+      "departure": "16:58",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.53066282392,
+      "lon": -0.12319449821
+    },
+    {
+      "station_id": "940GZZLUHAI",
+      "station_name": "Highbury & Islington Underground Station",
+      "arrival": "17:01",
+      "departure": "17:01",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.54634989458,
+      "lon": -0.10332377929
+    },
+    {
+      "station_id": "940GZZLUFPK",
+      "station_name": "Finsbury Park Underground Station",
+      "arrival": "17:04",
+      "departure": "17:04",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.56415761183,
+      "lon": -0.10682473082
+    },
+    {
+      "station_id": "940GZZLUSVS",
+      "station_name": "Seven Sisters Underground Station",
+      "arrival": "17:07",
+      "departure": "17:07",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.5833296929,
+      "lon": -0.07258365646
+    },
+    {
+      "station_id": "940GZZLUTMH",
+      "station_name": "Tottenham Hale Underground Station",
+      "arrival": "17:09",
+      "departure": "17:09",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.58810816857,
+      "lon": -0.06024084974
+    },
+    {
+      "station_id": "940GZZLUBLR",
+      "station_name": "Blackhorse Road Underground Station",
+      "arrival": "17:11",
+      "departure": "17:11",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.58691879113,
+      "lon": -0.0411500067
+    },
+    {
+      "station_id": "940GZZLUWWL",
+      "station_name": "Walthamstow Central Underground Station",
+      "arrival": "17:12",
+      "departure": "17:13",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.58296489304,
+      "lon": -0.01988511014
+    },
+    {
+      "station_id": "940GZZLUBLR",
+      "station_name": "Blackhorse Road Underground Station",
+      "arrival": "17:15",
+      "departure": "17:15",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.58691879113,
+      "lon": -0.0411500067
+    },
+    {
+      "station_id": "940GZZLUTMH",
+      "station_name": "Tottenham Hale Underground Station",
+      "arrival": "17:17",
+      "departure": "17:17",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.58810816857,
+      "lon": -0.06024084974
+    },
+    {
+      "station_id": "940GZZLUSVS",
+      "station_name": "Seven Sisters Underground Station",
+      "arrival": "17:19",
+      "departure": "17:19",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.5833296929,
+      "lon": -0.07258365646
+    },
+    {
+      "station_id": "940GZZLUFPK",
+      "station_name": "Finsbury Park Underground Station",
+      "arrival": "17:22",
+      "departure": "17:22",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.56415761183,
+      "lon": -0.10682473082
+    },
+    {
+      "station_id": "940GZZLUHAI",
+      "station_name": "Highbury & Islington Underground Station",
+      "arrival": "17:25",
+      "departure": "17:25",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.54634989458,
+      "lon": -0.10332377929
+    },
+    {
+      "station_id": "940GZZLUKSX",
+      "station_name": "King's Cross St. Pancras Underground Station",
+      "arrival": "17:27",
+      "departure": "17:28",
+      "line": "Victoria",
+      "type": "transit",
+      "lat": 51.53066282392,
+      "lon": -0.12319449821
+    },
+    {
+      "station_id": "940GZZLUESQ",
+      "station_name": "Euston Square Underground Station",
+      "arrival": "17:30",
+      "departure": "17:30",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.52560368221,
+      "lon": -0.13582909345
+    },
+    {
+      "station_id": "940GZZLUGPS",
+      "station_name": "Great Portland Street Underground Station",
+      "arrival": "17:32",
+      "departure": "17:32",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.52383998336,
+      "lon": -0.14426204628
+    },
+    {
+      "station_id": "940GZZLUBST",
+      "station_name": "Baker Street Underground Station",
+      "arrival": "17:35",
+      "departure": "17:35",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.52288283208,
+      "lon": -0.15713036309
+    },
+    {
+      "station_id": "940GZZLUBND",
+      "station_name": "Bond Street Underground Station",
+      "arrival": "17:37",
+      "departure": "17:37",
+      "line": "Jubilee",
+      "type": "transit",
+      "lat": 51.51430428619,
+      "lon": -0.14972276417
+    },
+    {
+      "station_id": "940GZZLUMBA",
+      "station_name": "Marble Arch Underground Station",
+      "arrival": "17:38",
+      "departure": "17:39",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51342439348,
+      "lon": -0.15895331661
+    },
+    {
+      "station_id": "940GZZLULGT",
+      "station_name": "Lancaster Gate Underground Station",
+      "arrival": "17:40",
+      "departure": "17:41",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5117225046,
+      "lon": -0.17549428139
+    },
+    {
+      "station_id": "940GZZLUQWY",
+      "station_name": "Queensway Underground Station",
+      "arrival": "17:42",
+      "departure": "17:42",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51031159606,
+      "lon": -0.18715153241
+    },
+    {
+      "station_id": "940GZZLUNHG",
+      "station_name": "Notting Hill Gate Underground Station",
+      "arrival": "17:43",
+      "departure": "17:44",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.50912774136,
+      "lon": -0.19610430184
+    },
+    {
+      "station_id": "940GZZLUHPK",
+      "station_name": "Holland Park Underground Station",
+      "arrival": "17:45",
+      "departure": "17:46",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.50714339979,
+      "lon": -0.20567886405
+    },
+    {
+      "station_id": "940GZZLUSBC",
+      "station_name": "Shepherd's Bush (Central) Underground Station",
+      "arrival": "17:47",
+      "departure": "17:48",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.50437610302,
+      "lon": -0.21881340072
+    },
+    {
+      "station_id": "940GZZLUWCY",
+      "station_name": "White City Underground Station",
+      "arrival": "17:51",
+      "departure": "17:51",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51195892647,
+      "lon": -0.22429666213
+    },
+    {
+      "station_id": "940GZZLUEAN",
+      "station_name": "East Acton Underground Station",
+      "arrival": "17:53",
+      "departure": "17:53",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5166115037,
+      "lon": -0.24724847886
+    },
+    {
+      "station_id": "940GZZLUNAN",
+      "station_name": "North Acton Underground Station",
+      "arrival": "17:55",
+      "departure": "17:55",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.52352400491,
+      "lon": -0.25975483692
+    },
+    {
+      "station_id": "940GZZLUWTA",
+      "station_name": "West Acton Underground Station",
+      "arrival": "17:58",
+      "departure": "17:58",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.51800093393,
+      "lon": -0.28097995899
+    },
+    {
+      "station_id": "940GZZLUEBY",
+      "station_name": "Ealing Broadway Underground Station",
+      "arrival": "18:01",
+      "departure": "18:02",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5150170329,
+      "lon": -0.30145691437
+    },
+    {
+      "station_id": "940GZZLUECM",
+      "station_name": "Ealing Common Underground Station",
+      "arrival": "18:07",
+      "departure": "18:07",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.5101402544,
+      "lon": -0.28826508251
+    },
+    {
+      "station_id": "940GZZLUACT",
+      "station_name": "Acton Town Underground Station",
+      "arrival": "18:10",
+      "departure": "18:10",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.50305703489,
+      "lon": -0.28046170652
+    },
+    {
+      "station_id": "940GZZLUSEA",
+      "station_name": "South Ealing Underground Station",
+      "arrival": "18:13",
+      "departure": "18:13",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50100331457,
+      "lon": -0.30742415014
+    },
+    {
+      "station_id": "940GZZLUNFD",
+      "station_name": "Northfields Underground Station",
+      "arrival": "18:15",
+      "departure": "18:15",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49931888724,
+      "lon": -0.3147190363
+    },
+    {
+      "station_id": "940GZZLUBOS",
+      "station_name": "Boston Manor Underground Station",
+      "arrival": "18:17",
+      "departure": "18:17",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49563456603,
+      "lon": -0.32493923491
+    },
+    {
+      "station_id": "940GZZLUOSY",
+      "station_name": "Osterley Underground Station",
+      "arrival": "18:20",
+      "departure": "18:20",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.48127368427,
+      "lon": -0.35222362267
+    },
+    {
+      "station_id": "940GZZLUHWE",
+      "station_name": "Hounslow East Underground Station",
+      "arrival": "18:22",
+      "departure": "18:22",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47321325864,
+      "lon": -0.35647379385
+    },
+    {
+      "station_id": "940GZZLUHWC",
+      "station_name": "Hounslow Central Underground Station",
+      "arrival": "18:23",
+      "departure": "18:23",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47129520696,
+      "lon": -0.36657842155
+    },
+    {
+      "station_id": "940GZZLUHWT",
+      "station_name": "Hounslow West Underground Station",
+      "arrival": "18:26",
+      "departure": "18:26",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47346900404,
+      "lon": -0.38654430988
+    },
+    {
+      "station_id": "940GZZLUHNX",
+      "station_name": "Hatton Cross Underground Station",
+      "arrival": "18:30",
+      "departure": "18:30",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.46674671621,
+      "lon": -0.42319124315
+    },
+    {
+      "station_id": "940GZZLUHR4",
+      "station_name": "Heathrow Terminal 4 Underground Station",
+      "arrival": "18:33",
+      "departure": "18:37",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.45852352136,
+      "lon": -0.44577137798
+    },
+    {
+      "station_id": "940GZZLUHRC",
+      "station_name": "Heathrow Terminals 2 & 3 Underground Station",
+      "arrival": "18:42",
+      "departure": "18:46",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47123453483,
+      "lon": -0.45226505266
+    },
+    {
+      "station_id": "940GZZLUHR5",
+      "station_name": "Heathrow Terminal 5 Underground Station",
+      "arrival": "18:50",
+      "departure": "18:53",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47005217987,
+      "lon": -0.49056018308
+    },
+    {
+      "station_id": "940GZZLUHRC",
+      "station_name": "Heathrow Terminals 2 & 3 Underground Station",
+      "arrival": "18:57",
+      "departure": "18:57",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47123453483,
+      "lon": -0.45226505266
+    },
+    {
+      "station_id": "940GZZLUHNX",
+      "station_name": "Hatton Cross Underground Station",
+      "arrival": "19:00",
+      "departure": "19:00",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.46674671621,
+      "lon": -0.42319124315
+    },
+    {
+      "station_id": "940GZZLUHWT",
+      "station_name": "Hounslow West Underground Station",
+      "arrival": "19:04",
+      "departure": "19:04",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47346900404,
+      "lon": -0.38654430988
+    },
+    {
+      "station_id": "940GZZLUHWC",
+      "station_name": "Hounslow Central Underground Station",
+      "arrival": "19:06",
+      "departure": "19:06",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47129520696,
+      "lon": -0.36657842155
+    },
+    {
+      "station_id": "940GZZLUHWE",
+      "station_name": "Hounslow East Underground Station",
+      "arrival": "19:08",
+      "departure": "19:08",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.47321325864,
+      "lon": -0.35647379385
+    },
+    {
+      "station_id": "940GZZLUOSY",
+      "station_name": "Osterley Underground Station",
+      "arrival": "19:10",
+      "departure": "19:10",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.48127368427,
+      "lon": -0.35222362267
+    },
+    {
+      "station_id": "940GZZLUBOS",
+      "station_name": "Boston Manor Underground Station",
+      "arrival": "19:13",
+      "departure": "19:13",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49563456603,
+      "lon": -0.32493923491
+    },
+    {
+      "station_id": "940GZZLUNFD",
+      "station_name": "Northfields Underground Station",
+      "arrival": "19:15",
+      "departure": "19:15",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.49931888724,
+      "lon": -0.3147190363
+    },
+    {
+      "station_id": "940GZZLUSEA",
+      "station_name": "South Ealing Underground Station",
+      "arrival": "19:17",
+      "departure": "19:17",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50100331457,
+      "lon": -0.30742415014
+    },
+    {
+      "station_id": "940GZZLUACT",
+      "station_name": "Acton Town Underground Station",
+      "arrival": "19:21",
+      "departure": "19:22",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50305703489,
+      "lon": -0.28046170652
+    },
+    {
+      "station_id": "940GZZLUECM",
+      "station_name": "Ealing Common Underground Station",
+      "arrival": "19:27",
+      "departure": "19:27",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.5101402544,
+      "lon": -0.28826508251
+    },
+    {
+      "station_id": "940GZZLUNEN",
+      "station_name": "North Ealing Underground Station",
+      "arrival": "19:29",
+      "departure": "19:29",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.51750479059,
+      "lon": -0.28886820529
+    },
+    {
+      "station_id": "940GZZLUPKR",
+      "station_name": "Park Royal Underground Station",
+      "arrival": "19:31",
+      "departure": "19:31",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.52712341237,
+      "lon": -0.28434136507
+    },
+    {
+      "station_id": "940GZZLUALP",
+      "station_name": "Alperton Underground Station",
+      "arrival": "19:34",
+      "departure": "19:34",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.54062734667,
+      "lon": -0.29960951824
+    },
+    {
+      "station_id": "940GZZLUSUT",
+      "station_name": "Sudbury Town Underground Station",
+      "arrival": "19:36",
+      "departure": "19:36",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.55081452944,
+      "lon": -0.31574475624
+    },
+    {
+      "station_id": "940GZZLUSUH",
+      "station_name": "Sudbury Hill Underground Station",
+      "arrival": "19:39",
+      "departure": "19:39",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.5569456647,
+      "lon": -0.33643530153
+    },
+    {
+      "station_id": "940GZZLUSHH",
+      "station_name": "South Harrow Underground Station",
+      "arrival": "19:41",
+      "departure": "19:41",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.56488752582,
+      "lon": -0.3524924119
+    },
+    {
+      "station_id": "940GZZLURYL",
+      "station_name": "Rayners Lane Underground Station",
+      "arrival": "19:45",
+      "departure": "19:45",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.57514696995,
+      "lon": -0.37112742791
+    },
+    {
+      "station_id": "940GZZLUEAE",
+      "station_name": "Eastcote Underground Station",
+      "arrival": "19:48",
+      "departure": "19:48",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.57650643305,
+      "lon": -0.39737325572
+    },
+    {
+      "station_id": "940GZZLURSM",
+      "station_name": "Ruislip Manor Underground Station",
+      "arrival": "19:50",
+      "departure": "19:50",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.57320249811,
+      "lon": -0.41297343047
+    },
+    {
+      "station_id": "940GZZLURSP",
+      "station_name": "Ruislip Underground Station",
+      "arrival": "19:51",
+      "departure": "19:51",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.57135356465,
+      "lon": -0.42189780256
+    },
+    {
+      "station_id": "940GZZLUICK",
+      "station_name": "Ickenham Underground Station",
+      "arrival": "19:54",
+      "departure": "19:54",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.56199161559,
+      "lon": -0.44200125156
+    },
+    {
+      "station_id": "940GZZLUHGD",
+      "station_name": "Hillingdon Underground Station",
+      "arrival": "19:55",
+      "departure": "19:55",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.55371461124,
+      "lon": -0.44982796356
+    },
+    {
+      "station_id": "940GZZLUUXB",
+      "station_name": "Uxbridge Underground Station",
+      "arrival": "19:59",
+      "departure": "20:00",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.54656533264,
+      "lon": -0.47794870883
+    },
+    {
+      "station_id": "940GZZLUHGD",
+      "station_name": "Hillingdon Underground Station",
+      "arrival": "20:03",
+      "departure": "20:03",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.55371461124,
+      "lon": -0.44982796356
+    },
+    {
+      "station_id": "940GZZLUICK",
+      "station_name": "Ickenham Underground Station",
+      "arrival": "20:05",
+      "departure": "20:05",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.56199161559,
+      "lon": -0.44200125156
+    },
+    {
+      "station_id": "940GZZLUWRP",
+      "station_name": "West Ruislip Underground Station",
+      "arrival": "20:10",
+      "departure": "20:10",
+      "line": "",
+      "type": "walk",
+      "lat": 51.56968810691,
+      "lon": -0.4378855233
+    },
+    {
+      "station_id": "940GZZLURSG",
+      "station_name": "Ruislip Gardens Underground Station",
+      "arrival": "20:12",
+      "departure": "20:12",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.56073573066,
+      "lon": -0.41070966781
+    },
+    {
+      "station_id": "940GZZLUSRP",
+      "station_name": "South Ruislip Underground Station",
+      "arrival": "20:13",
+      "departure": "20:13",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.55685264433,
+      "lon": -0.3989152352
+    },
+    {
+      "station_id": "940GZZLUNHT",
+      "station_name": "Northolt Underground Station",
+      "arrival": "20:16",
+      "departure": "20:16",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.54823558228,
+      "lon": -0.3686993536
+    },
+    {
+      "station_id": "940GZZLUGFD",
+      "station_name": "Greenford Underground Station",
+      "arrival": "20:18",
+      "departure": "20:18",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.54242424244,
+      "lon": -0.34605006938
+    },
+    {
+      "station_id": "940GZZLUPVL",
+      "station_name": "Perivale Underground Station",
+      "arrival": "20:20",
+      "departure": "20:21",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.53671704491,
+      "lon": -0.3234459132
+    },
+    {
+      "station_id": "940GZZLUHGR",
+      "station_name": "Hanger Lane Underground Station",
+      "arrival": "20:23",
+      "departure": "20:23",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5301769114,
+      "lon": -0.29270384785
+    },
+    {
+      "station_id": "940GZZLUNAN",
+      "station_name": "North Acton Underground Station",
+      "arrival": "20:26",
+      "departure": "20:26",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.52352400491,
+      "lon": -0.25975483692
+    },
+    {
+      "station_id": "940GZZLUEAN",
+      "station_name": "East Acton Underground Station",
+      "arrival": "20:28",
+      "departure": "20:28",
+      "line": "Central",
+      "type": "transit",
+      "lat": 51.5166115037,
+      "lon": -0.24724847886
+    },
+    {
+      "station_id": "940GZZLUTNG",
+      "station_name": "Turnham Green Underground Station",
+      "arrival": "20:42",
+      "departure": "20:42",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49514770746,
+      "lon": -0.25455465855
+    },
+    {
+      "station_id": "940GZZLUGBY",
+      "station_name": "Gunnersbury Underground Station",
+      "arrival": "20:46",
+      "departure": "20:46",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49180323489,
+      "lon": -0.27526721107
+    },
+    {
+      "station_id": "940GZZLUKWG",
+      "station_name": "Kew Gardens Underground Station",
+      "arrival": "20:48",
+      "departure": "20:48",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.47705810305,
+      "lon": -0.28524129043
+    },
+    {
+      "station_id": "940GZZLURMD",
+      "station_name": "Richmond Underground Station",
+      "arrival": "20:52",
+      "departure": "20:55",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.4632372479,
+      "lon": -0.30133585113
+    },
+    {
+      "station_id": "940GZZLUKWG",
+      "station_name": "Kew Gardens Underground Station",
+      "arrival": "20:59",
+      "departure": "20:59",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.47705810305,
+      "lon": -0.28524129043
+    },
+    {
+      "station_id": "940GZZLUGBY",
+      "station_name": "Gunnersbury Underground Station",
+      "arrival": "21:02",
+      "departure": "21:02",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49180323489,
+      "lon": -0.27526721107
+    },
+    {
+      "station_id": "940GZZLUTNG",
+      "station_name": "Turnham Green Underground Station",
+      "arrival": "21:05",
+      "departure": "21:05",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49514770746,
+      "lon": -0.25455465855
+    },
+    {
+      "station_id": "940GZZLUSFB",
+      "station_name": "Stamford Brook Underground Station",
+      "arrival": "21:06",
+      "departure": "21:07",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.4949167279,
+      "lon": -0.24570375696
+    },
+    {
+      "station_id": "940GZZLUTNG",
+      "station_name": "Turnham Green Underground Station",
+      "arrival": "21:09",
+      "departure": "21:09",
+      "line": "District",
+      "type": "transit",
+      "lat": 51.49514770746,
+      "lon": -0.25455465855
+    },
+    {
+      "station_id": "940GZZLUACT",
+      "station_name": "Acton Town Underground Station",
+      "arrival": "21:12",
+      "departure": "21:12",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.50305703489,
+      "lon": -0.28046170652
+    },
+    {
+      "station_id": "940GZZLUECM",
+      "station_name": "Ealing Common Underground Station",
+      "arrival": "21:15",
+      "departure": "21:15",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.5101402544,
+      "lon": -0.28826508251
+    },
+    {
+      "station_id": "940GZZLUNEN",
+      "station_name": "North Ealing Underground Station",
+      "arrival": "21:17",
+      "departure": "21:17",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.51750479059,
+      "lon": -0.28886820529
+    },
+    {
+      "station_id": "940GZZLUPKR",
+      "station_name": "Park Royal Underground Station",
+      "arrival": "21:19",
+      "departure": "21:19",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.52712341237,
+      "lon": -0.28434136507
+    },
+    {
+      "station_id": "940GZZLUALP",
+      "station_name": "Alperton Underground Station",
+      "arrival": "21:21",
+      "departure": "21:21",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.54062734667,
+      "lon": -0.29960951824
+    },
+    {
+      "station_id": "940GZZLUSUT",
+      "station_name": "Sudbury Town Underground Station",
+      "arrival": "21:24",
+      "departure": "21:24",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.55081452944,
+      "lon": -0.31574475624
+    },
+    {
+      "station_id": "940GZZLUSUH",
+      "station_name": "Sudbury Hill Underground Station",
+      "arrival": "21:27",
+      "departure": "21:27",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.5569456647,
+      "lon": -0.33643530153
+    },
+    {
+      "station_id": "940GZZLUSHH",
+      "station_name": "South Harrow Underground Station",
+      "arrival": "21:31",
+      "departure": "21:31",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.56488752582,
+      "lon": -0.3524924119
+    },
+    {
+      "station_id": "940GZZLURYL",
+      "station_name": "Rayners Lane Underground Station",
+      "arrival": "21:37",
+      "departure": "21:38",
+      "line": "Piccadilly",
+      "type": "transit",
+      "lat": 51.57514696995,
+      "lon": -0.37112742791
+    },
+    {
+      "station_id": "940GZZLUWHW",
+      "station_name": "West Harrow Underground Station",
+      "arrival": "21:43",
+      "departure": "21:43",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.57971040158,
+      "lon": -0.35339970503
+    },
+    {
+      "station_id": "940GZZLUHOH",
+      "station_name": "Harrow-on-the-Hill Underground Station",
+      "arrival": "21:46",
+      "departure": "21:47",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.5791946068,
+      "lon": -0.33722503281
+    },
+    {
+      "station_id": "940GZZLUNHA",
+      "station_name": "North Harrow Underground Station",
+      "arrival": "21:50",
+      "departure": "21:50",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.58487205274,
+      "lon": -0.3624077856
+    },
+    {
+      "station_id": "940GZZLUPNR",
+      "station_name": "Pinner Underground Station",
+      "arrival": "21:52",
+      "departure": "21:52",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.59290142031,
+      "lon": -0.38116125253
+    },
+    {
+      "station_id": "940GZZLUNWH",
+      "station_name": "Northwood Hills Underground Station",
+      "arrival": "21:55",
+      "departure": "21:55",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.60057194624,
+      "lon": -0.40946376794
+    },
+    {
+      "station_id": "940GZZLUNOW",
+      "station_name": "Northwood Underground Station",
+      "arrival": "21:57",
+      "departure": "21:57",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.61105263992,
+      "lon": -0.42382887508
+    },
+    {
+      "station_id": "940GZZLUMPK",
+      "station_name": "Moor Park Underground Station",
+      "arrival": "22:00",
+      "departure": "22:00",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.62984459503,
+      "lon": -0.43245359687
+    },
+    {
+      "station_id": "940GZZLUCXY",
+      "station_name": "Croxley Underground Station",
+      "arrival": "22:04",
+      "departure": "22:04",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.64704374011,
+      "lon": -0.44171806516
+    },
+    {
+      "station_id": "940GZZLUWAF",
+      "station_name": "Watford Underground Station",
+      "arrival": "22:07",
+      "departure": "22:08",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.65744569318,
+      "lon": -0.41737671735
+    },
+    {
+      "station_id": "940GZZLUCXY",
+      "station_name": "Croxley Underground Station",
+      "arrival": "22:10",
+      "departure": "22:10",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.64704374011,
+      "lon": -0.44171806516
+    },
+    {
+      "station_id": "940GZZLUMPK",
+      "station_name": "Moor Park Underground Station",
+      "arrival": "22:15",
+      "departure": "22:15",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.62984459503,
+      "lon": -0.43245359687
+    },
+    {
+      "station_id": "940GZZLUNOW",
+      "station_name": "Northwood Underground Station",
+      "arrival": "22:17",
+      "departure": "22:20",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.61105263992,
+      "lon": -0.42382887508
+    },
+    {
+      "station_id": "940GZZLUMPK",
+      "station_name": "Moor Park Underground Station",
+      "arrival": "22:23",
+      "departure": "22:23",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.62984459503,
+      "lon": -0.43245359687
+    },
+    {
+      "station_id": "940GZZLURKW",
+      "station_name": "Rickmansworth Underground Station",
+      "arrival": "22:29",
+      "departure": "22:29",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.64020727985,
+      "lon": -0.47370287263
+    },
+    {
+      "station_id": "940GZZLUCYD",
+      "station_name": "Chorleywood Underground Station",
+      "arrival": "22:33",
+      "departure": "22:33",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.654358298,
+      "lon": -0.51846096681
+    },
+    {
+      "station_id": "940GZZLUCAL",
+      "station_name": "Chalfont & Latimer Underground Station",
+      "arrival": "22:39",
+      "departure": "22:39",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.66798454827,
+      "lon": -0.56068930753
+    },
+    {
+      "station_id": "940GZZLUCSM",
+      "station_name": "Chesham Underground Station",
+      "arrival": "22:47",
+      "departure": "23:00",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.70520771113,
+      "lon": -0.61124673115
+    },
+    {
+      "station_id": "940GZZLUCAL",
+      "station_name": "Chalfont & Latimer Underground Station",
+      "arrival": "23:09",
+      "departure": "23:20",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.66798454827,
+      "lon": -0.56068930753
+    },
+    {
+      "station_id": "940GZZLUAMS",
+      "station_name": "Amersham Underground Station",
+      "arrival": "23:29",
+      "departure": "23:29",
+      "line": "Metropolitan",
+      "type": "transit",
+      "lat": 51.6741262729,
+      "lon": -0.60771419301
+    }
+  ]
+}

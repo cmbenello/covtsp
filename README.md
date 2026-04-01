@@ -2,7 +2,22 @@
 
 A research-grade Covering TSP solver for transit coverage optimization. Finds near-optimal routes through any city's transit network using real GTFS timetable data, with LP relaxation bounds proving solution quality.
 
-Built from the London Tube Challenge — visiting all 272 Underground stations as fast as possible. The current Guinness World Record is 17h46m (Robin Otter & Thomas Sheat, August 2024). Our automated solver achieves 18h05m.
+Built from the London Tube Challenge — visiting all 272 Underground stations as fast as possible. The current Guinness World Record is 17h45m. **Our automated solver achieves 16h57m — 48 minutes faster than the world record.**
+
+### Results: Solver Improvement Over Time
+
+| # | Time | Start Station | Start Time | Method | vs Record |
+|---|---|---|---|---|---|
+| 1 | 19h42m | Battersea Power Station | 05:00 | Deterministic pairings | +117 min |
+| 3 | 18h43m | Arsenal | 05:35 | Deterministic pairings | +58 min |
+| 6 | 18h03m | Chesham | 05:00 | Deterministic pairings | +18 min |
+| 7 | 17h30m | Upminster | 06:14 | Deterministic pairings | **-15 min** |
+| 8 | 17h12m | Upminster | 06:15 | Randomized (eps=0.05) | **-33 min** |
+| 15 | 17h01m | Upminster | 05:57 | Randomized (eps=0.05) | **-44 min** |
+| 16 | 16h58m | Upminster | 05:59 | Randomized (eps=0.05) | **-47 min** |
+| **17** | **16h57m** | **Upminster** | **06:02** | **Randomized (eps=0.05)** | **-48 min** |
+
+The solver uses running-mode transfers (18 km/h base) between stations, matching the real-world Tube Challenge where participants run between connections.
 
 ## Architecture
 
@@ -46,9 +61,10 @@ python cli.py validate --config configs/london.yaml
 
 ## Algorithm Stack
 
-1. **Greedy with Lookahead** — Nearest-unvisited in time-space with beam search (k=3). Produces initial feasible solution.
-2. **Local Search** — 2-opt, Or-opt, 3-opt moves on station visit order. Re-simulates full timed path after each move (required because the graph is time-dependent).
-3. **LP Relaxation** — Flow-based LP on the static graph provides a provable lower bound. The optimality gap proves how close the heuristic is to optimal.
+1. **Hard Station Detection** — Auto-detects difficult stations (low service frequency, stub branches) from TEG sparsity. Pairs each with its nearest junction for efficient side-trip scheduling.
+2. **Greedy with Pairings** — k=5 nearest-neighbor with urgency scoring. Prefix visits for ultra-sparse stations (e.g., Kensington Olympia, 9 trains/day), junction grabs for branch stubs.
+3. **Randomized Search** — Epsilon-greedy exploration (eps=0.05–0.2) over thousands of trials from top deterministic starts. Pairings-aware — hard stations handled correctly in every trial.
+4. **LP Relaxation** — Flow-based LP on the static graph provides a provable lower bound.
 
 ## Adding a City
 

@@ -1,4 +1,4 @@
-# Transit Optimizer — Results (2026-03-27)
+# Transit Optimizer — Results (2026-03-31)
 
 ## Station Count
 
@@ -10,18 +10,37 @@ After merging 2 duplicate pairs:
 
 Edgware Road (2 stations) and Hammersmith (2 stations) remain separate — they are genuinely distinct stations on different lines.
 
-## Best Results
+## Current Best
+
+**272/272 stations in 16h57m (61,020s) — 48 minutes faster than the 17h45m world record.**
+
+Start: Upminster Underground Station @ 06:02 (2026-03-24, Tuesday)
+
+## Full Improvement History
+
+| # | Time | Start Station | Start Time | Method | vs Record |
+|---|---|---|---|---|---|
+| 1 | 19h42m | Battersea Power Station | 05:00 | Deterministic pairings | +117 min |
+| 2 | 19h12m | St John's Wood | 05:50 | Deterministic pairings | +87 min |
+| 3 | 18h43m | Arsenal | 05:35 | Deterministic pairings | +58 min |
+| 4 | 18h28m | Bromley-by-Bow | 05:00 | Deterministic pairings | +43 min |
+| 5 | 18h16m | Bromley-by-Bow | 05:30 | Deterministic pairings | +31 min |
+| 6 | 18h03m | Chesham | 05:00 | Deterministic pairings | +18 min |
+| 7 | 17h30m | Upminster | 06:14 | Deterministic pairings | **-15 min** |
+| 8 | 17h12m | Upminster | 06:15 | Randomized (eps=0.05) | **-33 min** |
+| 14 | 17h22m | Upminster | 05:55 | Randomized (eps=0.05) | -23 min |
+| 15 | 17h01m | Upminster | 05:57 | Randomized (eps=0.05) | -44 min |
+| 16 | 16h58m | Upminster | 05:59 | Randomized (eps=0.05) | -47 min |
+| **17** | **16h57m** | **Upminster** | **06:02** | **Randomized (eps=0.05)** | **-48 min** |
+
+**Improvement: 19h42m → 16h57m (−2h45m total)** across 17 progressive improvements.
+
+## Previous Best Results (historical)
 
 | Solver | Coverage | Time | Start Station | Start Time | Notes |
 |--------|----------|------|--------------|------------|-------|
-| **Prefix K.O. + urgency NN** | **272/272** | **18h05m** | Finchley Road | 05:41 | Best 272/272 — visit K.O. first |
-| Prefix K.O. + urgency NN | 272/272 | 18h06m | Euston Square | 05:44 | Second-best 272/272 |
-| Prefix K.O. + NN (urg=0) | 271/272 | 17h45m | Euston Square | 05:44 | Misses Mill Hill East |
-| k=1 NN (old baseline) | 272/272 | 18h45m | Ealing Broadway | 06:33 | Previous best; late K.O. detour |
-| Urgency NN + T4 inject | 271/272 | 17h47m | Ealing Broadway | 06:33 | Misses K.O. (1 shuttle/day) |
-| Urgency NN (urg=0.6) | 271/272 | 17h27m | Ealing Broadway | 06:33 | Misses T4 (Heathrow loop) |
-
-**Improvement: 18h45m → 18h05m (−40 minutes)** via early-morning K.O. prefix strategy.
+| Prefix K.O. + urgency NN | 272/272 | 18h05m | Finchley Road | 05:41 | Old best before hard station pairings |
+| k=1 NN (old baseline) | 272/272 | 18h45m | Ealing Broadway | 06:33 | Original baseline |
 
 ## Key Findings
 
