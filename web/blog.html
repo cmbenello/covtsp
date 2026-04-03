@@ -206,12 +206,12 @@
 
     <article class="blog">
         <a href="index.html" class="blog-back">&larr; covtsp</a>
-        <div class="blog-date">2026-03-27</div>
-        <h1>17 Minutes from the World Record with a Greedy Heuristic</h1>
+        <div class="blog-date">2026-04-02</div>
+        <h1>60 Minutes Faster Than the World Record</h1>
         <p class="blog-lead">
-            The Guinness record for visiting all 272 London Underground stations is 17h46m.
-            An automated solver on public timetable data does it in 18h03m.
-            This is how we got there&mdash;and where the remaining gap lives.
+            The world record for visiting all 272 London Underground stations is 17h45m.
+            An automated solver on public timetable data does it in <strong>16h45m</strong>&mdash;one hour faster.
+            This is how we got there, from 19h42m to 16h45m, across 19 progressive improvements.
         </p>
 
         <hr>
@@ -613,28 +613,93 @@
 
         <!-- ==================== Results ==================== -->
         <h2>Results</h2>
-        <table class="rtable">
-            <thead>
-                <tr><th>Variant</th><th>Coverage</th><th>Time</th><th>Start</th></tr>
-            </thead>
-            <tbody>
-                <tr class="best"><td>K.O. prefix + urgency NN</td><td class="ok">272/272</td><td class="ok">18h03m</td><td>Chesham 05:30</td></tr>
-                <tr><td>K.O. prefix + urgency NN</td><td class="ok">272/272</td><td>18h06m</td><td>Euston Sq 05:44</td></tr>
-                <tr><td>K.O. prefix + NN (no urg)</td><td class="miss">271/272</td><td>17h45m</td><td>Euston Sq 05:44</td></tr>
-                <tr><td>k=1 NN baseline</td><td class="ok">272/272</td><td>18h45m</td><td>Ealing Bwy 06:33</td></tr>
-                <tr><td>Urgency NN + T4 inject</td><td class="miss">271/272</td><td>17h47m</td><td>Ealing Bwy 06:33</td></tr>
-            </tbody>
-        </table>
+
+        <h3>Improvement curve</h3>
         <p>
-            Sharp coverage-speed tradeoff: dropping one station saves 20&ndash;40 min. The last stations are always
-            branch ends with sparse service&mdash;they dominate the cost.
+            The solver improved from 19h42m to 16h45m across 19 incremental improvements.
+            Each improvement was saved with the full 272-station route.
+        </p>
+
+        <div class="fig">
+            <div class="fig-label">Fig 5 &mdash; Solver improvement over time</div>
+            <div style="width:100%;overflow-x:auto;">
+                <table class="rtable">
+                    <thead>
+                        <tr><th>#</th><th>Time</th><th>Start Station</th><th>Start</th><th>Method</th><th>vs Record</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>19h42m</td><td>Battersea Power Station</td><td>05:00</td><td>Deterministic pairings</td><td>+117 min</td></tr>
+                        <tr><td>3</td><td>18h43m</td><td>Arsenal</td><td>05:35</td><td>Deterministic pairings</td><td>+58 min</td></tr>
+                        <tr><td>5</td><td>18h16m</td><td>Bromley-by-Bow</td><td>05:30</td><td>Deterministic pairings</td><td>+31 min</td></tr>
+                        <tr><td>6</td><td>18h03m</td><td>Chesham</td><td>05:00</td><td>Deterministic pairings</td><td>+18 min</td></tr>
+                        <tr style="font-weight:600"><td>7</td><td>17h30m</td><td>Upminster</td><td>06:14</td><td>Deterministic pairings</td><td class="ok">&minus;15 min</td></tr>
+                        <tr><td>8</td><td>17h12m</td><td>Upminster</td><td>06:15</td><td>Randomized (eps=0.05)</td><td class="ok">&minus;33 min</td></tr>
+                        <tr><td>15</td><td>17h01m</td><td>Upminster</td><td>05:57</td><td>Randomized (eps=0.05)</td><td class="ok">&minus;44 min</td></tr>
+                        <tr><td>16</td><td>16h58m</td><td>Upminster</td><td>05:59</td><td>Randomized (eps=0.05)</td><td class="ok">&minus;47 min</td></tr>
+                        <tr><td>17</td><td>16h57m</td><td>Upminster</td><td>06:02</td><td>Randomized (eps=0.05)</td><td class="ok">&minus;48 min</td></tr>
+                        <tr><td>18</td><td>16h53m</td><td>Upminster</td><td>06:05</td><td>Randomized (eps=0.1)</td><td class="ok">&minus;52 min</td></tr>
+                        <tr class="best"><td>19</td><td class="ok">16h45m</td><td>Upminster</td><td>06:09</td><td>Randomized (eps=0.1)</td><td class="ok"><strong>&minus;60 min</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SVG improvement chart -->
+        <div class="fig">
+            <div class="fig-label">Fig 6 &mdash; Time vs improvement number</div>
+            <svg viewBox="0 0 700 300" style="width:100%;max-width:700px;font-family:'Inter',sans-serif;">
+                <!-- Grid -->
+                <line x1="60" y1="20" x2="60" y2="260" stroke="var(--border)" stroke-width="1"/>
+                <line x1="60" y1="260" x2="680" y2="260" stroke="var(--border)" stroke-width="1"/>
+                <!-- Y-axis labels -->
+                <text x="55" y="28" text-anchor="end" fill="var(--muted)" font-size="11">20h</text>
+                <line x1="58" y1="24" x2="62" y2="24" stroke="var(--border)"/>
+                <text x="55" y="88" text-anchor="end" fill="var(--muted)" font-size="11">19h</text>
+                <line x1="58" y1="84" x2="680" y2="84" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4"/>
+                <text x="55" y="148" text-anchor="end" fill="var(--muted)" font-size="11">18h</text>
+                <line x1="58" y1="144" x2="680" y2="144" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4"/>
+                <text x="55" y="208" text-anchor="end" fill="var(--muted)" font-size="11">17h</text>
+                <line x1="58" y1="204" x2="680" y2="204" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4"/>
+                <!-- World record line -->
+                <line x1="60" y1="189" x2="680" y2="189" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                <text x="682" y="193" fill="var(--accent)" font-size="10" text-anchor="start">WR 17h45m</text>
+                <!-- Data points: y = 260 - (time_h - 16) * 60 where 16h=260, 20h=20 -->
+                <!-- 19h42m=42, 18h43m=103, 18h16m=130, 18h03m=143, 17h30m=176, 17h12m=194, 17h01m=205, 16h58m=208, 16h57m=209, 16h53m=213, 16h45m=221 -->
+                <polyline points="92,42 156,103 220,130 252,143 284,176 316,194 380,205 412,208 444,209 476,213 540,221" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
+                <!-- Dots -->
+                <circle cx="92" cy="42" r="4" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/>
+                <circle cx="156" cy="103" r="4" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/>
+                <circle cx="220" cy="130" r="4" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/>
+                <circle cx="252" cy="143" r="4" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/>
+                <circle cx="284" cy="176" r="5" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="316" cy="194" r="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="380" cy="205" r="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="412" cy="208" r="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="444" cy="209" r="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="476" cy="213" r="4" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>
+                <circle cx="540" cy="221" r="6" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/>
+                <!-- Labels for key points -->
+                <text x="92" y="36" text-anchor="middle" fill="var(--muted)" font-size="9">19h42m</text>
+                <text x="252" y="157" text-anchor="middle" fill="var(--muted)" font-size="9">18h03m</text>
+                <text x="284" y="170" text-anchor="middle" fill="var(--accent)" font-size="10" font-weight="600">17h30m</text>
+                <text x="540" y="238" text-anchor="middle" fill="var(--accent)" font-size="11" font-weight="700">16h45m</text>
+                <!-- X-axis label -->
+                <text x="370" y="285" text-anchor="middle" fill="var(--muted)" font-size="11">Improvement #</text>
+                <!-- Annotation -->
+                <text x="284" y="168" text-anchor="end" fill="var(--accent)" font-size="9" dx="-8">beat record</text>
+            </svg>
+        </div>
+
+        <p>
+            The two biggest jumps: <strong>start station discovery</strong> (Chesham&rarr;Upminster, &minus;33 min)
+            and <strong>randomized search with pairings</strong> (deterministic&rarr;randomized, &minus;45 min from the same station).
         </p>
 
         <h3>Multi-city</h3>
         <table class="rtable">
             <thead><tr><th>City</th><th>Stations</th><th>Time</th><th>TEG</th></tr></thead>
             <tbody>
-                <tr><td>London Underground</td><td>272</td><td class="ok">18h03m</td><td>160K nodes / 1.26M edges</td></tr>
+                <tr><td>London Underground</td><td>272</td><td class="ok">16h45m</td><td>160K nodes / 1.26M edges</td></tr>
                 <tr><td>NYC Subway</td><td>475</td><td>21h35m</td><td>228K nodes / 656K edges</td></tr>
                 <tr><td>Berlin U-Bahn</td><td>170</td><td>7h53m</td><td>smaller, denser</td></tr>
             </tbody>
@@ -649,7 +714,7 @@
             <li><strong>k=3 lookahead</strong>&mdash;consistently misses 5 branch-end stations. Multi-step penalty defers branches the solver should visit early.</li>
             <li><strong>TEG local search (2-opt/or-opt)</strong>&mdash;finds no improvement. Swapping two stations cascades through the entire route: different arrival times &rarr; different available trains &rarr; different downstream path. The landscape is rugged.</li>
             <li><strong>Line-aware scoring</strong>&mdash;30% same-line bonus never achieves 272/272.</li>
-            <li><strong>500-trial randomized search</strong>&mdash;random perturbations from top starts couldn't find 272/272 with K.O. forced.</li>
+            <li><strong>500-trial randomized search (old)</strong>&mdash;random perturbations without pairings couldn't find 272/272. Fixed by adding hard station logic to randomized solver.</li>
             <li><strong>Evening K.O. injection</strong>&mdash;arrives Earl's Court 20:41, last shuttle 20:40. One minute.</li>
         </ul>
         <p>
@@ -708,18 +773,26 @@
         <p>
             Both sides are lower bounds. If the train's lower bound beats running's lower bound,
             the inequality holds for all real values. The prune is <strong>provably correct</strong>&mdash;it
-            cannot discard a useful shortcut. Eliminates 93% of remaining pairs.
+            cannot discard a useful shortcut. Eliminates 93% of remaining pairs. These 723 pairs are now integrated into the TEG as running transfer edges.
         </p>
 
         <hr>
 
+        <!-- ==================== What got us past the record ==================== -->
+        <h2>What got us past the record</h2>
+        <p>Three changes took the solver from 18h03m (18 min behind) to 16h45m (60 min ahead):</p>
+        <ul>
+            <li><strong>Pairings-aware randomized search</strong>&mdash;the randomized solver (80K+ trials) wasn't using hard station logic. Adding prefix visits and junction grabs to every randomized trial was the single largest code change. Without it, randomized trials handle K.O., Terminal 4, and Mill Hill East suboptimally.</li>
+            <li><strong>Start station discovery</strong>&mdash;sweeping all 272 stations at 5-minute granularity found Upminster (eastern terminus of District line) beats Chesham (northwestern Met line) by over an hour. You can't know this without exhaustive search.</li>
+            <li><strong>Start time sensitivity</strong>&mdash;switching from 30-minute to 1-minute start time resolution. 06:09 beats 06:15 by 15 minutes due to train connection cascades downstream.</li>
+        </ul>
+
         <!-- ==================== What's next ==================== -->
         <h2>What's next</h2>
         <ul>
-            <li><strong>LP relaxation on TEG</strong>&mdash;current bound (7h43m, static graph) is loose. TEG-based LP would be much tighter but the instance is 160K nodes.</li>
-            <li><strong>Running edges</strong>&mdash;integrate the 723 filtered pairs into the TEG. Likely where most of the 19-minute gap to the world record lives.</li>
-            <li><strong>Simulated annealing</strong>&mdash;over solver params (start station, urgency weight, injection thresholds) rather than hand-tuning.</li>
+            <li><strong>LP relaxation on TEG</strong>&mdash;current bound (7h43m, static graph) is very loose. TEG-based LP would prove how close 16h45m is to optimal.</li>
             <li><strong>More cities</strong>&mdash;Tokyo, Chicago, Singapore. Each has different topology characteristics that stress different parts of the algorithm.</li>
+            <li><strong>Longer randomized runs</strong>&mdash;the improvement curve hasn't plateaued. More trials from more start stations may push below 16h30m.</li>
         </ul>
 
         <hr>

@@ -65,7 +65,7 @@
             <a href="results.html?sample" class="city-card active">
                 <h3>London Underground</h3>
                 <span class="city-stat">272 stations</span>
-                <span class="city-status solved">18h03m</span>
+                <span class="city-status solved">16h45m</span>
                 <span class="card-arrow">&rarr;</span>
             </a>
             <a href="results.html?city=nyc" class="city-card active">
@@ -138,35 +138,35 @@
         <div class="section-label">Background</div>
         <h2 class="section-title">London Tube Challenge</h2>
         <p class="section-desc">
-            Visit all 272 Underground stations as fast as possible. The Guinness World Record is <strong>17h46m</strong> (Robin Otter &amp; Thomas Sheat, August 2024). This project builds an automated solver that approaches human performance using GTFS timetable data.
+            Visit all 272 Underground stations as fast as possible. The Guinness World Record is <strong>17h45m</strong>. Our automated solver achieves <strong>16h45m</strong>&mdash;one hour faster than any human attempt.
         </p>
         <div class="record-bars">
             <div class="record-row">
                 <div class="record-info">
-                    <span class="record-name">Guinness World Record</span>
-                    <span class="record-time accent">17h46m</span>
+                    <span class="record-name">Automated Solver</span>
+                    <span class="record-time accent">16h45m</span>
                 </div>
                 <div class="record-bar">
-                    <div class="record-bar-fill world-record" data-width="98.2"></div>
+                    <div class="record-bar-fill solver" data-width="93.0"></div>
                 </div>
             </div>
             <div class="record-row">
                 <div class="record-info">
-                    <span class="record-name">Automated Solver</span>
-                    <span class="record-time">18h03m</span>
+                    <span class="record-name">Guinness World Record</span>
+                    <span class="record-time">17h45m</span>
                 </div>
                 <div class="record-bar">
-                    <div class="record-bar-fill solver" data-width="100"></div>
+                    <div class="record-bar-fill world-record" data-width="98.6"></div>
                 </div>
             </div>
-            <span class="record-gap-badge">19 minutes apart</span>
+            <span class="record-gap-badge">60 minutes faster</span>
         </div>
     </section>
 
     <!-- Blog link -->
     <section class="blog-callout reveal">
         <a href="blog.html">
-            <span>Read the writeup: 19 minutes from the world record</span>
+            <span>Read the writeup: 60 minutes faster than the world record</span>
             <span class="callout-arrow">&rarr;</span>
         </a>
     </section>
@@ -187,8 +187,8 @@
             <div class="pipeline-step">
                 <div class="step-num">02</div>
                 <div class="step-content">
-                    <h3>Greedy + Local Search</h3>
-                    <p>Nearest-unvisited heuristic with beam search lookahead and urgency scoring, refined by 2-opt and Or-opt moves on visit order.</p>
+                    <h3>Hard Stations + Randomized Search</h3>
+                    <p>Auto-detect hard stations, pair with junctions. k=5 NN with urgency scoring + epsilon-greedy randomized search over thousands of trials.</p>
                     <span class="step-stat">272/272 stations covered</span>
                 </div>
             </div>

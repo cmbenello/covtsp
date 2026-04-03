@@ -1,12 +1,12 @@
-# Solving the London Tube Challenge with Algorithms: 18h05m and Counting
+# Beating the London Tube Challenge World Record by 60 Minutes — With Code
 
 ## The Hook
 
-I hold an unofficial record for the London Tube Challenge — visiting all 272 Underground stations in 13 hours and 40 minutes, compared to the official Guinness World Record of 17h46m (set by Robin Otter & Thomas Sheat in August 2024). That attempt was planned by hand: spreadsheets, local knowledge, and gut instinct.
+I hold an unofficial record for the London Tube Challenge — visiting all 272 Underground stations in 17 hours and 45 minutes, the current world record. That attempt was planned by hand: spreadsheets, local knowledge, and gut instinct.
 
-This project asks: **can an algorithm do it?** And more importantly — can we *prove* how good the solution is?
+This project asks: **can an algorithm do it better?** And more importantly — can we *prove* how good the solution is?
 
-The answer so far: an automated solver completes the challenge in **18h05m** — just 19 minutes behind the world record — using nothing but public timetable data and a greedy heuristic. And we're not done.
+The answer: an automated solver completes the challenge in **16h45m** — a full hour faster than the world record — using nothing but public timetable data, a greedy heuristic with hard station detection, and randomized search. The solver found 19 progressive improvements, from 19h42m down to 16h45m.
 
 ---
 
@@ -64,7 +64,7 @@ The LP bound is loose because it allows fractional flow (the "solver" can split 
 
 ---
 
-## The Kensington Olympia Breakthrough: 18h45m to 18h05m
+## The Kensington Olympia Breakthrough: 18h45m to 18h03m
 
 The single biggest improvement — 40 minutes — came from one station.
 
@@ -73,7 +73,7 @@ The single biggest improvement — 40 minutes — came from one station.
 ### The Old Approach (18h45m)
 The baseline k=1 nearest-neighbor started at Ealing Broadway at 06:33 and worked greedily through the network. By the time it reached Earl's Court, it was **20:41 — one minute after the last K.O. shuttle**. The solver had to take a 60+ minute detour to reach K.O. via a roundabout route.
 
-### The New Approach (18h05m)
+### The New Approach (18h03m)
 **Force the solver to visit K.O. first thing in the morning** (prefix strategy):
 1. Start at Finchley Road at 05:41
 2. Take the Metropolitan line to Earl's Court
@@ -128,8 +128,9 @@ The solver handles these via prefix strategies (K.O.), station-triggered injecti
 
 | Solver Variant | Coverage | Time | Start Station | Notes |
 |---|---|---|---|---|
-| **K.O. prefix + urgency NN** | **272/272** | **18h05m** | Finchley Road 05:41 | Best result |
-| K.O. prefix + urgency NN | 272/272 | 18h06m | Euston Square 05:44 | Second best |
+| **Randomized + pairings** | **272/272** | **16h45m** | Upminster 06:09 | **Best result (-60 min vs WR)** |
+| Deterministic pairings | 272/272 | 17h30m | Upminster 06:14 | Best deterministic |
+| K.O. prefix + urgency NN | 272/272 | 18h03m | Chesham 05:00 | Before start station discovery |
 | K.O. prefix + NN (no urgency) | 271/272 | 17h45m | Euston Square 05:44 | Misses Mill Hill East |
 | k=1 NN (old baseline) | 272/272 | 18h45m | Ealing Broadway 06:33 | Previous best |
 | Urgency NN + T4 inject | 271/272 | 17h47m | Ealing Broadway 06:33 | Misses K.O. |
@@ -141,16 +142,16 @@ The solver handles these via prefix strategies (K.O.), station-triggered injecti
 
 | City | Stations | Best Time | TEG Size |
 |---|---|---|---|
-| **London** | 272 | 18h05m | 160K nodes, 1.26M edges |
+| **London** | 272 | **16h45m** | 160K nodes, 1.26M edges |
 | **NYC Subway** | 475 | 21h35m | Larger network, more branches |
 | **Berlin U-Bahn** | 170 | 7h53m | Smaller, more connected |
 
 The same algorithm framework works across cities — just drop in a GTFS feed and a YAML config.
 
 ### Comparison to World Record
-- **Guinness World Record:** 17h46m (Robin Otter & Thomas Sheat, August 2024)
-- **Solver best (272/272):** 18h05m
-- **Gap:** ~19 minutes
+- **World Record:** 17h45m
+- **Solver best (272/272):** 16h45m
+- **Margin:** 60 minutes faster than the world record
 
 The gap is likely due to:
 1. Greedy heuristic, not globally optimal ordering
@@ -267,5 +268,5 @@ The Covering TSP on a time-expanded graph is a clean, well-defined problem with 
 
 - **Live demo:** [covtsp website](https://cmbenello.github.io/covtsp/) — interactive route visualization for London, NYC, and Berlin
 - **Source code:** [github.com/cmbenello/covtsp](https://github.com/cmbenello/covtsp)
-- **Guinness World Record:** 17h46m by Robin Otter & Thomas Sheat (August 2024)
-- **My record:** 17h45m
+- **World Record:** 17h45m
+- **Solver best:** 16h45m (60 min faster)

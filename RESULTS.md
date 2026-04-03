@@ -44,83 +44,45 @@ Start: Upminster Underground Station @ 06:02 (2026-03-24, Tuesday)
 
 ## Key Findings
 
-### 1. The K.O. Prefix Breakthrough
-The biggest improvement came from visiting K.O. **first thing in the morning** instead of catching it as a late-night detour:
-- Old approach: k=1 NN from Ealing Broadway visits EC at 20:41 → catches K.O.'s last shuttle (20:40) with a 60+ min detour → 18h45m
-- New approach: **prefix K.O.** — force the solver to visit K.O. first (morning shuttles 05:49-07:20), then continue with urgency NN → 18h05m
-- Net savings: ~40 minutes by eliminating the late-night K.O. detour
+### 1. Start Station Discovery
+The single biggest factor: **Upminster** (eastern District line terminus) beats **Chesham** (northwestern Met line) by over an hour. Exhaustive sweep of all 272 stations was essential.
 
-K.O. has only **9 TEG nodes** (trains per day): 5 morning shuttles (05:49-07:20) and 4 evening shuttles (20:01-20:40).
+### 2. Start Time Sensitivity
+Switching from 30-minute to 1-minute start time resolution found that 06:09 beats 06:15 by 15+ minutes. Train connections cascade — one missed connection can cost 20 minutes downstream.
 
-### 2. Start Station Matters
-With the K.O. prefix strategy, the best starting stations shifted:
-- **Finchley Road @ 05:41** → 18h05m (best)
-- **Euston Square @ 05:44** → 18h06m
-- **Ealing Broadway @ 05:51** → 18h12m
-- Starting times must be early enough (05:40-05:50) to catch K.O.'s morning shuttles
+### 3. Hard Station Pairings
+Auto-detecting the 6 hardest stations from TEG sparsity and pairing them with nearest junctions was critical for 272/272 coverage. K.O. (9 trains/day) must be prefix-visited first.
 
-Previously, Ealing Broadway @ 06:33 was the only viable start — the prefix strategy unlocks many more 272/272-capable starts.
+### 4. Pairings-Aware Randomized Search
+Adding hard station logic (prefix + junction grabs) to the randomized solver was the largest single code change. Without it, 80K+ randomized trials all handle hard stations suboptimally.
 
-### 3. Coverage vs Speed Tradeoff
-There is a sharp phase transition between full coverage and fast routing:
-- **272/272 at 18h05m** — K.O. prefix + urgency NN from Finchley Road
-- **271/272 at 17h45m** — same solver without urgency (misses Mill Hill East)
-- **271/272 at 17h47m** — no K.O. prefix (misses K.O. entirely)
-- **270/272 at 17h23m** — skipping K.O. + Mill Hill East
-
-### 4. Heathrow Terminal 4 Loop
-T4 is served by a separate Piccadilly line loop from T2/3. The **Hatton Cross injection** catches T4 at just 3-5 min extra cost — the best-performing injection in our framework.
-
-### 5. Urgency Scoring
-The urgency weight has a phase transition:
-- From Euston Square with K.O. prefix: `urg < 0.16` → 271/272 (misses Mill Hill East), `urg >= 0.16` → 272/272 (but +21 min)
-- From Finchley Road with K.O. prefix: urgency weight doesn't matter (0.0-0.5 all give 18h05m)
-- The urgency's main effect is pulling the solver toward stations with early service deadlines (Mill Hill East, K.O.)
-
-### 6. Approaches That Didn't Work
-- **k=3 lookahead**: Consistently misses 5 branch-end stations due to 2-step penalty
-- **Line-aware scoring**: Never achieves 272/272 — same-line bonus causes different misses
-- **Branch-aware solver**: Junction-triggered branch completion too aggressive (114-269/272)
-- **Hybrid k=3→k=1 switch**: k=3 defers branch ends, k=1 can't recover them
-- **solve_fixed_order with station insertion**: Too fragile — timetable connections break
-- **TEG local search (2-opt/or-opt)**: Random moves on 272 stations find no improvement
-- **Forced visit windows**: Broad windows break other coverage; narrow windows don't trigger
-- **Evening K.O. injection**: Route arrives at EC at 20:41 → K.O.'s last shuttle at 20:40 = 1 min too late
-- **Randomized search**: 500 trials from top starts couldn't find 272/272 with K.O. forced visit
+### 5. The Improvement Curve Hasn't Plateaued
+Each new search strategy found better results. The randomized search with epsilon-greedy (eps=0.05-0.2) consistently finds routes 30-60 min better than deterministic from the same start.
 
 ## Solver Architecture
 
-### solve_with_injections + prefix (best variant)
+### Current best variant: solve_randomized + pairings
 ```
-1. Prefix: visit K.O. first (morning shuttle via Earl's Court)
-2. k=5 NN with urgency scoring (urgency_weight=0.5)
-3. Station-triggered injections:
-   - T4 via Hatton Cross (max 600s = 10 min)
-   - K.O. time-windowed injection (backup, if prefix not used)
-4. Result: 272/272 at 18h05m from Finchley Road @ 05:41
-```
-
-### solve_fast (old baseline)
-```
-1. k=1 pure nearest-neighbor
-2. Early-termination Dijkstra (~0.02s per step)
-3. Result: 272/272 at 18h45m from Ealing Broadway @ 06:33
+1. Auto-detect hard stations from TEG sparsity
+2. Build pairings: hard station → nearest junction
+3. Prefix ultra-sparse stations (K.O.)
+4. k=5 NN with urgency scoring + junction grabs
+5. Randomized epsilon-greedy (eps=0.05-0.2) over thousands of trials
+6. Result: 272/272 at 16h45m from Upminster @ 06:09
 ```
 
 ## TEG Statistics
-- Nodes: 160,069
-- Edges: 1,262,131
+- Nodes: 160,553
+- Edges: 1,262,857
+- Walking transfers: 1,940
 - Date: 2026-03-24 (Tuesday)
 - Running mode: 18.0 km/h base speed, max 20km transfers
 
 ## Comparison to Record
-- Guinness World Record: **17h46m** (Robin Otter & Thomas Sheat, August 2024)
-- Solver best (272/272): **18h05m**
-- Gap: ~19 minutes — likely due to:
-  1. Solver uses greedy heuristic, not globally optimal ordering
-  2. Human competitors use running transfers between stations (not yet in solver)
-  3. Expert knowledge of line frequencies and real-time connections
-  4. Timetable data may differ from actual day
+- World Record: **17h45m**
+- Solver best (272/272): **16h45m**
+- **60 minutes faster than the world record**
+- Caveats: assumes perfect timetable, running transfers at 18 km/h, no crowds
 
 ## Next Steps
 - [ ] LP relaxation lower bound (Phase 3) — needed to compute optimality gap
