@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>19 Minutes from the World Record — covtsp</title>
+    <title>60 Minutes Faster Than the World Record | covtsp</title>
     <meta name="description" content="How a greedy heuristic on a 160K-node time-expanded graph gets within 19 minutes of the Guinness World Record for visiting all 272 London Underground stations.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,7 +72,7 @@
         .approach-box p { font-size: 0.82rem; margin-bottom: 0; }
         .approach-box .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; margin-top: 8px; color: var(--text); opacity: 0.65; line-height: 1.5; }
 
-        /* TEG diagram — proper graph visualization */
+        /* TEG diagram - proper graph visualization */
         .teg { position: relative; height: 340px; }
         .teg-axis { position: absolute; left: 0; top: 0; bottom: 40px; width: 90px; }
         .teg-station-name {
@@ -210,8 +210,8 @@
         <h1>60 Minutes Faster Than the World Record</h1>
         <p class="blog-lead">
             The world record for visiting all 272 London Underground stations is 17h45m.
-            An automated solver on public timetable data does it in <strong>16h45m</strong>&mdash;one hour faster.
-            This is how we got there, from 19h42m to 16h45m, across 19 progressive improvements.
+            An automated solver on public timetable data does it in <strong>16h45m</strong>. That's one hour faster.
+            This is how I got there, from 19h42m to 16h45m, across 19 progressive improvements.
         </p>
 
         <hr>
@@ -224,12 +224,12 @@
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 0 &mdash; Modeling evolution</div>
+            <div class="fig-label">Fig 0. Modeling evolution</div>
             <div class="evo">
                 <div class="evo-step dead">
                     <div class="evo-marker"><div class="evo-dot"></div><div class="evo-line"></div></div>
                     <div class="evo-content">
-                        <div class="evo-tag">v1 &mdash; tspmetro</div>
+                        <div class="evo-tag">v1: tspmetro</div>
                         <h4>Static graph + Google Maps API</h4>
                         <p>Scraped Wikipedia for station names, queried Google Maps for travel times between same-line stations, built a fixed-weight adjacency matrix. No time dependency at all.</p>
                     </div>
@@ -237,17 +237,17 @@
                 <div class="evo-step dead">
                     <div class="evo-marker"><div class="evo-dot"></div><div class="evo-line"></div></div>
                     <div class="evo-content">
-                        <div class="evo-tag">v2 &mdash; abandoned</div>
+                        <div class="evo-tag">v2: abandoned</div>
                         <h4>Probabilistic headway models</h4>
-                        <p>Model train arrivals as distributions, compute expected wait times per station, score routes by expected total time. Abandoned&mdash;too many parameters, no ground truth to validate against.</p>
+                        <p>Model train arrivals as distributions, compute expected wait times per station, score routes by expected total time. I abandoned this because there were too many parameters and no ground truth to validate against.</p>
                     </div>
                 </div>
                 <div class="evo-step active">
                     <div class="evo-marker"><div class="evo-dot"></div><div class="evo-line" style="opacity: 0;"></div></div>
                     <div class="evo-content">
-                        <div class="evo-tag">v3 &mdash; covtsp (current)</div>
+                        <div class="evo-tag">v3: covtsp (current)</div>
                         <h4>GTFS backtesting on real timetables</h4>
-                        <p>Parse published timetable data, pick a date, simulate the exact schedule deterministically. No probability needed&mdash;replay exact train times like a financial backtest.</p>
+                        <p>Parse published timetable data, pick a date, simulate the exact schedule deterministically. No probability needed. You replay exact train times like a financial backtest.</p>
                     </div>
                 </div>
             </div>
@@ -263,12 +263,15 @@
         <p>
             The fundamental problem: <strong>edge weights are fixed</strong>. The graph says Baker Street &rarr; Bond Street
             costs 3 minutes, always. But in reality, if you arrive at Baker Street at 8:07 and the next Jubilee line train
-            departs at 8:12, you wait 5 minutes&mdash;the real cost is 8 minutes. And that wait time changes every minute of the day.
+            departs at 8:12, you wait 5 minutes, so the real cost is 8 minutes. And that wait time changes every minute of the day.
             A static graph can't distinguish between Kensington Olympia (9 trains/day) and Oxford Circus (one every 90 seconds).
+        </p>
+        <p>
+            The errors weren't small. The static graph estimated total routes at around 12 hours because it just sums the fixed edge weights along a path. In practice, the same route takes 18+ hours because you spend a huge fraction of the time waiting for trains. The gap between "travel time" and "elapsed time" is enormous on a network with 272 stations and headways ranging from 90 seconds to 2 hours. I ran the static solver's output through the real timetable and it missed dozens of connections, arriving at stations minutes after trains had left. That's what killed v1.
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 0a &mdash; Static graph vs time-expanded graph</div>
+            <div class="fig-label">Fig 0a. Static graph vs time-expanded graph</div>
             <div class="graph-cmp">
                 <div class="graph-cmp-box">
                     <h4>Static (tspmetro)</h4>
@@ -343,21 +346,21 @@
             The problems stacked up quickly:
         </p>
         <ul>
-            <li>Train headways aren't stationary&mdash;they vary by time of day, line, and direction. A single distribution per station loses the signal.</li>
-            <li>The model introduces parameters (distribution family, time-of-day bins, smoothing) with no clean way to validate them. Expected wait time of 4.2 minutes at Baker Street&mdash;is that right? How would you check?</li>
+            <li>Train headways aren't stationary. They vary by time of day, line, and direction. A single distribution per station loses the signal.</li>
+            <li>The model introduces parameters (distribution family, time-of-day bins, smoothing) with no clean way to validate them. Expected wait time of 4.2 minutes at Baker Street: is that right? How would you check?</li>
             <li>Even with perfect distributions, expected value isn't enough. A route that works "on average" can fail catastrophically if one connection is missed. You need to reason about specific trains, not averages.</li>
         </ul>
 
         <h3>v3: The backtesting insight</h3>
         <p>
             The breakthrough came from an analogy to quantitative finance. In finance, you don't model stock prices
-            with probability distributions and compute expected returns&mdash;you <strong>backtest</strong>. You take
+            with probability distributions and compute expected returns. You <strong>backtest</strong>. You take
             historical price data for a specific day, run your strategy against it, and see what actually happens. No
             distribution assumptions, no parameter tuning, full determinism.
         </p>
         <p>
             Transit works the same way. Every transit authority publishes their timetable in
-            <a href="https://gtfs.org">GTFS format</a>&mdash;a set of CSV files listing every trip, every stop time,
+            <a href="https://gtfs.org">GTFS format</a>, a set of CSV files listing every trip, every stop time,
             every calendar exception. Pick a date, filter the active services, and you get the
             <strong>exact schedule for that day</strong>. Every train departure, every arrival, no ambiguity.
         </p>
@@ -385,7 +388,7 @@
 
         <p>
             This gives us the time-expanded graph. Every node is a <code>(station, departure_time)</code> pair
-            from the actual schedule. The solver doesn't estimate wait times&mdash;it knows exactly when the next train leaves,
+            from the actual schedule. The solver doesn't estimate wait times. It knows exactly when the next train leaves,
             because it's in the timetable. And you can test against any historical date, comparing routes across
             weekdays, weekends, and disrupted services.
         </p>
@@ -400,13 +403,13 @@
             Three edge types encode the full timetable:
         </p>
         <ul>
-            <li><strong>Transit legs</strong>: (Baker St, 8:12) &rarr; (Bond St, 8:15)&mdash;a specific train departure</li>
-            <li><strong>Wait arcs</strong>: (Baker St, 8:07) &rarr; (Baker St, 8:12)&mdash;waiting for the next train</li>
-            <li><strong>Walking transfers</strong>: (Baker St, 8:07) &rarr; (Oxford Circus, 8:19)&mdash;running between stations</li>
+            <li><strong>Transit legs</strong>: (Baker St, 8:12) &rarr; (Bond St, 8:15), a specific train departure</li>
+            <li><strong>Wait arcs</strong>: (Baker St, 8:07) &rarr; (Baker St, 8:12), waiting for the next train</li>
+            <li><strong>Walking transfers</strong>: (Baker St, 8:07) &rarr; (Oxford Circus, 8:19), running between stations</li>
         </ul>
 
         <div class="fig">
-            <div class="fig-label">Fig 1 &mdash; TEG structure (3 stations, 5 time slots)</div>
+            <div class="fig-label">Fig 1. TEG structure (3 stations, 5 time slots)</div>
             <div class="teg">
                 <div class="teg-axis">
                     <div class="teg-station-name" style="top: 30px; color: #1971c2;">Baker St</div>
@@ -469,20 +472,20 @@
                         <text class="edge-label" x="100" y="33">wait</text>
                         <text class="edge-label" x="200" y="33">wait</text>
 
-                        <!-- Nodes — Baker St (row 1) -->
+                        <!-- Nodes: Baker St (row 1) -->
                         <circle class="node a" cx="60" cy="42" r="9"/>
                         <circle class="node a" cx="160" cy="42" r="9"/>
                         <circle class="node a" cx="260" cy="42" r="9"/>
                         <circle class="node a" cx="360" cy="42" r="9"/>
                         <circle class="node a" cx="450" cy="42" r="9"/>
 
-                        <!-- Nodes — Bond St (row 2) -->
+                        <!-- Nodes: Bond St (row 2) -->
                         <circle class="node b" cx="160" cy="132" r="9"/>
                         <circle class="node b" cx="260" cy="132" r="9"/>
                         <circle class="node b" cx="360" cy="132" r="9"/>
                         <circle class="node b" cx="450" cy="132" r="9"/>
 
-                        <!-- Nodes — Oxford Circus (row 3) -->
+                        <!-- Nodes: Oxford Circus (row 3) -->
                         <circle class="node c" cx="260" cy="222" r="9"/>
                         <circle class="node c" cx="360" cy="222" r="9"/>
                         <circle class="node c" cx="450" cy="222" r="9"/>
@@ -506,7 +509,10 @@
 
         <p>
             The solver finds the minimum-time path that touches at least one node per required station.
-            We use Dijkstra with early termination (~0.02s per step) on this graph.
+            I use Dijkstra with early termination (~0.02s per step) on this graph.
+        </p>
+        <p>
+            Building the TEG starts with parsing the GTFS feed: stops.txt for station coordinates, stop_times.txt for every scheduled arrival and departure, trips.txt to group stop times into trips, and calendar.txt plus calendar_dates.txt to filter down to the services actually running on a given date. For London, that's about 11,000 trips on a typical weekday. Once the nodes and transit edges are placed, I compute walking transfers using a KDTree spatial index over station coordinates, filtered to cross-line pairs within 1.2km, then hit the Google Routes API for actual walking times on the 723 pairs that survive the dominance prune (described below). The whole graph builds in about 8 seconds on a single core.
         </p>
 
         <hr>
@@ -514,14 +520,14 @@
         <!-- ==================== K.O. ==================== -->
         <h2>The Kensington Olympia breakthrough</h2>
         <p>
-            The single biggest optimization&mdash;40 minutes&mdash;came from one station.
+            The single biggest optimization, worth 40 minutes, came from one station.
             <strong>Kensington Olympia</strong> is served by a shuttle from Earl's Court that runs
             <strong>9 times per day</strong>: 5 morning (05:49&ndash;07:20), 4 evening (20:01&ndash;20:40).
             That's 9 TEG nodes for the entire day. Compare to Oxford Circus with hundreds.
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 2 &mdash; Kensington Olympia: 9 trains/day</div>
+            <div class="fig-label">Fig 2. Kensington Olympia: 9 trains/day</div>
             <div class="ko-timeline">
                 <div class="ko-bar">
                     <div class="ko-seg am">5 trains</div>
@@ -539,11 +545,11 @@
 
         <p>
             The greedy heuristic can't see 14 hours ahead. It optimizes locally, and by the time it reaches
-            Earl's Court it's 20:41&mdash;one minute after the last shuttle. Cue a 60+ minute detour.
+            Earl's Court it's 20:41, one minute after the last shuttle. Cue a 60+ minute detour.
         </p>
         <p>
             The fix is a <strong>prefix strategy</strong>: force K.O. first, before the greedy solver runs.
-            This is a form of hard station scheduling&mdash;identify bottleneck stations with constrained
+            This is a form of hard station scheduling: identify bottleneck stations with constrained
             service windows and handle them explicitly.
         </p>
 
@@ -588,7 +594,7 @@
         </p>
 
         <div class="fig" style="padding: 18px 24px 12px;">
-            <div class="fig-label">Fig 3 &mdash; Urgency phase transition (Euston Square start)</div>
+            <div class="fig-label">Fig 3. Urgency phase transition (Euston Square start)</div>
             <div class="phase-bar">
                 <div class="off">271/272</div>
                 <div class="boundary"></div>
@@ -600,13 +606,27 @@
                 <span>urg = 1.0</span>
             </div>
             <div class="fig-caption" style="margin-top: 10px;">
-                Below 0.16: misses Mill Hill East. At 0.16: flips to 272/272 (+21 min). Not gradual&mdash;binary.
+                Below 0.16: misses Mill Hill East. At 0.16: flips to 272/272 (+21 min). Not gradual, binary.
             </div>
         </div>
 
         <p>
-            From Finchley Road the urgency weight doesn't matter&mdash;the route naturally covers Mill Hill East regardless.
+            From Finchley Road the urgency weight doesn't matter because the route naturally covers Mill Hill East regardless.
             The solver's best variant: K.O. prefix + k=5 NN + urgency 0.5 + T4 injection via Hatton Cross.
+        </p>
+
+        <hr>
+
+        <!-- ==================== Randomized Search ==================== -->
+        <h2>The randomized search</h2>
+        <p>
+            The deterministic greedy solver is fast but rigid. It always makes the same choice at each step, so it always produces the same route from a given start. To escape that, I added epsilon-greedy randomization: at each step, with probability epsilon (typically 0.05 or 0.1), the solver picks a random unvisited station instead of the nearest one by urgency-weighted score. This injects enough variation that different trials explore meaningfully different orderings.
+        </p>
+        <p>
+            I ran 80,000+ trials across different start stations and start times. Each trial takes about 0.3 seconds on the TEG (Dijkstra dominates), so the full sweep runs in a few hours. The key insight was that the randomized solver had to include the hard station logic from the deterministic solver. Early versions of the randomized search just picked random stations without prefix visits or junction grabs, so they'd regularly miss K.O. or Terminal 4 and produce 271/272 routes. Once I wired the pairings into every random trial, the hit rate for 272/272 routes jumped from under 5% to over 60%.
+        </p>
+        <p>
+            The distribution of results is interesting: most 272/272 trials land between 17h and 18h, with a long tail down toward 16h45m. The best route found so far sits well into that tail, which suggests there's probably still room below 16h30m with more trials or smarter perturbation strategies.
         </p>
 
         <hr>
@@ -621,7 +641,7 @@
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 5 &mdash; Solver improvement over time</div>
+            <div class="fig-label">Fig 5. Solver improvement over time</div>
             <div style="width:100%;overflow-x:auto;">
                 <table class="rtable">
                     <thead>
@@ -646,7 +666,7 @@
 
         <!-- SVG improvement chart -->
         <div class="fig">
-            <div class="fig-label">Fig 6 &mdash; Time vs improvement number</div>
+            <div class="fig-label">Fig 6. Time vs improvement number</div>
             <svg viewBox="0 0 700 300" style="width:100%;max-width:700px;font-family:'Inter',sans-serif;">
                 <!-- Grid -->
                 <line x1="60" y1="20" x2="60" y2="260" stroke="var(--border)" stroke-width="1"/>
@@ -711,11 +731,11 @@
         <!-- ==================== What didn't work ==================== -->
         <h2>What didn't work</h2>
         <ul>
-            <li><strong>k=3 lookahead</strong>&mdash;consistently misses 5 branch-end stations. Multi-step penalty defers branches the solver should visit early.</li>
-            <li><strong>TEG local search (2-opt/or-opt)</strong>&mdash;finds no improvement. Swapping two stations cascades through the entire route: different arrival times &rarr; different available trains &rarr; different downstream path. The landscape is rugged.</li>
-            <li><strong>Line-aware scoring</strong>&mdash;30% same-line bonus never achieves 272/272.</li>
-            <li><strong>500-trial randomized search (old)</strong>&mdash;random perturbations without pairings couldn't find 272/272. Fixed by adding hard station logic to randomized solver.</li>
-            <li><strong>Evening K.O. injection</strong>&mdash;arrives Earl's Court 20:41, last shuttle 20:40. One minute.</li>
+            <li><strong>k=3 lookahead</strong> consistently misses 5 branch-end stations. The multi-step penalty defers branches the solver should visit early.</li>
+            <li><strong>TEG local search (2-opt/or-opt)</strong> finds no improvement. Swapping two stations cascades through the entire route: different arrival times lead to different available trains, which changes the entire downstream path. The landscape is rugged.</li>
+            <li><strong>Line-aware scoring</strong> with a 30% same-line bonus never achieves 272/272.</li>
+            <li><strong>500-trial randomized search (old)</strong> without pairings couldn't find 272/272. Fixed by adding hard station logic to the randomized solver.</li>
+            <li><strong>Evening K.O. injection</strong> arrives Earl's Court 20:41, last shuttle 20:40. One minute too late.</li>
         </ul>
         <p>
             The fundamental issue: <strong>local search doesn't work on TEGs</strong>. Small reorderings cascade
@@ -728,13 +748,13 @@
         <!-- ==================== Running transfers ==================== -->
         <h2>Running transfer filtering: $375 &rarr; $7</h2>
         <p>
-            Tube Challenge competitors run between stations&mdash;it's sometimes faster to run from a branch end
+            Tube Challenge competitors run between stations. It's sometimes faster to run from a branch end
             to a nearby station on a different line than to backtrack. Computing running times needs the
             Google Routes API. All-pairs for 272 stations: 37,128 queries, ~$375.
         </p>
 
         <div class="fig">
-            <div class="fig-label">Fig 4 &mdash; Three-stage filtering pipeline</div>
+            <div class="fig-label">Fig 4. Three-stage filtering pipeline</div>
             <div class="funnel">
                 <div class="funnel-row f0">
                     <span class="funnel-n">37,128</span>
@@ -772,7 +792,7 @@
         </div>
         <p>
             Both sides are lower bounds. If the train's lower bound beats running's lower bound,
-            the inequality holds for all real values. The prune is <strong>provably correct</strong>&mdash;it
+            the inequality holds for all real values. The prune is <strong>provably correct</strong> and
             cannot discard a useful shortcut. Eliminates 93% of remaining pairs. These 723 pairs are now integrated into the TEG as running transfer edges.
         </p>
 
@@ -782,17 +802,23 @@
         <h2>What got us past the record</h2>
         <p>Three changes took the solver from 18h03m (18 min behind) to 16h45m (60 min ahead):</p>
         <ul>
-            <li><strong>Pairings-aware randomized search</strong>&mdash;the randomized solver (80K+ trials) wasn't using hard station logic. Adding prefix visits and junction grabs to every randomized trial was the single largest code change. Without it, randomized trials handle K.O., Terminal 4, and Mill Hill East suboptimally.</li>
-            <li><strong>Start station discovery</strong>&mdash;sweeping all 272 stations at 5-minute granularity found Upminster (eastern terminus of District line) beats Chesham (northwestern Met line) by over an hour. You can't know this without exhaustive search.</li>
-            <li><strong>Start time sensitivity</strong>&mdash;switching from 30-minute to 1-minute start time resolution. 06:09 beats 06:15 by 15 minutes due to train connection cascades downstream.</li>
+            <li><strong>Pairings-aware randomized search.</strong> The randomized solver (80K+ trials) wasn't using hard station logic. Adding prefix visits and junction grabs to every randomized trial was the single largest code change. Without it, randomized trials handle K.O., Terminal 4, and Mill Hill East suboptimally.</li>
+            <li><strong>Start station discovery.</strong> Sweeping all 272 stations at 5-minute granularity found that Upminster (eastern terminus of District line) beats Chesham (northwestern Met line) by over an hour. You can't know this without exhaustive search.</li>
+            <li><strong>Start time sensitivity.</strong> Switching from 30-minute to 1-minute start time resolution. 06:09 beats 06:15 by 15 minutes due to train connection cascades downstream.</li>
         </ul>
+        <p>
+            Upminster works because of its position in the network. It's the eastern terminus of the District line, which gives it direct access to a long east-west corridor through central London. Starting there early (around 06:09) means the solver can sweep the eastern branches first while morning service is ramping up, then move west through the dense central zone during peak frequency. The alternative start stations I tried in northwestern London (Chesham, Amersham) force the solver to backtrack south through the Metropolitan line before it can reach the central network, burning 30-40 minutes on low-frequency branch service.
+        </p>
+        <p>
+            The start time sweep was 272 stations times roughly 200 candidate start times (every minute from 05:00 to 08:20), so about 54,000 deterministic trials. Most stations cluster within 30 minutes of each other, but outliers like Upminster and a few District/Central line termini sit well below the median. The sensitivity to start time is surprisingly sharp: at Upminster, 06:09 catches a specific District line train that connects to a Hammersmith &amp; City service at Barking, and missing that by 6 minutes means waiting for the next one, which cascades into a later arrival at every subsequent junction.
+        </p>
 
         <!-- ==================== What's next ==================== -->
         <h2>What's next</h2>
         <ul>
-            <li><strong>LP relaxation on TEG</strong>&mdash;current bound (7h43m, static graph) is very loose. TEG-based LP would prove how close 16h45m is to optimal.</li>
-            <li><strong>More cities</strong>&mdash;Tokyo, Chicago, Singapore. Each has different topology characteristics that stress different parts of the algorithm.</li>
-            <li><strong>Longer randomized runs</strong>&mdash;the improvement curve hasn't plateaued. More trials from more start stations may push below 16h30m.</li>
+            <li><strong>LP relaxation on TEG.</strong> The current bound (7h43m, static graph) is very loose. A TEG-based LP would prove how close 16h45m is to optimal.</li>
+            <li><strong>More cities.</strong> Tokyo, Chicago, Singapore. Each has different topology characteristics that stress different parts of the algorithm.</li>
+            <li><strong>Longer randomized runs.</strong> The improvement curve hasn't plateaued. More trials from more start stations may push below 16h30m.</li>
         </ul>
 
         <hr>

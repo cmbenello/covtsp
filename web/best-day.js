@@ -1,4 +1,4 @@
-/* best-day.js — Best Day to Attempt feature */
+/* best-day.js - Best Day to Attempt feature */
 
 (function () {
   'use strict';
@@ -114,8 +114,8 @@
 
   function buildDetail(day) {
     var parts = [];
-    parts.push('<strong>Service:</strong> ' + day.service.score.toFixed(0) + ' — ' + day.service.day_type);
-    parts.push('<strong>Weather:</strong> ' + day.weather.score.toFixed(0) + ' — ' + day.weather.summary);
+    parts.push('<strong>Service:</strong> ' + day.service.score.toFixed(0) + ' / ' + day.service.day_type);
+    parts.push('<strong>Weather:</strong> ' + day.weather.score.toFixed(0) + ' / ' + day.weather.summary);
 
     if (day.disruptions.count > 0) {
       var lines = day.disruptions.items.map(function(i) { return i.line; }).join(', ');
